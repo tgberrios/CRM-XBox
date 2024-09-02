@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="BugPedia - Manage and track issues effectively."
+    />
+    <meta name="keywords" content="BugPedia, issue tracking, bug management" />
+    <meta name="author" content="Tomy G. Berrios B." />
+    <title>BugPedia</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
+    />
+    <link rel="stylesheet" href="./css/bugpedia.css" />
+    <style></style>
+  </head>
+  <body class="bg-dark text-light">
+    <div class="container mt-4">
+      <div class="row">
+        <div class="col-md-6 col-left">
+          <h2 class="text-success">Report an Issue</h2>
+          <form id="issueForm" class="bg-secondary p-4 rounded">
+            <div class="form-group">
+              <label for="name">Name:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                name="name"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="date">Date:</label>
+              <input
+                type="date"
+                class="form-control"
+                id="date"
+                name="date"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="observedBehavior">Observed Behavior:</label>
+              <div id="observedBehavior" class="quill-editor"></div>
+            </div>
+            <div class="form-group">
+              <label for="reproductionSteps">Reproduction Steps:</label>
+              <div id="reproductionSteps" class="quill-editor"></div>
+            </div>
+            <div class="form-group">
+              <label for="expectedBehavior">Expected Behavior:</label>
+              <div id="expectedBehavior" class="quill-editor"></div>
+            </div>
+            <div class="form-group">
+              <label for="notes">Notes:</label>
+              <div id="notes" class="quill-editor"></div>
+            </div>
+            <div class="form-group">
+              <label for="bqScore">BQ Score:</label>
+              <input
+                type="number"
+                class="form-control"
+                id="bqScore"
+                name="bqScore"
+                min="0"
+                max="100"
+              />
+            </div>
+            <div class="form-group">
+              <label for="tags">Tags:</label>
+              <input type="text" class="form-control" id="tags" name="tags" />
+            </div>
+            <div class="form-group">
+              <label for="xr">XR:</label>
+              <input type="text" class="form-control" id="xr" name="xr" />
+            </div>
+            <div class="form-group">
+              <label for="scenario">Scenario:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="scenario"
+                name="scenario"
+              />
+            </div>
+            <button type="submit" class="btn btn-success">Add Issue</button>
+            <a href="../index.html" class="btn btn-success">Home</a>
+          </form>
+        </div>
+        <div class="col-md-6 col-right">
+          <h2 class="text-success">BugPedia</h2>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              id="searchInput"
+              placeholder="Search issues..."
+            />
+          </div>
+          <div id="issueList" class="list-group">
+            <!-- Issue items will be dynamically added here -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="sidepeekModal" class="modal-sidepeek">
+      <span class="modal-close-btn" onclick="closeModal()">&#10005;</span>
+      <div id="modalContent">
+        <!-- Issue details will be dynamically added here -->
+      </div>
+    </div>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="js/bugpedia.js"></script>
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        // Create and style the loading overlay
+        const overlay = document.createElement("div");
+        overlay.style.position = "fixed";
+        overlay.style.top = "0";
+        overlay.style.left = "0";
+        overlay.style.width = "100%";
+        overlay.style.height = "100%";
+        overlay.style.backgroundColor = "#000"; // Fondo oscuro
+        overlay.style.zIndex = "9998";
+        overlay.style.filter = "blur(5px)"; // Aplicar desenfoque
+        overlay.style.transition = "opacity 0.5s ease-in-out";
+        overlay.style.opacity = "1";
+        document.body.appendChild(overlay);
+
+        // Create and style the loading screen iframe
+        const loadingScreen = document.createElement("iframe");
+        loadingScreen.src = "./loading.html";
+        loadingScreen.style.position = "fixed";
+        loadingScreen.style.top = "0";
+        loadingScreen.style.left = "0";
+        loadingScreen.style.width = "100%";
+        loadingScreen.style.height = "100%";
+        loadingScreen.style.border = "none";
+        loadingScreen.style.zIndex = "9999";
+        document.body.appendChild(loadingScreen);
+
+        // Remove the loading screen and overlay when the main content is fully loaded
+        window.addEventListener("load", () => {
+          setTimeout(() => {
+            document.body.removeChild(loadingScreen);
+            overlay.style.opacity = "0";
+            setTimeout(() => {
+              document.body.removeChild(overlay);
+            }, 500); // Wait for the transition to complete
+          }, 500); // Delay to ensure everything is properly removed
+        });
+      });
+    </script>
+  </body>
+</html>

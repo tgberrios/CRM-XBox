@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ˋˏ [] ˎˊ CERT News</title>
+    <link
+      href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/styles.css" />
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  </head>
+  <body class="bodyNews">
+    <!-- Aquí se muestran las noticias -->
+    <div class="news-container">
+      <div class="column">
+        <h1>ˋˏ [] ˎˊ CERT News</h1>
+        <div class="updates-list" id="newsList"></div>
+      </div>
+    </div>
+
+    <!-- Pie de Página -->
+    <footer>
+      <p>
+        For comments or suggestions, please email me at
+        <a
+          href="mailto:v-tomyb@microsoft.com?subject=Feedback%20CERT"
+          class="contact-email"
+        >
+          v-tomyb@microsoft.com
+        </a>
+      </p>
+      <button class="footer-button" id="openSidePeekButton">Update</button>
+      <a href="../index.html">Home</a>
+    </footer>
+
+    <!-- Side Peek para registrar actualizaciones -->
+    <div id="sidePeek" class="side-peek">
+      <div class="side-peek-content">
+        <span class="close" id="closeSidePeekButton">&times;</span>
+        <h2>New Update</h2>
+        <form id="updateForm">
+          <div class="form-group">
+            <label for="updateType">Category:</label>
+            <select
+              id="updateType"
+              name="updateType"
+              class="form-select"
+              required
+            >
+              <option value="" disabled selected>Select Type:</option>
+              <option value="news">News</option>
+              <option value="XR Update">XR Update</option>
+              <option value="Process Update">Process Update</option>
+              <option value="Suggestions">Suggestions</option>
+              <option value="XBox Docs">XBox</option>
+              <option value="W10 Docs">W10</option>
+              <option value="BVT">BVT</option>
+              <option value="Console Prep">Console Prep</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="updateTitle">Title:</label>
+            <input
+              type="text"
+              id="updateTitle"
+              name="updateTitle"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="updateContent">Content:</label>
+            <div id="editor-container"></div>
+          </div>
+          <button type="button" class="btn btn-primary" id="logUpdateButton">
+            Send Update
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Side Peek para mostrar contenido -->
+    <div id="contentSidePeek" class="side-peek">
+      <div class="side-peek-content">
+        <span class="close" id="closeContentSidePeekButton">&times;</span>
+        <h2 id="contentSidePeekTitle"></h2>
+        <div id="contentSidePeekBody"></div>
+        <img
+          id="contentSidePeekImage"
+          class="update-image"
+          src=""
+          alt=""
+          style="display: none"
+        />
+        <div id="contentSidePeekAttachments" class="attachments"></div>
+        <button class="delete-button" id="deleteUpdateButton">Delete</button>
+      </div>
+    </div>
+
+    <!-- Inicializar Quill Editor -->
+    <script>
+      var quill = new Quill("#editor-container", {
+        theme: "snow",
+        modules: {
+          toolbar: [
+            [{ header: "1" }, { header: "2" }, { font: [] }],
+            [{ list: "ordered" }, { list: "bullet" }],
+            ["bold", "italic", "underline"],
+            ["link", "image"],
+            [{ align: [] }],
+            ["clean"],
+          ],
+        },
+      });
+    </script>
+    <script src="./js/news.js"></script>
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        // Create and style the loading overlay
+        const overlay = document.createElement("div");
+        overlay.style.position = "fixed";
+        overlay.style.top = "0";
+        overlay.style.left = "0";
+        overlay.style.width = "100%";
+        overlay.style.height = "100%";
+        overlay.style.backgroundColor = "#000"; // Fondo oscuro
+        overlay.style.zIndex = "9998";
+        overlay.style.filter = "blur(5px)"; // Aplicar desenfoque
+        overlay.style.transition = "opacity 0.5s ease-in-out";
+        overlay.style.opacity = "1";
+        document.body.appendChild(overlay);
+
+        // Create and style the loading screen iframe
+        const loadingScreen = document.createElement("iframe");
+        loadingScreen.src = "./loading.html";
+        loadingScreen.style.position = "fixed";
+        loadingScreen.style.top = "0";
+        loadingScreen.style.left = "0";
+        loadingScreen.style.width = "100%";
+        loadingScreen.style.height = "100%";
+        loadingScreen.style.border = "none";
+        loadingScreen.style.zIndex = "9999";
+        document.body.appendChild(loadingScreen);
+
+        // Remove the loading screen and overlay when the main content is fully loaded
+        window.addEventListener("load", () => {
+          setTimeout(() => {
+            document.body.removeChild(loadingScreen);
+            overlay.style.opacity = "0";
+            setTimeout(() => {
+              document.body.removeChild(overlay);
+            }, 500); // Wait for the transition to complete
+          }, 500); // Delay to ensure everything is properly removed
+        });
+      });
+    </script>
+  </body>
+</html>

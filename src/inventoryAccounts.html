@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Manage and edit accounts efficiently with import and export functionalities."
+    />
+    <title>Inventory - Accounts</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="./css/inventoryAccounts.css" />
+    <style>
+      ::-webkit-scrollbar {
+        width: 12px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #000000; /* Un gris oscuro para mejor contraste */
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #000000; /* Un tono más claro al pasar el cursor */
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #000000; /* Un color claro para la pista */
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-track:hover {
+        background: #000000; /* Un tono ligeramente más oscuro al pasar el cursor */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <!-- Column for Form -->
+        <div class="col-md-5 mb-4">
+          <h2>Add / Edit Account</h2>
+          <form id="accountForm">
+            <div class="mb-3">
+              <label for="id" class="form-label">ID</label>
+              <input type="text" class="form-control" id="id" disabled />
+            </div>
+            <div class="mb-3">
+              <label for="state" class="form-label">State</label>
+              <input type="text" class="form-control" id="state" required />
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" required />
+            </div>
+            <div class="mb-3">
+              <label for="position" class="form-label">Position</label>
+              <input type="text" class="form-control" id="position" required />
+            </div>
+            <div class="mb-3">
+              <label for="gamertag" class="form-label">Gamertag</label>
+              <input type="text" class="form-control" id="gamertag" required />
+            </div>
+            <div class="mb-3">
+              <label for="sandbox" class="form-label">Sandbox</label>
+              <input type="text" class="form-control" id="sandbox" required />
+            </div>
+            <div class="mb-3">
+              <label for="subscription" class="form-label">Subscription</label>
+              <input
+                type="text"
+                class="form-control"
+                id="subscription"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="location" class="form-label">Location</label>
+              <input type="text" class="form-control" id="location" required />
+            </div>
+            <div class="mb-3">
+              <label for="notes" class="form-label">Notes</label>
+              <textarea class="form-control" id="notes" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Account</button>
+          </form>
+        </div>
+
+        <!-- Column for Table -->
+        <div class="col-md-6 mb-4">
+          <!-- Search input -->
+          <div class="mb-4">
+            <input
+              type="text"
+              id="searchInput"
+              class="form-control"
+              placeholder="Search accounts..."
+            />
+          </div>
+
+          <!-- Accounts table -->
+          <table class="table table-dark">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>State</th>
+                <th>Email</th>
+                <th>Position</th>
+                <th>Gamertag</th>
+                <th>Sandbox</th>
+                <th>Subscription</th>
+                <th>Location</th>
+                <th>Notes</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="accountsTable">
+              <!-- Accounts will be dynamically inserted here -->
+            </tbody>
+          </table>
+
+          <!-- Pagination controls -->
+          <nav aria-label="Page navigation">
+            <ul
+              class="pagination justify-content-center"
+              id="paginationControls"
+            >
+              <!-- Pagination links will be dynamically inserted here -->
+            </ul>
+          </nav>
+
+          <!-- Export to Excel button -->
+          <div class="text-center mt-4">
+            <button class="btn btn-primary" onclick="exportToExcel()">
+              Export to Excel
+            </button>
+            <button class="btn btn-primary" onclick="showImportSection()">
+              Import from Excel
+            </button>
+          </div>
+
+          <!-- Import section -->
+          <div
+            id="importSection"
+            class="text-center mt-4"
+            style="display: none"
+          >
+            <input
+              type="file"
+              id="importFile"
+              class="form-control"
+              accept=".xlsx, .xls"
+            />
+            <button class="btn btn-secondary mt-2" onclick="importFromExcel()">
+              Start Import
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-4">
+        <a href="inventoryHardware.html" class="btn btn-secondary"
+          >Go to Hardware Inventory</a
+        >
+        <a href="../index.html" class="btn btn-primary">Back to Home</a>
+      </div>
+    </div>
+
+    <script src="./js/inventoryAccounts.js"></script>
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        // Create and style the loading overlay
+        const overlay = document.createElement("div");
+        overlay.style.position = "fixed";
+        overlay.style.top = "0";
+        overlay.style.left = "0";
+        overlay.style.width = "100%";
+        overlay.style.height = "100%";
+        overlay.style.backgroundColor = "#000"; // Fondo oscuro
+        overlay.style.zIndex = "9998";
+        overlay.style.filter = "blur(5px)"; // Aplicar desenfoque
+        overlay.style.transition = "opacity 0.5s ease-in-out";
+        overlay.style.opacity = "1";
+        document.body.appendChild(overlay);
+
+        // Create and style the loading screen iframe
+        const loadingScreen = document.createElement("iframe");
+        loadingScreen.src = "./loading.html";
+        loadingScreen.style.position = "fixed";
+        loadingScreen.style.top = "0";
+        loadingScreen.style.left = "0";
+        loadingScreen.style.width = "100%";
+        loadingScreen.style.height = "100%";
+        loadingScreen.style.border = "none";
+        loadingScreen.style.zIndex = "9999";
+        document.body.appendChild(loadingScreen);
+
+        // Remove the loading screen and overlay when the main content is fully loaded
+        window.addEventListener("load", () => {
+          setTimeout(() => {
+            document.body.removeChild(loadingScreen);
+            overlay.style.opacity = "0";
+            setTimeout(() => {
+              document.body.removeChild(overlay);
+            }, 500); // Wait for the transition to complete
+          }, 500); // Delay to ensure everything is properly removed
+        });
+      });
+    </script>
+  </body>
+</html>

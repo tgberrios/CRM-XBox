@@ -1,0 +1,24 @@
+/* Estilo para campos de formulario específicos de Xbox */
+.form-control-xbox {
+  display: block;
+  width: 100%;
+  height: calc(1.5em + 0.75rem + 2px); /* Altura ajustada para el campo */
+  padding: 0.375rem 0.75rem; /* Espaciado interno */
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center; /* Alineación centrada del texto */
+  color: #888;
+  background-color: #000000; /* Fondo oscuro */
+  background-clip: padding-box; /* Evita que el fondo se extienda fuera del padding */
+  border: 1px solid #000000; /* Borde oscuro */
+  border-radius: 0.25rem; /* Bordes ligeramente redondeados */
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; /* Transiciones suaves */
+}
+
+/* Estilo para títulos h2 */
+h2 {
+  text-align: center; /* Centrar el texto del título */
+  color: #888; /* Color del texto claro */
+  margin-bottom: 20px; /* Espaciado inferior para separación */
+}

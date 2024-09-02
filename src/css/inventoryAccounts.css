@@ -1,0 +1,155 @@
+body {
+  background-color: #000000; /* Dark background color */
+  color: #888; /* Light text color */
+  padding: 20px;
+  font-family: "Noto Sans JP", sans-serif; /* Modern font */
+}
+
+.container {
+  max-width: 1900px;
+  margin: auto;
+  background-color: #000000; /* Dark container background */
+  padding: 20px;
+  border-radius: 8px;
+}
+
+h1 {
+  color: #888; /* Light text color */
+  font-size: 1.75rem;
+  margin-bottom: 20px;
+}
+
+/* Form Control */
+#id.form-control,
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #888; /* Dynamic text color */
+  background-color: #000000; /* Dark background */
+  border: 1px solid #000000; /* Border color */
+  border-radius: var(--bs-border-radius); /* Dynamic border-radius */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control::placeholder {
+  color: #888; /* Color del texto del placeholder */
+  opacity: 1;
+}
+
+.form-control:focus {
+  color: #888; /* Light text color */
+  background-color: #000000; /* Dark background */
+  border-color: #000000; /* Focus border color */
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.25); /* Focus shadow */
+}
+
+/* Table Styles */
+.table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse; /* Ensure borders collapse */
+}
+
+.table > :not(caption) > * > * {
+  padding: 0.5rem;
+  color: #888; /* Light text color */
+  background-color: #000000; /* Dark background */
+  border-bottom: 1px solid #333; /* Darker border color */
+}
+
+.table th,
+.table td {
+  padding: 0.5rem; /* Espaciado interno */
+  border: 1px solid #000000; /* Color del borde */
+  text-align: left; /* Alineación del texto a la izquierda */
+  vertical-align: middle; /* Alineación vertical del contenido */
+}
+
+.active > .page-link,
+.page-link.active {
+  z-index: 3;
+  color: var(--bs-pagination-active-color);
+  background-color: #888888;
+  border-color: #888888;
+}
+
+.table th,
+.table td {
+  /* Elimina el tamaño fijo de las celdas, adaptándolas al contenido */
+  white-space: nowrap; /* Evita el salto de línea dentro de celdas */
+}
+
+.table tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.05); /* Slightly lighter rows */
+}
+
+/* Button Styles */
+.btn-primary {
+  background-color: #202020; /* Dark button background */
+  border-color: #202020; /* Dark button border */
+  color: #fff; /* White text color */
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #363636; /* Lighter on hover */
+  border-color: #363636; /* Lighter border on hover */
+  color: #fff; /* Ensure text remains white */
+}
+
+.btn-secondary {
+  background-color: #202020; /* Dark button background */
+  border-color: #202020; /* Dark button border */
+  color: #fff; /* White text color */
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #363636; /* Lighter on hover */
+  border-color: #363636; /* Lighter border on hover */
+  color: #fff; /* Ensure text remains white */
+}
+
+.btn-warning {
+  background-color: #202020; /* Dark button background */
+  border-color: #202020; /* Dark button border */
+  color: #fff; /* White text color */
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-warning:hover {
+  background-color: #363636; /* Lighter on hover */
+  border-color: #363636; /* Lighter border on hover */
+  color: #fff; /* Ensure text remains white */
+}
+
+.btn-danger {
+  background-color: #202020; /* Dark button background */
+  border-color: #202020; /* Dark button border */
+  color: #fff; /* White text color */
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-danger {
+  background-color: #363636; /* Lighter on hover */
+  border-color: #363636; /* Lighter border on hover */
+  color: #fff; /* Ensure text remains white */
+}
+
+/* Pagination Styles */
+.pagination {
+  margin-top: 20px;
+}
+
+/* Hidden Import Section */
+#importSection {
+  display: none; /* Hide import section by default */
+}

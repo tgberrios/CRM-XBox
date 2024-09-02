@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CERT Management</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./css/styles.css" />
+
+    <!-- JavaScript Libraries -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      defer
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      defer
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"
+      defer
+    ></script>
+  </head>
+  <body id="auth-page">
+    <div class="auth-container">
+      <h1 class="text-center">Authentication</h1>
+
+      <!-- Login Form -->
+      <div id="loginFormContainer">
+        <h2>Login</h2>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="loginUsername">Username:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="loginUsername"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Password:</label>
+            <input
+              type="password"
+              class="form-control"
+              id="loginPassword"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-success btn-block">Login</button>
+          <div class="signup-link">
+            <p>
+              Don't have an account?
+              <a href="#" id="showRegisterForm">Sign Up</a>
+            </p>
+          </div>
+        </form>
+      </div>
+      <!-- Login Form -->
+
+      <!-- Register Form -->
+      <div id="registerFormContainer" style="display: none">
+        <h2>Register</h2>
+        <form id="registerForm">
+          <div class="form-group">
+            <label for="regUsername">Username:</label>
+            <input type="text" class="form-control" id="regUsername" required />
+          </div>
+          <div class="form-group">
+            <label for="regPassword">Password:</label>
+            <input
+              type="password"
+              class="form-control"
+              id="regPassword"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-success btn-block">
+            Register
+          </button>
+          <div class="signup-link">
+            <p>
+              Already have an account? <a href="#" id="showLoginForm">Login</a>
+            </p>
+          </div>
+        </form>
+      </div>
+      <!-- Register Form -->
+
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="loginModal"
+        tabindex="-1"
+        aria-labelledby="loginModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="loginModalLabel">Login Status</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body"></div>
+            <!-- Aquí Aparece la Info -->
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal -->
+    </div>
+    <!-- Custom JS -->
+    <script src="./js/auth.js" defer></script>
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        // Create and style the loading overlay
+        const overlay = document.createElement("div");
+        overlay.style.position = "fixed";
+        overlay.style.top = "0";
+        overlay.style.left = "0";
+        overlay.style.width = "100%";
+        overlay.style.height = "100%";
+        overlay.style.backgroundColor = "#000"; // Fondo oscuro
+        overlay.style.zIndex = "9998";
+        overlay.style.filter = "blur(5px)"; // Aplicar desenfoque
+        overlay.style.transition = "opacity 0.5s ease-in-out";
+        overlay.style.opacity = "1";
+        document.body.appendChild(overlay);
+
+        // Create and style the loading screen iframe
+        const loadingScreen = document.createElement("iframe");
+        loadingScreen.src = "./loading.html";
+        loadingScreen.style.position = "fixed";
+        loadingScreen.style.top = "0";
+        loadingScreen.style.left = "0";
+        loadingScreen.style.width = "100%";
+        loadingScreen.style.height = "100%";
+        loadingScreen.style.border = "none";
+        loadingScreen.style.zIndex = "9999";
+        document.body.appendChild(loadingScreen);
+
+        // Remove the loading screen and overlay when the main content is fully loaded
+        window.addEventListener("load", () => {
+          setTimeout(() => {
+            document.body.removeChild(loadingScreen);
+            overlay.style.opacity = "0";
+            setTimeout(() => {
+              document.body.removeChild(overlay);
+            }, 500); // Wait for the transition to complete
+          }, 500); // Delay to ensure everything is properly removed
+        });
+      });
+    </script>
+  </body>
+</html>

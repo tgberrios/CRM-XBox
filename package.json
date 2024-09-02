@@ -1,0 +1,58 @@
+{
+  "name": "cert-management",
+  "version": "1.0.0",
+  "main": "./main.js",
+  "scripts": {
+    "start": "electron . --no-sandbox",
+    "dist": "electron-builder",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "keywords": [],
+  "author": "Tomy G. Berrios B.",
+  "license": "ISC",
+  "description": "CERT CRM",
+  "devDependencies": {
+    "electron": "^31.2.0",
+    "electron-builder": "^24.13.3"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/material": "^5.16.1",
+    "fs-extra": "^11.2.0",
+    "knex": "^3.1.0",
+    "sqlite3": "^5.0.2",
+    "sweetalert": "^2.1.2",
+    "sweetalert2": "^11.12.4",
+    "systeminformation": "^5.22.11"
+  },
+  "build": {
+    "appId": "IKS",
+    "productName": "Cert Management",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "./data/*",
+      "./src/**/*",
+      "./appDB.db",
+      "index.html",
+      "main.js",
+      "package.json",
+      "package-lock.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "./src/assets/xbox.ico"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "icon.ico"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "icon.ico"
+    }
+  }
+}

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Manage and document Xbox test cases efficiently with this web app."
+    />
+    <meta name="author" content="Tomy G. Berrios B." />
+    <title>XBox Docs</title>
+    <!-- CSS Libraries -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/styles.css" />
+    <link rel="stylesheet" href="./css/xboxdocs.css" />
+  </head>
+  <body class="xboxdocsbody">
+    <div class="xbox-container">
+      <div class="row">
+        <div class="col-md-6 px-50">
+          <h2>Search Test Cases</h2>
+          <input
+            type="text"
+            id="searchInput"
+            class="form-control form-control-xbox"
+            placeholder="Search by XR or Documentation"
+            aria-label="Search Input"
+          />
+          <div class="text-center mt-3">
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#testCaseModal"
+              aria-label="Add Test Case"
+            >
+              Add Test Case
+            </button>
+          </div>
+        </div>
+        <div class="col-md-6 px-20">
+          <h2>Stored Test Cases</h2>
+          <div id="testCasesList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Add Test Case Modal -->
+    <div
+      class="modal fade"
+      id="testCaseModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="testCaseModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="testCaseModalLabel">Add Test Case</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="testCaseForm">
+              <input type="hidden" id="testCaseId" />
+              <div class="form-group">
+                <label for="xr">Test Case XR</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="xr"
+                  aria-describedby="xrHelp"
+                  required
+                />
+                <small id="xrHelp" class="form-text text-muted">
+                  Enter the XR for the test case.
+                </small>
+              </div>
+              <div class="form-group">
+                <label for="documentation">Documentation</label>
+                <div id="documentation" class="form-control"></div>
+              </div>
+              <div class="form-group">
+                <label for="passExample">Pass Example</label>
+                <textarea
+                  class="form-control"
+                  id="passExample"
+                  rows="2"
+                  aria-describedby="passExampleHelp"
+                  required
+                ></textarea>
+                <small id="passExampleHelp" class="form-text text-muted">
+                  Provide an example of a passing test case.
+                </small>
+              </div>
+              <div class="form-group">
+                <label for="failExample">Fail Example</label>
+                <textarea
+                  class="form-control"
+                  id="failExample"
+                  rows="2"
+                  aria-describedby="failExampleHelp"
+                  required
+                ></textarea>
+                <small id="failExampleHelp" class="form-text text-muted">
+                  Provide an example of a failing test case.
+                </small>
+              </div>
+              <div class="form-group">
+                <label for="naExample">Non Applicable Example</label>
+                <textarea
+                  class="form-control"
+                  id="naExample"
+                  rows="2"
+                  aria-describedby="naExampleHelp"
+                  required
+                ></textarea>
+                <small id="naExampleHelp" class="form-text text-muted">
+                  Provide an example of a non-applicable test case.
+                </small>
+              </div>
+              <button type="submit" id="saveButton" class="btn btn-primary">
+                Save Test Case
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- View Test Case Modal -->
+    <div
+      class="modal fade"
+      id="viewModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="viewModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="viewModalLabel">View Test Case</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div><strong>XR:</strong> <span id="viewXR"></span></div>
+            <div>
+              <strong>Documentation:</strong>
+              <p id="viewDocumentation"></p>
+            </div>
+            <div>
+              <strong>Pass Example:</strong>
+              <p id="viewPassExample"></p>
+            </div>
+            <div>
+              <strong>Fail Example:</strong>
+              <p id="viewFailExample"></p>
+            </div>
+            <div>
+              <strong>Non Applicable Example:</strong>
+              <p id="viewNAExample"></p>
+            </div>
+            <div id="viewImage"></div>
+            <button id="editButton" class="btn btn-warning">Edit</button>
+            <button id="deleteButton" class="btn btn-danger">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="./js/your-script.js"></script>
+    <script src="./js/xboxdocs.js"></script>
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        // Create and style the loading overlay
+        const overlay = document.createElement("div");
+        overlay.style.position = "fixed";
+        overlay.style.top = "0";
+        overlay.style.left = "0";
+        overlay.style.width = "100%";
+        overlay.style.height = "100%";
+        overlay.style.backgroundColor = "#000"; // Fondo oscuro
+        overlay.style.zIndex = "9998";
+        overlay.style.filter = "blur(5px)"; // Aplicar desenfoque
+        overlay.style.transition = "opacity 0.5s ease-in-out";
+        overlay.style.opacity = "1";
+        document.body.appendChild(overlay);
+
+        // Create and style the loading screen iframe
+        const loadingScreen = document.createElement("iframe");
+        loadingScreen.src = "./loading.html";
+        loadingScreen.style.position = "fixed";
+        loadingScreen.style.top = "0";
+        loadingScreen.style.left = "0";
+        loadingScreen.style.width = "100%";
+        loadingScreen.style.height = "100%";
+        loadingScreen.style.border = "none";
+        loadingScreen.style.zIndex = "9999";
+        document.body.appendChild(loadingScreen);
+
+        // Remove the loading screen and overlay when the main content is fully loaded
+        window.addEventListener("load", () => {
+          setTimeout(() => {
+            document.body.removeChild(loadingScreen);
+            overlay.style.opacity = "0";
+            setTimeout(() => {
+              document.body.removeChild(overlay);
+            }, 500); // Wait for the transition to complete
+          }, 500); // Delay to ensure everything is properly removed
+        });
+      });
+    </script>
+  </body>
+</html>

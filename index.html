@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="CERT Management - Efficient management of documents, KPIs, and more."
+    />
+    <meta
+      name="keywords"
+      content="CERT, Management, Documents, KPIs, Inventory, Tools"
+    />
+    <title>CERT MANAGEMENT</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/png" href="./src/assets/xbox.ico" />
+    <link rel="stylesheet" href="./src/css/styles.css" />
+    <link rel="stylesheet" href="./src/css/index.css" />
+  </head>
+  <body class="indexbody">
+    <header>
+      <h1 class="box">CERT MANAGEMENT</h1>
+      <nav id="navbar" role="navigation">
+        <ul class="nav">
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="./src/news.html"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              >News</a
+            >
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="docsDropdown"
+              role="button"
+              aria-expanded="false"
+              >Docs</a
+            >
+            <ul class="dropdown-menu" aria-labelledby="docsDropdown">
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  onclick="openMaximizedWindow('./src/xboxdocs.html')"
+                  >Docs</a
+                >
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  onclick="openMaximizedWindow('./src/fma.html')"
+                  >FMA Scenarios</a
+                >
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="kpiDropdown"
+              role="button"
+              aria-expanded="false"
+              >KPI Management</a
+            >
+            <ul class="dropdown-menu" aria-labelledby="kpiDropdown">
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  onclick="openMaximizedWindow('./src/qa.html')"
+                  target="_blank"
+                  >KPI</a
+                >
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  onclick="openMaximizedWindow('./src/titleAudit.html')"
+                  target="_blank"
+                  >Audits</a
+                >
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./src/submissionManager.html"
+              >Submissions Manager</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./src/labDistribution.html"
+              >Lab Distribution & Info</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./src/tickets.html">Tickets</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./src/bugpedia.html">Bugpedia</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./src/SaveGameComp.html"
+              >Save Game Compatibility</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="#"
+              onclick="openMaximizedWindow('./src/xrComments.html')"
+              >XR Comments</a
+            >
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="inventoryDropdown"
+              role="button"
+              aria-expanded="false"
+              >Inventory</a
+            >
+            <ul class="dropdown-menu" aria-labelledby="inventoryDropdown">
+              <li>
+                <a class="dropdown-item" href="./src/inventoryAccounts.html"
+                  >Accounts</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="./src/inventoryHardware.html"
+                  >Hardware</a
+                >
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="toolsDropdown"
+              role="button"
+              aria-expanded="false"
+              >Tools</a
+            >
+            <ul class="dropdown-menu" aria-labelledby="toolsDropdown">
+              <li>
+                <a class="dropdown-item" href="./data/XCertv4.msix">XCert CR</a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="https://cmlog.blob.core.windows.net/cmcont/publish.htm"
+                  >CMT</a
+                >
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="container">
+      <section class="main-content">
+        <ul>
+          <li>
+            <a
+              href="https://hclo365.sharepoint.com/sites/MYHCLTech"
+              target="_blank"
+              rel="noopener noreferrer"
+              >My HCL</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://hclcontent.percipio.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Percipio Academy</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://xcert.xboxlive.com/authentication/login?returnUrl=https%3A%2F%2Fxcert.xboxlive.com%2Fauthentication%2Flogin-callback%23"
+              target="_blank"
+              rel="noopener noreferrer"
+              >XCert Web</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://support.xbox.com/en-US/xbox-live-status"
+              target="_blank"
+              rel="noopener noreferrer"
+              >XBox Services</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://www.microsoft.com/en-us/store/b/xbox"
+              target="_blank"
+              rel="noopener noreferrer"
+              >XBox Store</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://store.steampowered.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Steam</a
+            >
+          </li>
+        </ul>
+      </section>
+      <aside class="sidebar">
+        <h2>CERT ඞ</h2>
+        <div class="clock" id="clock">
+          <!-- Relojes combinados -->
+        </div>
+      </aside>
+    </main>
+
+    <div
+      class="modal fade"
+      id="deleteNewsModal"
+      tabindex="-1"
+      aria-labelledby="deleteNewsModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteNewsModalLabel">
+              Eliminar Noticia
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            ¿Estás seguro de que deseas eliminar esta noticia?
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-danger" id="confirmDeleteNews">
+              Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>Version 1.4 &copy; IKS</footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script src="./src/js/index.js"></script>
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        // Create and style the loading overlay
+        const overlay = document.createElement("div");
+        overlay.style.position = "fixed";
+        overlay.style.top = "0";
+        overlay.style.left = "0";
+        overlay.style.width = "100%";
+        overlay.style.height = "100%";
+        overlay.style.backgroundColor = "#000"; // Fondo oscuro
+        overlay.style.zIndex = "9998";
+        overlay.style.filter = "blur(5px)"; // Aplicar desenfoque
+        overlay.style.transition = "opacity 0.5s ease-in-out";
+        overlay.style.opacity = "1";
+        document.body.appendChild(overlay);
+
+        // Create and style the loading screen iframe
+        const loadingScreen = document.createElement("iframe");
+        loadingScreen.src = "./src/loading.html";
+        loadingScreen.style.position = "fixed";
+        loadingScreen.style.top = "0";
+        loadingScreen.style.left = "0";
+        loadingScreen.style.width = "100%";
+        loadingScreen.style.height = "100%";
+        loadingScreen.style.border = "none";
+        loadingScreen.style.zIndex = "9999";
+        document.body.appendChild(loadingScreen);
+
+        // Remove the loading screen and overlay when the main content is fully loaded
+        window.addEventListener("load", () => {
+          setTimeout(() => {
+            document.body.removeChild(loadingScreen);
+            overlay.style.opacity = "0";
+            setTimeout(() => {
+              document.body.removeChild(overlay);
+            }, 500); // Wait for the transition to complete
+          }, 500); // Delay to ensure everything is properly removed
+        });
+      });
+    </script>
+  </body>
+</html>

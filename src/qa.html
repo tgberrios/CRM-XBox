@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QA Performance Management</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
+      rel="stylesheet"
+    />
+    <style>
+      .form-control {
+        display: block;
+        height: auto;
+        width: 100%;
+        padding: 12px 15px; /* Increased padding for a more spacious feel */
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #bdbdbd; /* Darker text for better contrast */
+        background-color: #000000; /* Light gray background */
+        border: none; /* Remove border for a cleaner look */
+        border-bottom: 1px solid #ccc; /* Subtle bottom border */
+        border-radius: 0; /* Remove border radius */
+        transition: box-shadow 0.2s ease-in-out; /* Subtle shadow on focus */
+      }
+
+      .form-control:focus {
+        color: #495057;
+        background-color: #000000;
+        border-color: #ffffff;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25);
+      }
+      /* Estilo para la barra de desplazamiento en general */
+      ::-webkit-scrollbar {
+        width: 8px; /* Ancho más delgado */
+      }
+      .ql-toolbar.ql-snow {
+        border: none;
+        box-sizing: border-box;
+        font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+        padding: 8px;
+        background-color: #000000;
+      }
+      /* Estilo para el "thumb" (parte que se mueve) */
+      ::-webkit-scrollbar-thumb {
+        background-color: #000000; /* Color gris claro para un aspecto más moderno */
+        border-radius: 5px; /* Bordes ligeramente redondeados */
+      }
+
+      /* Estilo para el área de la barra de desplazamiento (el track) */
+      ::-webkit-scrollbar-track {
+        background-color: transparent; /* Fondo transparente para un aspecto más limpio */
+      }
+
+      /* Botones */
+      button.btn.btn-primary,
+      .btn-secondary {
+        background-color: #3b3b3b; /* Azul claro, un color común para botones primarios */
+        border-color: transparent;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(29, 29, 29, 0.1); /* Sombra sutil */
+        transition: background-color 0.3s ease-in-out;
+
+        &:hover {
+          background-color: #1f1f1f;
+          border-color: transparent; /* Color más oscuro al pasar el ratón */
+        }
+      }
+      .btn-danger {
+        background-color: #3b3b3b; /* Modern red */
+        border-color: transparent; /* Remove border */
+        color: #fff;
+        padding: 12px 20px; /* Adjust padding for better spacing */
+        border-radius: 5px; /* Add subtle rounded corners */
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        transition: background-color 0.2s ease-in-out;
+
+        &:hover {
+          background-color: #d32f2b; /* Darker red on hover */
+        }
+      }
+
+      .ql-container.ql-snow {
+        border: none; /* Remove border */
+        background-color: #000000; /* Light gray background */
+        box-shadow: 0px 2px 4px rgba(82, 82, 82, 0.05); /* Subtle shadow */
+      }
+
+      ::before {
+        color: #333; /* Darker color for better contrast */
+      }
+
+      svg {
+        overflow: hidden;
+        vertical-align: middle;
+        color: #333; /* Darker color for better contrast */
+      }
+
+      span#ql-picker-options-0 {
+        background-color: #f5f5f5; /* Light gray background */
+        border: none; /* Remove border */
+      }
+
+      .ql-toolbar.ql-snow {
+        border: none; /* Remove border */
+        box-sizing: border-box;
+        font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+        padding: 8px;
+        background-color: #000000; /* Lighter gray background */
+      }
+
+      body {
+        background-color: #000000; /* Light gray background */
+        color: #888; /* Darker text for better contrast */
+        font-family: "Hiragino Sans", sans-serif; /* Consistent font */
+      }
+
+      #reviewModal {
+        display: none;
+        position: fixed;
+        right: 0;
+        top: 0;
+        width: 70%; /* Wider modal for a more immersive feel */
+        height: 100%;
+        background: #000000; /* Light background with a hint of beige */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        padding: 40px; /* Increased padding for a more spacious look */
+        z-index: 1000;
+        overflow-y: auto; /* Vertical scrollbar */
+        font-family: "Yu Gothic", sans-serif; /* Japanese-style font (consider fallback font) */
+      }
+
+      #reviewModal.show {
+        display: block;
+      }
+
+      /* Additional styles for content within the modal (optional) */
+
+      .review-item {
+        border-bottom: none; /* Remove bottom border for a cleaner look */
+        padding: 15px 20px; /* Adjust padding for a more airy feel */
+        margin-bottom: 10px; /* Add spacing between review items */
+        background-color: #000000; /* Even lighter background for content sections */
+        border-radius: 5px; /* Subtle rounded corners */
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Very faint shadow for separation */
+      }
+
+      .review-item:hover {
+        background-color: #2e2e2e; /* Slightly darker background on hover */
+      }
+
+      .review-title {
+        font-size: 18px; /* Increase title size for emphasis */
+        font-weight: bold;
+      }
+      .close-button {
+        position: absolute;
+        top: 10px; /* Reduced top margin for a cleaner look */
+        right: 10px; /* Reduced right margin for a cleaner look */
+        width: 30px;
+        height: 30px;
+        background: transparent;
+        border: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+
+        z-index: 1100;
+        color: #333; /* Lighter color for a minimalist feel */
+      }
+
+      .close-button:hover {
+        color: #111; /* Darker color on hover for emphasis */
+      }
+
+      .close-button::before,
+      .close-button::after {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 2px;
+        background-color: currentColor;
+        transform: rotate(45deg);
+      }
+      #reviewModal.show {
+        display: block;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .close-button::after {
+        transform: rotate(-45deg);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>‎ ‎</h1>
+      <div class="row">
+        <div class="col-md-6">
+          <form id="reviewForm">
+            <div class="form-group">
+              <label for="testerName">Tester Name</label>
+              <select id="testerName" class="form-control" required></select>
+            </div>
+            <div class="form-group">
+              <label for="performanceScore">Performance Score</label>
+              <input
+                type="number"
+                id="performanceScore"
+                class="form-control"
+                min="1"
+                max="10"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="bugDetectionAccuracy">Bug Detection Accuracy</label>
+              <input
+                type="number"
+                id="bugDetectionAccuracy"
+                class="form-control"
+                min="1"
+                max="10"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="testingEfficiency">Testing Efficiency</label>
+              <input
+                type="number"
+                id="testingEfficiency"
+                class="form-control"
+                min="1"
+                max="10"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="communicationSkills">Communication Skills</label>
+              <input
+                type="number"
+                id="communicationSkills"
+                class="form-control"
+                min="1"
+                max="10"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="creativity">Creativity</label>
+              <input
+                type="number"
+                id="creativity"
+                class="form-control"
+                min="1"
+                max="10"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="responsiveness">Responsiveness</label>
+              <input
+                type="number"
+                id="responsiveness"
+                class="form-control"
+                min="1"
+                max="10"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="punctuality">Punctuality</label>
+              <input
+                type="number"
+                id="punctuality"
+                class="form-control"
+                min="1"
+                max="10"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="problemAnalysis">Problem Analysis</label>
+              <input
+                type="number"
+                id="problemAnalysis"
+                class="form-control"
+                min="1"
+                max="10"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="toolsKnowledge">Tools Knowledge</label>
+              <input
+                type="number"
+                id="toolsKnowledge"
+                class="form-control"
+                min="1"
+                max="10"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="overallRating">Overall Rating</label>
+              <input
+                type="number"
+                id="overallRating"
+                class="form-control"
+                min="1"
+                max="10"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="observations">Observations</label>
+              <div
+                id="observations"
+                class="form-control"
+                style="height: 100px"
+              ></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Review</button>
+            <!-- Botón para exportar datos -->
+            <button id="exportToExcelBtn" class="btn btn-primary">
+              Exportar a Excel
+            </button>
+
+            <button type="button" id="addTesterBtn" class="btn btn-secondary">
+              Add Tester
+            </button>
+          </form>
+        </div>
+        <div class="col-md-6">
+          <h2>Review List</h2>
+          <div id="reviewList"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="reviewModal">
+      <button id="closeModalBtn" class="close-button">&times;</button>
+      <form id="editReviewForm">
+        <input type="hidden" id="editReviewId" />
+        <div class="form-group">
+          <label for="editTesterName">Tester Name</label>
+          <select id="editTesterName" class="form-control" required></select>
+        </div>
+        <div class="form-group">
+          <label for="editPerformanceScore">Performance Score</label>
+          <input
+            type="number"
+            id="editPerformanceScore"
+            class="form-control"
+            min="1"
+            max="10"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="editBugDetectionAccuracy">Bug Detection Accuracy</label>
+          <input
+            type="number"
+            id="editBugDetectionAccuracy"
+            class="form-control"
+            min="1"
+            max="10"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="editTestingEfficiency">Testing Efficiency</label>
+          <input
+            type="number"
+            id="editTestingEfficiency"
+            class="form-control"
+            min="1"
+            max="10"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="editCommunicationSkills">Communication Skills</label>
+          <input
+            type="number"
+            id="editCommunicationSkills"
+            class="form-control"
+            min="1"
+            max="10"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="editCreativity">Creativity</label>
+          <input
+            type="number"
+            id="editCreativity"
+            class="form-control"
+            min="1"
+            max="10"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="editResponsiveness">Responsiveness</label>
+          <input
+            type="number"
+            id="editResponsiveness"
+            class="form-control"
+            min="1"
+            max="10"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="editPunctuality">Punctuality</label>
+          <input
+            type="number"
+            id="editPunctuality"
+            class="form-control"
+            min="1"
+            max="10"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="editProblemAnalysis">Problem Analysis</label>
+          <input
+            type="number"
+            id="editProblemAnalysis"
+            class="form-control"
+            min="1"
+            max="10"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="editToolsKnowledge">Tools Knowledge</label>
+          <input
+            type="number"
+            id="editToolsKnowledge"
+            class="form-control"
+            min="1"
+            max="10"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="editOverallRating">Overall Rating</label>
+          <input
+            type="number"
+            id="editOverallRating"
+            class="form-control"
+            min="1"
+            max="10"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="editObservations">Observations</label>
+          <div
+            id="editObservations"
+            class="form-control"
+            style="height: 100px"
+          ></div>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Review</button>
+        <button type="button" id="deleteReview" class="btn btn-danger">
+          Delete Review
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="closeModal()">
+          Close
+        </button>
+      </form>
+    </div>
+
+    <div class="modal" id="testerModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add Tester</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="addTesterForm">
+              <div class="form-group">
+                <label for="newTesterName">Tester Name</label>
+                <input
+                  type="text"
+                  id="newTesterName"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-primary">Add Tester</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script>
+      document
+        .getElementById("exportToExcelBtn")
+        .addEventListener("click", async function () {
+          try {
+            const reviews = await window.cert.getReviews();
+
+            // Convertir los datos a formato JSON
+            const ws = XLSX.utils.json_to_sheet(reviews);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Revisiones");
+
+            // Exportar el archivo Excel
+            XLSX.writeFile(wb, "revisiones.xlsx");
+          } catch (err) {
+            console.error("Error exporting to Excel:", err);
+          }
+        });
+
+      document
+        .getElementById("closeModalBtn")
+        .addEventListener("click", function () {
+          closeModal();
+        });
+
+      const quill = new Quill("#observations", {
+        theme: "snow",
+        modules: {
+          toolbar: true,
+        },
+      });
+
+      const editQuill = new Quill("#editObservations", {
+        theme: "snow",
+        modules: {
+          toolbar: true,
+        },
+      });
+
+      async function addReview(review) {
+        try {
+          await window.cert.addReview(review);
+          loadReviews();
+          document.getElementById("reviewForm").reset();
+          quill.setContents([]);
+        } catch (err) {
+          console.error("Error adding review:", err);
+        }
+      }
+
+      async function loadReviews() {
+        try {
+          const reviews = await window.cert.getReviews();
+          const reviewList = document.getElementById("reviewList");
+          reviewList.innerHTML = "";
+
+          reviews.forEach((review) => {
+            const reviewItem = document.createElement("div");
+            reviewItem.classList.add("review-item");
+            reviewItem.dataset.id = review.id;
+            reviewItem.innerHTML = `
+        <span>${review.testerName}</span>
+        <span>${new Date(review.date).toLocaleDateString()}</span>
+      `;
+            reviewItem.addEventListener("click", function () {
+              openModal(review.id);
+            });
+            reviewList.appendChild(reviewItem);
+          });
+        } catch (err) {
+          console.error("Error loading reviews:", err);
+        }
+      }
+
+      async function loadTesters() {
+        try {
+          const testers = await window.cert.getTesters();
+          const testerSelect = document.querySelectorAll(
+            "#testerName, #editTesterName"
+          );
+          testerSelect.forEach((select) => {
+            select.innerHTML = "";
+            testers.forEach((tester) => {
+              select.innerHTML += `<option value="${tester.name}">${tester.name}</option>`;
+            });
+          });
+        } catch (err) {
+          console.error("Error loading testers:", err);
+        }
+      }
+
+      async function updateReview(review) {
+        try {
+          await window.cert.updateReview(review);
+          loadReviews();
+          closeModal();
+        } catch (err) {
+          console.error("Error updating review:", err);
+        }
+      }
+
+      async function deleteReview(id) {
+        try {
+          await window.cert.deleteReview(id);
+          loadReviews();
+          closeModal();
+        } catch (err) {
+          console.error("Error deleting review:", err);
+        }
+      }
+
+      async function openModal(id) {
+        try {
+          const review = await window.cert.getReviewById(id);
+
+          document.getElementById("editReviewId").value = review.id;
+          document.getElementById("editTesterName").value = review.testerName;
+          document.getElementById("editPerformanceScore").value =
+            review.performanceScore;
+          document.getElementById("editBugDetectionAccuracy").value =
+            review.bugDetectionAccuracy;
+          document.getElementById("editTestingEfficiency").value =
+            review.testingEfficiency;
+          document.getElementById("editCommunicationSkills").value =
+            review.communicationSkills;
+          document.getElementById("editCreativity").value = review.creativity;
+          document.getElementById("editResponsiveness").value =
+            review.responsiveness;
+          document.getElementById("editPunctuality").value = review.punctuality;
+          document.getElementById("editProblemAnalysis").value =
+            review.problemAnalysis;
+          document.getElementById("editToolsKnowledge").value =
+            review.toolsKnowledge;
+          document.getElementById("editOverallRating").value =
+            review.overallRating;
+          editQuill.root.innerHTML = review.observations;
+          document.getElementById("reviewModal").classList.add("show");
+        } catch (err) {
+          console.error("Error fetching review:", err);
+        }
+      }
+
+      function closeModal() {
+        document.getElementById("reviewModal").classList.remove("show");
+        document.getElementById("editReviewForm").reset();
+        editQuill.setContents([]);
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        loadReviews();
+        loadTesters();
+
+        document
+          .getElementById("reviewForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            const review = {
+              testerName: document.getElementById("testerName").value,
+              performanceScore: parseInt(
+                document.getElementById("performanceScore").value
+              ),
+              bugDetectionAccuracy: parseInt(
+                document.getElementById("bugDetectionAccuracy").value
+              ),
+              testingEfficiency: parseInt(
+                document.getElementById("testingEfficiency").value
+              ),
+              communicationSkills: parseInt(
+                document.getElementById("communicationSkills").value
+              ),
+              creativity: parseInt(document.getElementById("creativity").value),
+              responsiveness: parseInt(
+                document.getElementById("responsiveness").value
+              ),
+              punctuality: parseInt(
+                document.getElementById("punctuality").value
+              ),
+              problemAnalysis: parseInt(
+                document.getElementById("problemAnalysis").value
+              ),
+              toolsKnowledge: parseInt(
+                document.getElementById("toolsKnowledge").value
+              ),
+              overallRating: parseInt(
+                document.getElementById("overallRating").value
+              ),
+              observations: quill.root.innerHTML,
+              date: new Date().toISOString(),
+            };
+            addReview(review);
+          });
+
+        document
+          .getElementById("addTesterBtn")
+          .addEventListener("click", function () {
+            $("#testerModal").modal("show");
+          });
+
+        document
+          .getElementById("addTesterForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            const testerName = document.getElementById("newTesterName").value;
+            if (testerName) {
+              window.cert
+                .addTester(testerName)
+                .then(() => {
+                  loadTesters();
+                  $("#testerModal").modal("hide");
+                })
+                .catch((err) => console.error("Error adding tester:", err));
+            }
+          });
+
+        document
+          .getElementById("editReviewForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            const review = {
+              id: parseInt(document.getElementById("editReviewId").value),
+              testerName: document.getElementById("editTesterName").value,
+              performanceScore: parseInt(
+                document.getElementById("editPerformanceScore").value
+              ),
+              bugDetectionAccuracy: parseInt(
+                document.getElementById("editBugDetectionAccuracy").value
+              ),
+              testingEfficiency: parseInt(
+                document.getElementById("editTestingEfficiency").value
+              ),
+              communicationSkills: parseInt(
+                document.getElementById("editCommunicationSkills").value
+              ),
+              creativity: parseInt(
+                document.getElementById("editCreativity").value
+              ),
+              responsiveness: parseInt(
+                document.getElementById("editResponsiveness").value
+              ),
+              punctuality: parseInt(
+                document.getElementById("editPunctuality").value
+              ),
+              problemAnalysis: parseInt(
+                document.getElementById("editProblemAnalysis").value
+              ),
+              toolsKnowledge: parseInt(
+                document.getElementById("editToolsKnowledge").value
+              ),
+              overallRating: parseInt(
+                document.getElementById("editOverallRating").value
+              ),
+              observations: editQuill.root.innerHTML,
+              date: new Date().toISOString(),
+            };
+            updateReview(review);
+          });
+
+        document
+          .getElementById("deleteReview")
+          .addEventListener("click", function () {
+            const id = parseInt(document.getElementById("editReviewId").value);
+            deleteReview(id);
+          });
+      });
+
+      window.addEventListener("DOMContentLoaded", () => {
+        // Create and style the loading overlay
+        const overlay = document.createElement("div");
+        overlay.style.position = "fixed";
+        overlay.style.top = "0";
+        overlay.style.left = "0";
+        overlay.style.width = "100%";
+        overlay.style.height = "100%";
+        overlay.style.backgroundColor = "#000"; // Fondo oscuro
+        overlay.style.zIndex = "9998";
+        overlay.style.filter = "blur(5px)"; // Aplicar desenfoque
+        overlay.style.transition = "opacity 0.5s ease-in-out";
+        overlay.style.opacity = "1";
+        document.body.appendChild(overlay);
+
+        // Create and style the loading screen iframe
+        const loadingScreen = document.createElement("iframe");
+        loadingScreen.src = "./loading.html";
+        loadingScreen.style.position = "fixed";
+        loadingScreen.style.top = "0";
+        loadingScreen.style.left = "0";
+        loadingScreen.style.width = "100%";
+        loadingScreen.style.height = "100%";
+        loadingScreen.style.border = "none";
+        loadingScreen.style.zIndex = "9999";
+        document.body.appendChild(loadingScreen);
+
+        // Remove the loading screen and overlay when the main content is fully loaded
+        window.addEventListener("load", () => {
+          setTimeout(() => {
+            document.body.removeChild(loadingScreen);
+            overlay.style.opacity = "0";
+            setTimeout(() => {
+              document.body.removeChild(overlay);
+            }, 500); // Wait for the transition to complete
+          }, 500); // Delay to ensure everything is properly removed
+        });
+      });
+    </script>
+  </body>
+</html>

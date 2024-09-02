@@ -1,0 +1,111 @@
+/* Estilo para la barra de desplazamiento en general */
+::-webkit-scrollbar {
+  width: 8px; /* Ancho de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2); /* Color del "thumb" */
+  border-radius: 4px; /* Bordes redondeados */
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.1); /* Color de fondo del track */
+}
+
+/* Estilo global del cuerpo */
+body {
+  background-color: #000000; /* Color de fondo oscuro */
+  color: #f0f0f0; /* Color de texto claro */
+  font-family: "Noto Sans JP", sans-serif; /* Fuente japonesa moderna */
+  margin: 0;
+  padding: 0;
+}
+
+/* Contenedor principal */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Estilo del encabezado */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+/* Estilo del campo de búsqueda */
+#searchInput {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: transparent;
+  color: #f0f0f0;
+  font-size: 16px;
+}
+
+/* Estilo del botón "Home" */
+#homeButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #333;
+  color: #f0f0f0;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+#homeButton:hover {
+  background-color: #444;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo de la tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: transparent;
+}
+
+th,
+td {
+  padding: 12px;
+  border: none;
+}
+
+th {
+  color: #fff;
+  text-align: left;
+}
+
+tr.title-row {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #f0f0f0;
+  font-weight: bold;
+  text-align: left;
+}
+
+td {
+  color: #d0d0d0;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Animación al pasar el ratón sobre las filas de la tabla */
+tr:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: scale(1.02); /* Aumenta ligeramente el tamaño */
+  transition: all 0.2s ease-in-out;
+}
+
+/* Animación para el campo de búsqueda al enfocarlo */
+#searchInput:focus {
+  outline: none;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}

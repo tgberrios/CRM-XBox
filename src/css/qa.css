@@ -1,0 +1,195 @@
+.form-control {
+  display: block;
+  height: auto;
+  width: 100%;
+  padding: 12px 15px; /* Increased padding for a more spacious feel */
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #bdbdbd; /* Darker text for better contrast */
+  background-color: #000000; /* Light gray background */
+  border: none; /* Remove border for a cleaner look */
+  border-bottom: 1px solid #ccc; /* Subtle bottom border */
+  border-radius: 0; /* Remove border radius */
+  transition: box-shadow 0.2s ease-in-out; /* Subtle shadow on focus */
+}
+
+.form-control:focus {
+  color: #495057;
+  background-color: #000000;
+  border-color: #ffffff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25);
+}
+/* Estilo para la barra de desplazamiento en general */
+::-webkit-scrollbar {
+  width: 8px; /* Ancho más delgado */
+}
+.ql-toolbar.ql-snow {
+  border: none;
+  box-sizing: border-box;
+  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  padding: 8px;
+  background-color: #000000;
+}
+/* Estilo para el "thumb" (parte que se mueve) */
+::-webkit-scrollbar-thumb {
+  background-color: #000000; /* Color gris claro para un aspecto más moderno */
+  border-radius: 5px; /* Bordes ligeramente redondeados */
+}
+
+/* Estilo para el área de la barra de desplazamiento (el track) */
+::-webkit-scrollbar-track {
+  background-color: transparent; /* Fondo transparente para un aspecto más limpio */
+}
+
+/* Botones */
+button.btn.btn-primary,
+.btn-secondary {
+  background-color: #3b3b3b; /* Azul claro, un color común para botones primarios */
+  border-color: transparent;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(29, 29, 29, 0.1); /* Sombra sutil */
+  transition: background-color 0.3s ease-in-out;
+
+  &:hover {
+    background-color: #1f1f1f;
+    border-color: transparent; /* Color más oscuro al pasar el ratón */
+  }
+}
+.btn-danger {
+  background-color: #3b3b3b; /* Modern red */
+  border-color: transparent; /* Remove border */
+  color: #fff;
+  padding: 12px 20px; /* Adjust padding for better spacing */
+  border-radius: 5px; /* Add subtle rounded corners */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #d32f2b; /* Darker red on hover */
+  }
+}
+
+.ql-container.ql-snow {
+  border: none; /* Remove border */
+  background-color: #000000; /* Light gray background */
+  box-shadow: 0px 2px 4px rgba(82, 82, 82, 0.05); /* Subtle shadow */
+}
+
+::before {
+  color: #333; /* Darker color for better contrast */
+}
+
+svg {
+  overflow: hidden;
+  vertical-align: middle;
+  color: #333; /* Darker color for better contrast */
+}
+
+span#ql-picker-options-0 {
+  background-color: #f5f5f5; /* Light gray background */
+  border: none; /* Remove border */
+}
+
+.ql-toolbar.ql-snow {
+  border: none; /* Remove border */
+  box-sizing: border-box;
+  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  padding: 8px;
+  background-color: #000000; /* Lighter gray background */
+}
+
+body {
+  background-color: #000000; /* Light gray background */
+  color: #888; /* Darker text for better contrast */
+  font-family: "Hiragino Sans", sans-serif; /* Consistent font */
+}
+
+#reviewModal {
+  display: none;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 70%; /* Wider modal for a more immersive feel */
+  height: 100%;
+  background: #000000; /* Light background with a hint of beige */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  padding: 40px; /* Increased padding for a more spacious look */
+  z-index: 1000;
+  overflow-y: auto; /* Vertical scrollbar */
+  font-family: "Yu Gothic", sans-serif; /* Japanese-style font (consider fallback font) */
+}
+
+#reviewModal.show {
+  display: block;
+}
+
+/* Additional styles for content within the modal (optional) */
+
+.review-item {
+  border-bottom: none; /* Remove bottom border for a cleaner look */
+  padding: 15px 20px; /* Adjust padding for a more airy feel */
+  margin-bottom: 10px; /* Add spacing between review items */
+  background-color: #000000; /* Even lighter background for content sections */
+  border-radius: 5px; /* Subtle rounded corners */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Very faint shadow for separation */
+}
+
+.review-item:hover {
+  background-color: #2e2e2e; /* Slightly darker background on hover */
+}
+
+.review-title {
+  font-size: 18px; /* Increase title size for emphasis */
+  font-weight: bold;
+}
+.close-button {
+  position: absolute;
+  top: 10px; /* Reduced top margin for a cleaner look */
+  right: 10px; /* Reduced right margin for a cleaner look */
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  z-index: 1100;
+  color: #333; /* Lighter color for a minimalist feel */
+}
+
+.close-button:hover {
+  color: #111; /* Darker color on hover for emphasis */
+}
+
+.close-button::before,
+.close-button::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 2px;
+  background-color: currentColor;
+  transform: rotate(45deg);
+}
+#reviewModal.show {
+  display: block;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.close-button::after {
+  transform: rotate(-45deg);
+}
