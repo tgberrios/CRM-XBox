@@ -38,7 +38,7 @@ function renderLevels() {
 
       const title = document.createElement("h2"); // Create the title
       title.classList.add("levelsTitle"); // Add the class
-      title.innerText = "Tier: " + level.level; // Set the text
+      title.innerText = "Tier " + level.level; // Set the text
       column.appendChild(title); // Append the title to the column
 
       printedLevels[level.level] = column; // Add the level to the dictionary
