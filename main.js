@@ -1,26 +1,30 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
-const crypto = require("crypto"); // Import crypto module
+const crypto = require("crypto");
 const sqlite3 = require("sqlite3").verbose();
 
+// DISABLE GPU ACCELERATION
 app.disableHardwareAcceleration();
 app.commandLine.appendSwitch("disable-software-rasterizer");
 app.commandLine.appendSwitch("ignore-gpu-blacklist");
 app.commandLine.appendSwitch("disable-gpu");
 app.commandLine.appendSwitch("disable-gpu-compositing");
 app.commandLine.appendSwitch("no-sandbox");
+// END DISABLE GPU ACCELERATION
 
 let db;
 let basePath = path.dirname(process.execPath);
 
-// Comprobar si la aplicación se está ejecutando en desarrollo o en producción
+// Verificar si la aplicación se está ejecutando en desarrollo o en producción
 if (process.env.NODE_ENV !== "production") {
-  // En desarrollo, usa el directorio actual
   basePath = process.cwd();
 }
+
 const dbPath = path.join(basePath, "appDB.db");
 console.log(`Database path: ${dbPath}`);
+// END DB PATH
 
+// Inicializar la base de datos
 function initializeDB() {
   db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
@@ -121,6 +125,16 @@ function initializeDB() {
               overallRating INTEGER,
               observations TEXT,
               date TEXT
+            )
+          `,
+        },
+        {
+          name: "levels",
+          sql: `
+            CREATE TABLE IF NOT EXISTS levels (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              testerName TEXT,
+              level INTEGER
             )
           `,
         },
@@ -280,25 +294,23 @@ function initializeDB() {
     }
   });
 }
-
-// Call initializeDB() to set up the database
 initializeDB();
+// END INITIALIZE DB
 
-//////////////////////////////////////////
-
+//CREATE WINDOW
 function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     fullscreen: false,
     webPreferences: {
-      preload: path.join(__dirname, "src/preload.js"), // Path to preload.js
-      contextIsolation: true, // Enable context isolation for security
-      enableRemoteModule: false, // Disable remote module for security
-      nodeIntegration: false, // Disable Node.js integration in renderer
-      sandbox: true, // Enable sandboxing for additional security
+      preload: path.join(__dirname, "src/preload.js"),
+      contextIsolation: true,
+      enableRemoteModule: false,
+      nodeIntegration: false,
+      sandbox: true,
     },
-    icon: path.join(__dirname, "src/assets/xbox.ico"), // Path to the icon
+    icon: path.join(__dirname, "src/assets/xbox.ico"),
   });
 
   // Load the HTML file
@@ -330,6 +342,7 @@ function createWindow() {
     };
   });
 }
+// END CREATE WINDOW
 
 // IPC handlers USERS
 ipcMain.handle("registerUser", async (event, username, password) => {
@@ -403,8 +416,9 @@ ipcMain.handle("fetch-items", async () => {
     });
   });
 });
+// IPC handlers USERS
 
-// IPC handlers here
+// IPC handlers HARDWARE
 ipcMain.handle("get-hardware", async () => {
   return new Promise((resolve, reject) => {
     db.all("SELECT * FROM hardware", [], (err, rows) => {
@@ -462,7 +476,9 @@ ipcMain.handle("delete-hardware", async (event, serialNumber) => {
     );
   });
 });
+// IPC handlers HARDWARE
 
+// IPC handlers ACCOUNTS
 ipcMain.handle("get-accounts", async (event, page, search) => {
   const itemsPerPage = 10;
   const offset = (page - 1) * itemsPerPage;
@@ -589,6 +605,7 @@ ipcMain.handle("get-next-id", async () => {
     });
   });
 });
+// IPC handlers ACCOUNTS
 
 ipcMain.handle("add-item", async (event, item) => {
   return new Promise((resolve, reject) => {
@@ -1513,6 +1530,67 @@ ipcMain.handle("moveTrackerToHistory", async (event, tracker) => {
           });
         }
       );
+    });
+  });
+});
+
+// Get all levels
+ipcMain.handle("get-levels", async () => {
+  return new Promise((resolve, reject) => {
+    db.all("SELECT * FROM levels", [], (err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(rows);
+      }
+    });
+  });
+});
+// Get a specific level by ID
+ipcMain.handle("add-level", async (event, level) => {
+  return new Promise((resolve, reject) => {
+    db.run(
+      `INSERT INTO levels (testerName, level) VALUES (?, ?)`,
+      [level.testerName, level.level],
+      function (err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(this.lastID);
+        }
+      }
+    );
+  });
+});
+
+//Update level
+
+ipcMain.handle("update-level", async (event, level) => {
+  return new Promise((resolve, reject) => {
+    db.run(
+      `UPDATE levels SET testerName = ?, level = ? WHERE id = ?`,
+      [level.testerName, level.level, level.id],
+      function (err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(this.changes);
+        }
+      }
+    );
+  });
+});
+
+//Delete level
+
+ipcMain.handle("delete-level", async (event, id) => {
+  return new Promise((resolve, reject) => {
+    db.run("DELETE FROM levels WHERE id = ?", id, function (err) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(this.changes);
+      }
     });
   });
 });

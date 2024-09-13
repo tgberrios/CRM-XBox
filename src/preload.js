@@ -96,6 +96,13 @@ const api = {
   deleteData: (id) => ipcRenderer.invoke("delete-data", id),
   loadAllData: () => ipcRenderer.invoke("loadAllData"),
 
+  // LEVELS
+  getLevels: () => ipcRenderer.invoke("get-levels"),
+  addLevel: (level) => ipcRenderer.invoke("add-level", level),
+  updateLevel: (level) => ipcRenderer.invoke("update-level", level),
+  deleteLevel: (id) => ipcRenderer.invoke("delete-level", id),
+  // LEVELS
+
   invoke: ipcRenderer.invoke.bind(ipcRenderer),
   on: ipcRenderer.on.bind(ipcRenderer),
 };
