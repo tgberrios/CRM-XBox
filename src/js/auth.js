@@ -14,11 +14,13 @@ function setupFormHandlers() {
 
       try {
         await window.cert.registerUser(username, password);
-        alert("Registration Successful!");
-        window.location.href = "../index.html";
+        $("#successModal").modal("show");
+        setTimeout(() => {
+          window.location.href = "../index.html";
+        }, 2000); // Opcional: espera un poco antes de redirigir
       } catch (error) {
         console.error("Registration failed: ", error);
-        alert("Registration Failed!");
+        $("#errorModal").modal("show");
       }
     });
 
@@ -31,7 +33,6 @@ function setupFormHandlers() {
 
       try {
         await window.cert.loginUser(username, password);
-        alert("Login Successful!");
         window.location.href = "../index.html";
       } catch (error) {
         console.error("Login failed: ", error);

@@ -10,9 +10,14 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
     />
+    <!-- Montserrat Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="./css/styles.css" />
+    <link rel="stylesheet" href="./css/style.css" />
 
     <!-- JavaScript Libraries -->
     <script
@@ -113,6 +118,7 @@
                 aria-label="Close"
               ></button>
             </div>
+
             <div class="modal-body"></div>
             <!-- Aquí Aparece la Info -->
             <div class="modal-footer">
@@ -129,47 +135,9 @@
       </div>
       <!-- Modal -->
     </div>
+
     <!-- Custom JS -->
     <script src="./js/auth.js" defer></script>
-    <script>
-      window.addEventListener("DOMContentLoaded", () => {
-        // Create and style the loading overlay
-        const overlay = document.createElement("div");
-        overlay.style.position = "fixed";
-        overlay.style.top = "0";
-        overlay.style.left = "0";
-        overlay.style.width = "100%";
-        overlay.style.height = "100%";
-        overlay.style.backgroundColor = "#000"; // Fondo oscuro
-        overlay.style.zIndex = "9998";
-        overlay.style.filter = "blur(5px)"; // Aplicar desenfoque
-        overlay.style.transition = "opacity 0.5s ease-in-out";
-        overlay.style.opacity = "1";
-        document.body.appendChild(overlay);
-
-        // Create and style the loading screen iframe
-        const loadingScreen = document.createElement("iframe");
-        loadingScreen.src = "./loading.html";
-        loadingScreen.style.position = "fixed";
-        loadingScreen.style.top = "0";
-        loadingScreen.style.left = "0";
-        loadingScreen.style.width = "100%";
-        loadingScreen.style.height = "100%";
-        loadingScreen.style.border = "none";
-        loadingScreen.style.zIndex = "9999";
-        document.body.appendChild(loadingScreen);
-
-        // Remove the loading screen and overlay when the main content is fully loaded
-        window.addEventListener("load", () => {
-          setTimeout(() => {
-            document.body.removeChild(loadingScreen);
-            overlay.style.opacity = "0";
-            setTimeout(() => {
-              document.body.removeChild(overlay);
-            }, 500); // Wait for the transition to complete
-          }, 500); // Delay to ensure everything is properly removed
-        });
-      });
-    </script>
+    <script src="loading.js"></script>
   </body>
 </html>
