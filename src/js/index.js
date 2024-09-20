@@ -10,8 +10,9 @@ function openMaximizedWindow(url) {
   );
 
   if (newWindow) {
+    // Usamos screen.availWidth y screen.availHeight para asegurarnos de que la ventana use todo el espacio disponible.
     newWindow.moveTo(0, 0);
-    newWindow.resizeTo(screen.width, screen.height);
+    newWindow.resizeTo(screen.availWidth, screen.availHeight);
   } else {
     alert("Por favor, permita las ventanas emergentes en su navegador.");
   }

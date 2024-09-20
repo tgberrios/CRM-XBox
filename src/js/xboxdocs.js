@@ -76,11 +76,16 @@ async function saveTestCase() {
 async function displayTestCases(searchValue = "") {
   try {
     const testCases = await window.cert.getAllTestCases();
-    const filteredTestCases = testCases.filter(
-      (testCase) =>
-        testCase.xr.toLowerCase().includes(searchValue) ||
-        testCase.documentation.toLowerCase().includes(searchValue)
-    );
+
+    const filteredTestCases = testCases.filter((testCase) => {
+      // Verificar si xr y documentation son cadenas, sino asignar una cadena vacía
+      const xr = testCase.xr ? testCase.xr.toLowerCase() : "";
+      const documentation = testCase.documentation
+        ? testCase.documentation.toLowerCase()
+        : "";
+
+      return xr.includes(searchValue) || documentation.includes(searchValue);
+    });
 
     const list = $("#testCasesList");
     list.empty();
@@ -88,7 +93,7 @@ async function displayTestCases(searchValue = "") {
     filteredTestCases.forEach((testCase) => {
       const item = $(`
           <div class="card mb-2">
-            <div class="card-body">
+            <div class="card-body-docs">
               <h5 class="card-title clickable" data-id="${testCase.id}">XR: ${testCase.xr}</h5>
             </div>
           </div>
@@ -170,3 +175,4 @@ function handleError(message, error) {
   console.error(message, error);
   // Implement user notification (e.g., toast message) if needed
 }
+console.log(window.cert);

@@ -304,7 +304,7 @@ function createWindow() {
     height: 600,
     fullscreen: false,
     webPreferences: {
-      preload: path.join(__dirname, "src/preload.js"),
+      preload: path.join(__dirname, "./preload.js"),
       contextIsolation: true,
       enableRemoteModule: false,
       nodeIntegration: false,
@@ -329,7 +329,7 @@ function createWindow() {
       action: "allow",
       overrideBrowserWindowOptions: {
         webPreferences: {
-          preload: path.join(__dirname, "src/preload.js"), // Ensure preload.js is loaded in new windows
+          preload: path.join(__dirname, "./preload.js"), // Ensure preload.js is loaded in new windows
           contextIsolation: true,
           enableRemoteModule: false,
           nodeIntegration: false,
