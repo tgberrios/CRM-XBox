@@ -78,7 +78,7 @@ async function loadAudits() {
     audits.forEach((audit) => {
       const reportItem = document.createElement("div");
       reportItem.className = "report-item";
-      reportItem.innerHTML = `<strong>${audit.titleName}</strong><br/>Test Date: ${audit.testDate}`;
+      reportItem.innerHTML = `<strong>${audit.titleName}</strong><br/> ${audit.testDate}`;
       reportItem.onclick = () => showModal(audit);
       reportList.appendChild(reportItem);
     });

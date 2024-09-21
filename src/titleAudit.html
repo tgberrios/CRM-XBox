@@ -9,129 +9,135 @@
       rel="stylesheet"
     />
     <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
       href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./css/titleAudit.css" />
+    <link rel="stylesheet" href="./css/audits.css" />
   </head>
   <body>
-    <div class="container">
-      <!-- Formulario -->
-      <div class="form-container">
-        <h2>Audit Form</h2>
-        <form id="evaluationForm">
-          <div class="mb-3">
-            <label for="titleName" class="form-label">Title Name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="titleName"
-              aria-required="true"
-            />
+    <div class="container-titleAudit">
+      <div class="row">
+        <!-- Formulario -->
+        <div class="col-md-6">
+          <div class="form-container">
+            <form id="evaluationForm">
+              <div class="mb-3">
+                <label for="titleName" class="form-label">Title Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="titleName"
+                  aria-required="true"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="submissionIteration" class="form-label"
+                  >Submission Iteration</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="submissionIteration"
+                  aria-required="true"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="generation" class="form-label">Generation</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="generation"
+                  aria-required="true"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="testDate" class="form-label">Test Date</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="testDate"
+                  aria-required="true"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="nonCFRIssuesLogged" class="form-label"
+                  >Non-CFR Issues Logged</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="nonCFRIssuesLogged"
+                  aria-required="true"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="cfrIssuesLogged" class="form-label"
+                  >CFR Issues Logged</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="cfrIssuesLogged"
+                  aria-required="true"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="totalCFRMissed" class="form-label"
+                  >Total CFR Missed</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="totalCFRMissed"
+                  aria-required="true"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="lead" class="form-label">Lead</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="lead"
+                  aria-required="true"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="testers" class="form-label">Testers</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="testers"
+                  aria-required="true"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="actionItemsEditor" class="form-label"
+                  >Action Items</label
+                >
+                <div id="actionItemsEditor"></div>
+              </div>
+              <div class="mb-3">
+                <label for="bugQualityTrackingEditor" class="form-label"
+                  >Bug Quality Tracking</label
+                >
+                <div id="bugQualityTrackingEditor"></div>
+              </div>
+              <button type="button" id="addAudit" class="btn btn-primary">
+                Add Audit
+              </button>
+            </form>
           </div>
-          <div class="mb-3">
-            <label for="submissionIteration" class="form-label"
-              >Submission Iteration</label
-            >
-            <input
-              type="text"
-              class="form-control"
-              id="submissionIteration"
-              aria-required="true"
-            />
-          </div>
-          <div class="mb-3">
-            <label for="generation" class="form-label">Generation</label>
-            <input
-              type="text"
-              class="form-control"
-              id="generation"
-              aria-required="true"
-            />
-          </div>
-          <div class="mb-3">
-            <label for="testDate" class="form-label">Test Date</label>
-            <input
-              type="date"
-              class="form-control"
-              id="testDate"
-              aria-required="true"
-            />
-          </div>
-          <div class="mb-3">
-            <label for="nonCFRIssuesLogged" class="form-label"
-              >Non-CFR Issues Logged</label
-            >
-            <input
-              type="number"
-              class="form-control"
-              id="nonCFRIssuesLogged"
-              aria-required="true"
-            />
-          </div>
-          <div class="mb-3">
-            <label for="cfrIssuesLogged" class="form-label"
-              >CFR Issues Logged</label
-            >
-            <input
-              type="number"
-              class="form-control"
-              id="cfrIssuesLogged"
-              aria-required="true"
-            />
-          </div>
-          <div class="mb-3">
-            <label for="totalCFRMissed" class="form-label"
-              >Total CFR Missed</label
-            >
-            <input
-              type="number"
-              class="form-control"
-              id="totalCFRMissed"
-              aria-required="true"
-            />
-          </div>
-          <div class="mb-3">
-            <label for="lead" class="form-label">Lead</label>
-            <input
-              type="text"
-              class="form-control"
-              id="lead"
-              aria-required="true"
-            />
-          </div>
-          <div class="mb-3">
-            <label for="testers" class="form-label">Testers</label>
-            <input
-              type="text"
-              class="form-control"
-              id="testers"
-              aria-required="true"
-            />
-          </div>
-          <div class="mb-3">
-            <label for="actionItemsEditor" class="form-label"
-              >Action Items</label
-            >
-            <div id="actionItemsEditor"></div>
-          </div>
-          <div class="mb-3">
-            <label for="bugQualityTrackingEditor" class="form-label"
-              >Bug Quality Tracking</label
-            >
-            <div id="bugQualityTrackingEditor"></div>
-          </div>
-          <button type="button" id="addAudit" class="btn btn-primary">
-            Add Audit
-          </button>
-        </form>
-      </div>
+        </div>
 
-      <!-- Reportes -->
-      <div class="report-container mt-4">
-        <h2>Audit Reports</h2>
-        <div class="report-list" id="reportList">
-          <!-- Los reportes serán insertados aquí dinámicamente -->
+        <!-- Reportes -->
+        <div class="col-md-6">
+          <div class="report-list" id="reportList">
+            <!-- Los reportes serán insertados aquí dinámicamente -->
+          </div>
         </div>
       </div>
     </div>
@@ -150,7 +156,7 @@
             <h5 class="modal-title" id="editAuditModalLabel">Audit Details</h5>
             <button
               type="button"
-              class="btn-close"
+              class="btn btn-primary"
               data-bs-dismiss="modal"
               aria-label="Close"
             ></button>
@@ -204,12 +210,12 @@
           <div class="modal-footer">
             <button
               type="button"
-              class="btn btn-secondary"
+              class="btn btn-primary"
               data-bs-dismiss="modal"
             >
               Close
             </button>
-            <button type="button" class="btn btn-danger" id="deleteAudit">
+            <button type="button" class="btn btn-primary" id="deleteAudit">
               Delete
             </button>
             <button type="button" class="btn btn-primary" id="editAudit">
