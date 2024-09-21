@@ -364,13 +364,13 @@ footer {
 .btn-primary:hover {
   background-color: #c7c7c7;
   border-color: #c7c7c7;
-  color: #1c1c1e;
+  color: #ffffff;
 }
 
 .btn-primary:active {
   background-color: #c7c7c7;
   border-color: #c7c7c7;
-  color: #1c1c1e;
+  color: #ffffff;
 }
 
 /*END INDEX HTML*/
@@ -879,3 +879,12 @@ button:not(:disabled) {
   margin-top: 5px;
 }
 /* END QA HTML*/
+
+/* SUBMISSION MANAGER HTML*/
+.table-dark {
+  --bs-table-color: #1c1c1e;
+  --bs-table-bg: #c7c7c7;
+  --bs-table-border-color: #c7c7c7;
+  color: var(--bs-table-color);
+  border-color: var(--bs-table-border-color);
+}
