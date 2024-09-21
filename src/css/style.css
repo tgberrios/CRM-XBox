@@ -691,12 +691,10 @@ button#deleteUpdateButton:hover {
 
 .ql-toolbar.ql-snow,
 .ql-container.ql-snow {
-  border: none; /* Remove default Quill editor border */
+  border: none;
 }
 
-/* Right Modal Animation (Optional) */
-/* You can choose to remove these styles if you don't need the right modal animation */
-.modal.right .modal-dialog {
+.modal .modal.right .modal-dialog {
   position: fixed;
   margin: auto;
   width: 320px;
@@ -725,4 +723,159 @@ input#searchInput {
   box-shadow: 0 0 0 0.2rem #c7c7c7;
 }
 
-/* END DOCS HTML*/
+/* FMA Scenarios HTML*/
+.container-fma {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+.header-fma {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+#searchInput {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: #c7c7c7;
+  color: #1c1c1e;
+  font-size: 16px;
+  transition: box-shadow 0.3s ease;
+}
+#searchInput:focus {
+  outline: none;
+  box-shadow: 0px 2px 4px #c7c7c7;
+}
+#homeButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #c7c7c7;
+  color: #1c1c1e;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Transición suave */
+}
+#homeButton:hover {
+  background-color: #c7c7c7;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: transparent;
+}
+
+th,
+td {
+  padding: 12px;
+  border: none;
+}
+
+th {
+  color: #1c1c1e;
+  text-align: left;
+}
+
+tr.title-row {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #1c1c1e;
+  font-weight: bold;
+  text-align: left;
+}
+
+td {
+  color: #1c1c1e;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+tr:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: scale(1.02); /* Aumenta ligeramente el tamaño */
+  transition: all 0.2s ease-in-out;
+}
+.body-fma {
+  background-color: #f2f2f7;
+  color: #1c1c1e;
+  margin: 0;
+  padding: 0;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+/* END FMA Scenarios HTML*/
+
+/* QA HTML*/
+
+#reviewModal {
+  display: none;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 70%;
+  height: 100%;
+  background: #f2f2f7;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  z-index: 1000;
+  overflow-y: auto;
+}
+#reviewModal.show {
+  display: block;
+}
+.review-item {
+  border-bottom: none;
+  padding: 7px 0px;
+  margin-top: 31px;
+  background-color: #c7c7c7;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  text-align: center;
+  cursor: pointer;
+}
+button:not(:disabled) {
+  cursor: pointer;
+  border: none;
+}
+.review-item:hover {
+  background-color: #c7c7c7; /* Slightly darker background on hover */
+}
+.review-title {
+  font-size: 18px; /* Increase title size for emphasis */
+  font-weight: bold;
+}
+#reviewModal.show {
+  display: block;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.close-button::after {
+  transform: rotate(-45deg);
+}
+.container-qa {
+  /* display: flex; */
+  margin: 20px auto;
+  width: 80%;
+  justify-content: center;
+}
+.col-md-6 {
+  -ms-flex: 0 0 50%;
+  flex: 0 0 50%;
+  max-width: 50%;
+  margin-top: 5px;
+}
+/* END QA HTML*/
