@@ -976,3 +976,102 @@ container-trackerDetails {
 }
 
 /* TRACKER DETAILS HTML*/
+
+.container-labDistribution {
+  display: flex;
+  margin: 10px 20px;
+  width: 100%;
+  justify-content: center;
+  flex-direction: column;
+}
+
+/* TICKETS HTML*/
+
+.container-tickets {
+  display: flex;
+  justify-content: space-between;
+  padding: 40px;
+}
+
+.form-column,
+.tickets-column {
+  width: 48%;
+}
+
+.ticket-item {
+  background-color: #c7c7c7;
+  color: #1c1c1e;
+  margin-top: 30px;
+  padding: 10px;
+  border: #c7c7c7;
+  border-bottom: #c7c7c7;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.ticket-item {
+  background-color: #c7c7c7;
+  color: #1c1c1e;
+  padding: 10px;
+  border: #c7c7c7;
+  border-bottom: #c7c7c7;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.ticket-item:hover {
+  background-color: #f2f2f7; /* Cambiar color de fondo al pasar el ratón */
+  transform: scale(1.05);
+  opacity: 0.8;
+}
+
+/* Estilo del contenido del modal */
+.modal-content {
+  background-color: #f2f2f7;
+  color: #1c1c1e;
+}
+
+.modal-header,
+.modal-footer {
+  background-color: #f2f2f7;
+}
+
+/* Estilo para el panel lateral (side peek) */
+.side-peek {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 300px;
+  height: 100%;
+  background-color: #c7c7c7;
+  color: #1c1c1e;
+  box-shadow: -2px 0 5px rgba(102, 102, 102, 0.5);
+  transition: right 0.3s ease;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.side-peek.show {
+  right: 0;
+}
+
+/* Estilo del encabezado del panel lateral */
+.side-peek-header {
+  background-color: #c7c7c7;
+  padding: 10px;
+  border-bottom: #c7c7c7;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.side-peek-header button {
+  background: none;
+  border: none;
+  color: #1c1c1e;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* END TICKETS HTML*/
