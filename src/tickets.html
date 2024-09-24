@@ -117,45 +117,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="./js/tickets.js"></script>
-    <script>
-      window.addEventListener("DOMContentLoaded", () => {
-        // Create and style the loading overlay
-        const overlay = document.createElement("div");
-        overlay.style.position = "fixed";
-        overlay.style.top = "0";
-        overlay.style.left = "0";
-        overlay.style.width = "100%";
-        overlay.style.height = "100%";
-        overlay.style.backgroundColor = "#000"; // Fondo oscuro
-        overlay.style.zIndex = "9998";
-        overlay.style.filter = "blur(5px)"; // Aplicar desenfoque
-        overlay.style.transition = "opacity 0.5s ease-in-out";
-        overlay.style.opacity = "1";
-        document.body.appendChild(overlay);
-
-        // Create and style the loading screen iframe
-        const loadingScreen = document.createElement("iframe");
-        loadingScreen.src = "./loading.html";
-        loadingScreen.style.position = "fixed";
-        loadingScreen.style.top = "0";
-        loadingScreen.style.left = "0";
-        loadingScreen.style.width = "100%";
-        loadingScreen.style.height = "100%";
-        loadingScreen.style.border = "none";
-        loadingScreen.style.zIndex = "9999";
-        document.body.appendChild(loadingScreen);
-
-        // Remove the loading screen and overlay when the main content is fully loaded
-        window.addEventListener("load", () => {
-          setTimeout(() => {
-            document.body.removeChild(loadingScreen);
-            overlay.style.opacity = "0";
-            setTimeout(() => {
-              document.body.removeChild(overlay);
-            }, 500); // Wait for the transition to complete
-          }, 500); // Delay to ensure everything is properly removed
-        });
-      });
-    </script>
+    <script src="./src/js/loading.js"></script>
   </body>
 </html>

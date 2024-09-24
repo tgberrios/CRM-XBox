@@ -1162,3 +1162,29 @@ container-comments {
   margin: 0 auto;
   padding: 20px;
 }
+
+.form-control:disabled {
+  background-color: #c7c7c7;
+  opacity: 1;
+}
+
+.active > .page-link,
+.page-link.active {
+  z-index: 3;
+  color: var(--bs-pagination-active-color);
+  background-color: #c7c7c7;
+  border-color: #c7c7c7;
+}
+
+.col-md-4 {
+  flex: 0 0 auto;
+  width: 33.333333%;
+}
+input#searchInput {
+  align-items: center;
+  text-align: center;
+  width: 300px;
+  margin: 20px;
+  padding: 20px;
+  margin-top: 54px;
+}
