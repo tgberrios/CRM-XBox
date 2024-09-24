@@ -1156,3 +1156,9 @@ input#searchInput {
   text-decoration: none;
   background-color: #c7c7c7;
 }
+
+container-comments {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
