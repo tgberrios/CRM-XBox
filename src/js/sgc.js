@@ -40,7 +40,7 @@ async function loadAllData() {
                 <h5>${item.title_name}</h5>
                 <p><strong>Date:</strong> ${item.date}</p>
                 <p><strong>Submission Iteration:</strong> ${item.submission_iteration}</p>
-                <button class="btn btn-info btn-sm" data-id="${item.id}" data-toggle="modal" data-target="#dataModal">Details</button>
+                <button class="btn btn-primary" data-id="${item.id}" data-toggle="modal" data-target="#dataModal">Details</button>
               `;
         dataDisplay.appendChild(itemElement);
       });
