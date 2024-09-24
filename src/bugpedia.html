@@ -18,14 +18,13 @@
       rel="stylesheet"
       href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
     />
-    <link rel="stylesheet" href="./css/bugpedia.css" />
+    <link rel="stylesheet" href="./css/style.css" />
     <style></style>
   </head>
   <body class="bg-dark text-light">
     <div class="container mt-4">
       <div class="row">
         <div class="col-md-6 col-left">
-          <h2 class="text-success">Report an Issue</h2>
           <form id="issueForm" class="bg-secondary p-4 rounded">
             <div class="form-group">
               <label for="name">Name:</label>
@@ -91,12 +90,11 @@
                 name="scenario"
               />
             </div>
-            <button type="submit" class="btn btn-success">Add Issue</button>
-            <a href="../index.html" class="btn btn-success">Home</a>
+            <button type="submit" class="btn btn-primary">Add Issue</button>
+            <a href="../index.html" class="btn btn-primary">Home</a>
           </form>
         </div>
         <div class="col-md-6 col-right">
-          <h2 class="text-success">BugPedia</h2>
           <div class="form-group">
             <input
               type="text"
@@ -112,7 +110,7 @@
       </div>
     </div>
     <div id="sidepeekModal" class="modal-sidepeek">
-      <span class="modal-close-btn" onclick="closeModal()">&#10005;</span>
+      <span class="btn btn-primary" onclick="closeModal()">&#10005;</span>
       <div id="modalContent">
         <!-- Issue details will be dynamically added here -->
       </div>
