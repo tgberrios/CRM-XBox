@@ -60,43 +60,55 @@ function loadTrackers() {
     .loadTrackers()
     .then((trackers) => {
       console.log("Trackers loaded:", trackers);
-      trackers.forEach((tracker) => {
-        console.log("Processing tracker:", tracker);
+      trackers.forEach(
+        ({ id, titleName, supportedPlatforms, leadName, testCases }) => {
+          console.log("Processing tracker:", titleName);
 
-        // Parse testCases safely
-        let testCases = [];
-        try {
-          testCases = JSON.parse(tracker.testCases) || [];
-        } catch (error) {
-          console.error("Error parsing test cases:", error);
+          let parsedTestCases = [];
+          try {
+            console.log("Raw test cases:", testCases);
+            console.log("Type of testCases:", typeof testCases);
+
+            // Ensure testCases is handled properly
+            if (typeof testCases === "string" && testCases.trim() !== "") {
+              parsedTestCases = JSON.parse(testCases);
+            } else if (Array.isArray(testCases)) {
+              parsedTestCases = testCases;
+            } else {
+              console.error("Unexpected format for testCases:", testCases);
+              throw new Error("Invalid format for test cases");
+            }
+
+            const totalCases = parsedTestCases.length;
+            const completedCases = parsedTestCases.filter((tc) =>
+              ["N/A", "Pass", "Fail", "CNT"].includes(tc.status)
+            ).length;
+
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${titleName || "N/A"}</td>
+              <td>${supportedPlatforms || "N/A"}</td>
+              <td>${leadName || "N/A"}</td>
+              <td>
+                <div class="progress-container">
+                  <div class="progress-text">${completedCases} / ${totalCases}</div>
+                </div>
+              </td>
+              <td>
+                <a href="trackerDetails.html?trackerId=${
+                  id || ""
+                }" class="btn btn-primary">View Details</a>
+                <button class="btn btn-danger" onclick="deleteTracker('${
+                  id || ""
+                }')">Delete</button>
+              </td>
+            `;
+            trackersTable.appendChild(row);
+          } catch (error) {
+            console.error("Error processing tracker:", titleName, error);
+          }
         }
-
-        const totalCases = testCases.length;
-        const completedCases = testCases.filter((tc) =>
-          ["N/A", "Pass", "Fail", "CNT"].includes(tc.status)
-        ).length;
-
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${tracker.titleName || "N/A"}</td>
-          <td>${tracker.supportedPlatforms || "N/A"}</td>
-          <td>${tracker.leadName || "N/A"}</td>
-          <td>
-            <div class="progress-container">
-              <div class="progress-text">${completedCases} / ${totalCases}</div>
-            </div>
-          </td>
-          <td>
-            <a href="trackerDetails.html?trackerId=${
-              tracker.id || ""
-            }" class="btn btn-primary">View Details</a>
-            <button class="btn btn-danger" onclick="deleteTracker('${
-              tracker.id || ""
-            }')">Delete</button>
-          </td>
-        `;
-        trackersTable.appendChild(row);
-      });
+      );
     })
     .catch((error) => {
       console.error("Error loading trackers:", error);
@@ -185,24 +197,48 @@ function deleteTracker(id) {
  * @param {string} trackerId - The ID of the tracker to view test cases for.
  */
 function viewTestCases(trackerId) {
+  console.log("Fetching test cases for tracker ID:", trackerId);
   window.cert
     .getTestCases(trackerId)
     .then((testCasesString) => {
+      console.log("Raw test cases string:", testCasesString);
+
+      let testCases;
       try {
-        const testCases = JSON.parse(testCasesString);
-        console.log("Test cases loaded:", testCases);
-        if (testCases.length > 0) {
-          renderTestCases(testCases);
-          const testCasesModal = new bootstrap.Modal(
-            document.getElementById("testCasesModal")
-          );
-          testCasesModal.show();
+        if (typeof testCasesString === "string") {
+          if (testCasesString.trim() === "") {
+            throw new Error("Received empty string");
+          }
+          testCases = JSON.parse(testCasesString);
+        } else if (Array.isArray(testCasesString)) {
+          testCases = testCasesString;
         } else {
-          alert("No test cases found for this tracker.");
+          throw new Error("Invalid format for test cases");
         }
       } catch (error) {
         console.error("Error parsing test cases:", error);
         alert("Failed to load test cases. Please try again.");
+        return;
+      }
+
+      console.log("Test cases loaded:", testCases);
+
+      // Aquí agregas los logs para verificar el array
+      console.log("Is array:", Array.isArray(testCases));
+      console.log("Length:", testCases.length);
+
+      if (Array.isArray(testCases) && testCases.length > 0) {
+        // Limpiar el contenedor antes de renderizar
+        const container = document.getElementById("testCasesContainer");
+        container.innerHTML = ""; // Limpiar antes de agregar nuevos casos
+
+        renderTestCases(testCases);
+        const testCasesModal = new bootstrap.Modal(
+          document.getElementById("testCasesModal")
+        );
+        testCasesModal.show();
+      } else {
+        alert("No test cases found for this tracker.");
       }
     })
     .catch((error) => {
@@ -217,16 +253,13 @@ function viewTestCases(trackerId) {
  */
 function renderTestCases(testCases) {
   const container = document.getElementById("testCasesContainer");
-  container.innerHTML = ""; // Clear existing content
+  container.innerHTML = ""; // Limpiar el contenedor antes de agregar nuevos casos
 
   testCases.forEach((testCase) => {
     const div = document.createElement("div");
-    div.classList.add("test-case");
     div.innerHTML = `
-      <h6>${testCase.title || "N/A"}</h6>
-      <p class="tester-name">Tester: ${testCase.testerName || "N/A"}</p>
-      <p>Status: ${testCase.status || "N/A"}</p>
-      <p>Description: ${testCase.comment || "N/A"}</p>
+      <h5>${testCase.title} (${testCase.status})</h5>
+      <p>${testCase.comment}</p>
     `;
     container.appendChild(div);
   });
@@ -252,29 +285,59 @@ function moveCompletedTrackersToHistory() {
   window.cert
     .getAllTrackers()
     .then((trackers) => {
-      // Get only trackers where all test cases are complete
       const completedTrackers = trackers.filter((tracker) => {
         let testCases = [];
         try {
-          testCases = JSON.parse(tracker.testCases);
+          console.log("Raw test cases:", tracker.testCases);
+
+          // Verificar si testCases es una cadena y no está vacía
+          if (
+            typeof tracker.testCases === "string" &&
+            tracker.testCases.trim() !== ""
+          ) {
+            testCases = JSON.parse(tracker.testCases);
+          } else if (Array.isArray(tracker.testCases)) {
+            testCases = tracker.testCases;
+          } else {
+            console.error("Invalid format for test cases:", tracker.testCases);
+            return false; // Formato no válido
+          }
+
+          // Validaciones adicionales
+          if (!Array.isArray(testCases)) {
+            console.error("Parsed test cases are not an array:", testCases);
+            return false; // No es un array
+          }
+
+          console.log("Parsed test cases:", testCases);
+          console.log("Is array:", Array.isArray(testCases));
+          console.log("Length:", testCases.length);
         } catch (e) {
           console.error("Error parsing test cases:", e);
-          return false; // Skip trackers with parsing errors
+          return false; // Saltar trackers con errores de análisis
         }
         return areAllTestCasesComplete(testCases);
       });
 
       if (completedTrackers.length > 0) {
-        // Move each completed tracker to history
         Promise.all(
-          completedTrackers.map((tracker) =>
-            window.cert.moveTrackerToHistory(tracker)
-          )
+          completedTrackers.map((tracker) => {
+            const dateText = new Date().toISOString();
+
+            return window.cert.moveTrackerToHistory({
+              id: tracker.id || null,
+              titleName: tracker.titleName || "",
+              supportedPlatforms: tracker.supportedPlatforms || "",
+              leadName: tracker.leadName || "",
+              testCases: JSON.stringify(tracker.testCases || []),
+              date: dateText,
+            });
+          })
         )
           .then(() => {
             alert("Completed trackers moved to history.");
-            loadTrackers(); // Refresh trackers
-            loadHistory(); // Refresh history
+            loadTrackers();
+            loadHistory();
           })
           .catch((error) => {
             console.error("Error moving trackers to history:", error);

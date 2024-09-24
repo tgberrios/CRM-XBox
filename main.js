@@ -1459,6 +1459,8 @@ ipcMain.handle("deleteTracker", async (event, id) => {
 
 // Manejador para mover un tracker al historial
 ipcMain.handle("moveTrackerToHistory", async (event, tracker) => {
+  console.log("Tracker data before moving:", tracker);
+
   return new Promise((resolve, reject) => {
     const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
       if (err) {
@@ -1467,7 +1469,6 @@ ipcMain.handle("moveTrackerToHistory", async (event, tracker) => {
       }
     });
 
-    // Obtener información de esquema de la tabla 'history'
     db.all("PRAGMA table_info(history);", (err, columns) => {
       if (err) {
         console.error("Error fetching table info:", err.message);
@@ -1477,7 +1478,6 @@ ipcMain.handle("moveTrackerToHistory", async (event, tracker) => {
 
       console.log("Columns in history table:", columns);
 
-      // Verificar si la columna 'supportedPlatforms' existe
       const hasSupportedPlatforms = columns.some(
         (column) => column.name === "supportedPlatforms"
       );
@@ -1492,17 +1492,20 @@ ipcMain.handle("moveTrackerToHistory", async (event, tracker) => {
         );
       }
 
-      // Inserta el tracker en la tabla de historial
+      const id = typeof tracker.id === "number" ? tracker.id : null;
+      const testCasesString = JSON.stringify(tracker.testCases || []);
+      const dateText = new Date().toISOString(); // Esto debe ser una cadena de texto válida
+
       db.run(
         `INSERT INTO history (id, titleName, supportedPlatforms, leadName, testCases, date) 
          VALUES (?, ?, ?, ?, ?, ?)`,
         [
-          tracker.id,
-          tracker.titleName,
-          tracker.supportedPlatforms,
-          tracker.leadName,
-          JSON.stringify(tracker.testCases),
-          new Date().toISOString(),
+          id,
+          tracker.titleName || "",
+          tracker.supportedPlatforms || "",
+          tracker.leadName || "",
+          testCasesString,
+          dateText,
         ],
         (err) => {
           if (err) {
@@ -1511,7 +1514,6 @@ ipcMain.handle("moveTrackerToHistory", async (event, tracker) => {
             return reject("Error inserting into history: " + err.message);
           }
 
-          // Elimina el tracker de la tabla principal
           db.run("DELETE FROM trackers WHERE id = ?", [tracker.id], (err) => {
             if (err) {
               console.error("Error deleting from trackers:", err.message);
