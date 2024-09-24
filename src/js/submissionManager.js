@@ -198,55 +198,64 @@ function deleteTracker(id) {
  */
 function viewTestCases(trackerId) {
   console.log("Fetching test cases for tracker ID:", trackerId);
+
+  // Check if trackerId is valid
+  if (!trackerId) {
+    alert("Invalid tracker ID.");
+    return;
+  }
+
   window.cert
     .getTestCases(trackerId)
     .then((testCasesString) => {
-      console.log("Raw test cases string:", testCasesString);
+      console.log("Raw test cases string:", testCasesString); // Print the raw string
 
       let testCases;
       try {
-        if (typeof testCasesString === "string") {
-          if (testCasesString.trim() === "") {
-            throw new Error("Received empty string");
-          }
-          testCases = JSON.parse(testCasesString);
-        } else if (Array.isArray(testCasesString)) {
-          testCases = testCasesString;
-        } else {
-          throw new Error("Invalid format for test cases");
+        // Clean the string by removing extra escapes
+        const cleanedString = testCasesString
+          .replace(/^"|"$/g, "") // Remove leading and trailing quotes
+          .replace(/\\\"/g, '"') // Replace escaped quotes
+          .replace(/\\\\/g, "\\") // Replace double backslashes
+          .replace(/\s+/g, " ") // Replace multiple whitespace characters with a single space
+          .trim(); // Trim whitespace from start and end
+
+        // Log cleaned string for debugging
+        console.log("Cleaned test cases string:", cleanedString);
+
+        // Validate and parse the JSON string
+        testCases = JSON.parse(cleanedString);
+
+        // Check if the result is an array
+        if (!Array.isArray(testCases)) {
+          throw new Error("Test cases is not an array");
         }
       } catch (error) {
         console.error("Error parsing test cases:", error);
-        alert("Failed to load test cases. Please try again.");
+        alert(
+          "Failed to load test cases. Please ensure the data format is correct."
+        );
         return;
       }
 
-      console.log("Test cases loaded:", testCases);
-
-      // Aquí agregas los logs para verificar el array
-      console.log("Is array:", Array.isArray(testCases));
-      console.log("Length:", testCases.length);
-
-      if (Array.isArray(testCases) && testCases.length > 0) {
-        // Limpiar el contenedor antes de renderizar
-        const container = document.getElementById("testCasesContainer");
-        container.innerHTML = ""; // Limpiar antes de agregar nuevos casos
-
-        renderTestCases(testCases);
-        const testCasesModal = new bootstrap.Modal(
-          document.getElementById("testCasesModal")
-        );
-        testCasesModal.show();
-      } else {
+      // Check if there are test cases
+      if (testCases.length === 0) {
         alert("No test cases found for this tracker.");
+        return;
       }
+
+      // Render the test cases
+      renderTestCases(testCases);
+      const testCasesModal = new bootstrap.Modal(
+        document.getElementById("testCasesModal")
+      );
+      testCasesModal.show();
     })
     .catch((error) => {
       console.error("Error loading test cases:", error);
       alert("Failed to load test cases. Please try again.");
     });
 }
-
 /**
  * Renders the test cases in the modal.
  * @param {Array} testCases - Array of test cases to render.
