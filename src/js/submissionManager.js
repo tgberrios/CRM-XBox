@@ -266,9 +266,23 @@ function renderTestCases(testCases) {
 
   testCases.forEach((testCase) => {
     const div = document.createElement("div");
+
+    // Definir color según el estado
+    let statusColor = "";
+    if (testCase.status === "Pass") {
+      statusColor = "green";
+    } else if (testCase.status === "Fail") {
+      statusColor = "red";
+    } else if (testCase.status === "Pending") {
+      statusColor = "orange";
+    }
+
     div.innerHTML = `
-      <h5>${testCase.title} (${testCase.status})</h5>
-      <p>${testCase.comment}</p>
+      <h5>${testCase.title} <span style="color: ${statusColor};">(${
+      testCase.status
+    })</span></h5>
+      <p><strong>Tester:</strong> ${testCase.testerName || "???"}</p>
+      <p><strong>Comment:</strong> ${testCase.comment}</p>
     `;
     container.appendChild(div);
   });
