@@ -1188,3 +1188,15 @@ input#searchInput {
   padding: 20px;
   margin-top: 54px;
 }
+a.contact-email {
+  font-weight: bold;
+  color: black;
+  transition: color 0.3s ease, transform 0.3s ease; /* Transición de color y transformación */
+}
+
+a.contact-email:hover {
+  color: blue;
+  transform: scale(
+    1.1
+  ); /* Aumenta ligeramente el tamaño del enlace al hacer hover */
+}

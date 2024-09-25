@@ -40,7 +40,8 @@
       "index.html",
       "main.js",
       "package.json",
-      "package-lock.json"
+      "package-lock.json",
+      "preload.js"
     ],
     "win": {
       "target": "nsis",

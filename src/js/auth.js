@@ -14,13 +14,13 @@ function setupFormHandlers() {
 
       try {
         await window.cert.registerUser(username, password);
-        $("#successModal").modal("show");
+        alert("Success!");
         setTimeout(() => {
           window.location.href = "../index.html";
-        }, 2000); // Opcional: espera un poco antes de redirigir
+        }); // Espera antes de redirigir
       } catch (error) {
-        console.error("Registration failed: ", error);
-        $("#errorModal").modal("show");
+        console.error("Error: ", error);
+        alert("¡Error en el registro! Por favor, inténtalo de nuevo.");
       }
     });
 
@@ -33,10 +33,15 @@ function setupFormHandlers() {
 
       try {
         await window.cert.loginUser(username, password);
-        window.location.href = "../index.html";
+        alert("Success!");
+        setTimeout(() => {
+          window.location.href = "../index.html";
+        }); // Espera antes de redirigir
       } catch (error) {
-        console.error("Login failed: ", error);
-        alert("Login Failed!");
+        console.error("Error: ", error);
+        alert(
+          "¡Error en el inicio de sesión! Por favor, revisa tus credenciales."
+        );
       }
     });
 }
@@ -52,7 +57,7 @@ function setupFormToggles() {
 }
 
 function initializeForms() {
-  // Initialize to show the login form
+  // Inicializa mostrando el formulario de login
   toggleFormVisibility(false);
 }
 
