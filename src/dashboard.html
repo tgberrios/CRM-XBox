@@ -11,8 +11,16 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
    
-
+<!-- Montserrat Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
+      * {
+  font-family: "montserrat", sans-serif;
+  color: 1C1C1E;
+}
       .notification-modal .modal-dialog {
   position: fixed; /* Mantiene el modal en una posición fija */
   bottom: 20px; /* Espaciado desde la parte inferior */
@@ -85,7 +93,13 @@ p {
           <!-- Últimos SGC -->
           <h3>Últimos SGC:</h3>
           <ul id="sgcList" class="list-group"></ul>
+          <h3>Average BQ Score:</h3>
+<div style="border: 2px solid #4CAF50; padding: 15px; border-radius: 5px; background-color: #f9f9f9; display: inline-block;">
+    <p style="font-size: 24px; font-weight: bold; color: #4CAF50;" id="averageBugScore">1</p>
+    <p style="font-size: 14px; color: #555;">This score reflects the average qualit the CR performance. Scores range from 0 to 10, where higher values indicate better quality.</p>
+</div>
         </div>
+        
 
         <!-- Segunda Columna -->
         <div class="col-md-4">
@@ -423,6 +437,20 @@ const realTimeNotifications = async () => {
   }
 };
 
+const averageBugScore = async () => { 
+  try {
+    const issues = await window.cert.getIssues();
+    console.log("Issues:", issues);
+    const bugScoreArray = issues.map((issue) => issue.bqScore);
+    const averageBugScore = bugScoreArray.reduce((total, current) => total + current, 0) / bugScoreArray.length;
+    console.log("Average Bug Score:", averageBugScore);
+    document.getElementById("averageBugScore").textContent = `${averageBugScore}`;
+  } catch (error) {
+    console.error("Error loading issues:", error);
+  }
+};
+
+
 
 
 
@@ -437,6 +465,7 @@ const realTimeNotifications = async () => {
         realTimeNotifications();
         setInterval(realTimeNotifications, 5000);
         topPerformance();
+        averageBugScore();
       };
     </script>
   </body>
