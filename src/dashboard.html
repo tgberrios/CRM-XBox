@@ -90,14 +90,11 @@ p {
           <h3>Lista de Issues:</h3>
           <ul id="issuesList" class="list-group"></ul>
 
-          <!-- Últimos SGC -->
-          <h3>Últimos SGC:</h3>
-          <ul id="sgcList" class="list-group"></ul>
-          <h3>Average BQ Score:</h3>
-<div style="border: 2px solid #4CAF50; padding: 15px; border-radius: 5px; background-color: #f9f9f9; display: inline-block;">
-    <p style="font-size: 24px; font-weight: bold; color: #4CAF50;" id="averageBugScore">1</p>
-    <p style="font-size: 14px; color: #555;">This score reflects the average qualit the CR performance. Scores range from 0 to 10, where higher values indicate better quality.</p>
-</div>
+          <h3>Últimos Noticias:</h3>          
+          <ul id="newsList" class="list-group"></ul>
+
+          
+          
         </div>
         
 
@@ -111,7 +108,8 @@ p {
             <h3>Top 3 Performance:</h3>
             <ul id="topPerformance" class="list-group"></ul>
           </div>
-
+          <h3>Tickets Prioridades Altas:</h3>
+          <ul id="highPriorityTicketsList" class="list-group"></ul>
           <!-- Tickets List -->
           <h3>Tickets Activos:</h3>
           <ul id="ticketsList" class="list-group"></ul>
@@ -126,6 +124,14 @@ p {
           <!-- Audits Recientes -->
           <h3>Audits Recientes:</h3>
           <ul id="recentAuditsList" class="list-group"></ul>
+          <h3>Average BQ Score:</h3>
+<div style=" padding: 15px; border-radius: 5px; background-color: #f9f9f9; display: inline-block;">
+    <p style="font-size: 24px; font-weight: bold; color: #1C1C1E;" id="averageBugScore">1</p>
+    <p style="font-size: 14px; color: #555;">This score reflects the average qualit the CR performance. Scores range from 0 to 10, where higher values indicate better quality.</p>
+</div>
+<!-- Últimos SGC -->
+          <h3>Últimos SGC:</h3>
+          <ul id="sgcList" class="list-group"></ul>
 
           
         </div>
@@ -396,46 +402,7 @@ p {
         }
       };
 
-      let lastSeenTicketId = null;
-let hasLoadedInitially = false; // Nuevo flag para evitar la notificación inicial
 
-const realTimeNotifications = async () => {
-  try {
-    const ticketNotifications = await window.cert.getTickets();
-
-    // Verifica que hay tickets y obtiene el último ticket
-    if (ticketNotifications.length > 0) {
-      const mostRecentTicket = ticketNotifications[ticketNotifications.length - 1]; // Obtener el último ticket
-
-      // Verifica si hay un ticket nuevo y si no ha sido visto anteriormente
-      if (mostRecentTicket && mostRecentTicket.status === "Open") {
-        // Solo muestra la notificación si no es la primera carga
-        if (hasLoadedInitially && mostRecentTicket.id !== lastSeenTicketId) {
-          lastSeenTicketId = mostRecentTicket.id; // Actualiza el último ticket visto
-          const notificationContent = document.getElementById("notificationContent");
-          notificationContent.textContent = `${mostRecentTicket.name} está abierto`;
-
-          const notificationModal = new bootstrap.Modal(
-            document.getElementById("notificationModal")
-          );
-          notificationModal.show();
-
-          // Cierra el modal automáticamente después de 2 segundos
-          setTimeout(() => {
-            notificationModal.hide();
-          }, 2000); // 2000 milisegundos = 2 segundos
-        }
-      }
-
-      // Marca como true después de la primera carga
-      if (!hasLoadedInitially) {
-        hasLoadedInitially = true;
-      }
-    }
-  } catch (error) {
-    console.error("Error loading notifications:", error);
-  }
-};
 
 const averageBugScore = async () => { 
   try {
@@ -447,6 +414,117 @@ const averageBugScore = async () => {
     document.getElementById("averageBugScore").textContent = `${averageBugScore}`;
   } catch (error) {
     console.error("Error loading issues:", error);
+  }
+};
+
+const highPriorityTickets = async () => {
+  try {
+    const tickets = await window.cert.getTickets();
+    const highPriorityTickets = tickets.filter(
+      (ticket) => ticket.priority === "High"
+    );
+    const highPriorityTicketsListContainer = document.getElementById(
+      "highPriorityTicketsList"
+    );
+    highPriorityTicketsListContainer.innerHTML = "";
+    highPriorityTickets.forEach((ticket) => {
+      const listItem = document.createElement("li");
+      listItem.className = "list-group-item";
+      listItem.textContent = ticket.name;
+      highPriorityTicketsListContainer.appendChild(listItem);
+    });
+  } catch (error) {
+    console.error("Error loading high priority tickets:", error);
+  }
+};
+
+const lastestNews = async () => {
+  try {
+    const news = await window.cert.loadUpdates();
+    const newsListContainer = document.getElementById("newsList");
+    newsListContainer.innerHTML = "";
+    news.forEach((news) => {
+      const listItem = document.createElement("li");
+      listItem.className = "list-group-item";
+      listItem.textContent = news.title;
+      newsListContainer.appendChild(listItem);
+    });
+  } catch (error) {
+    console.error("Error loading news:", error);
+  }
+};
+
+let lastSeenTicketId = null;
+let lastSeenNewsId = null; // Para controlar las noticias
+let hasLoadedInitially = false; // Para evitar la notificación inicial
+
+const realTimeNotifications = async () => {
+  try {
+    const ticketNotifications = await window.cert.getTickets(); // Cargar tickets
+    const lastestNews = await window.cert.loadUpdates(); // Cargar noticias
+
+    // Marca la carga inicial
+    if (!hasLoadedInitially) {
+      hasLoadedInitially = true; // Ahora se ha cargado inicialmente
+      // Almacenamos el último ID de ticket y noticias para evitar mostrar inicialmente
+      if (ticketNotifications.length > 0) {
+        lastSeenTicketId = ticketNotifications[ticketNotifications.length - 1].id; // Marca el último ticket como visto
+      }
+      if (lastestNews.length > 0) {
+        lastSeenNewsId = lastestNews[lastestNews.length - 1].id; // Marca la última noticia como vista
+      }
+      return; // Salimos de la función para evitar mostrar notificaciones
+    }
+
+    // Verifica si hay tickets nuevos
+    if (ticketNotifications.length > 0) {
+      const mostRecentTicket = ticketNotifications[ticketNotifications.length - 1]; // Obtener el último ticket
+
+      if (mostRecentTicket && mostRecentTicket.status === "Open" && mostRecentTicket.id !== lastSeenTicketId) {
+        lastSeenTicketId = mostRecentTicket.id; // Actualiza el último ticket visto
+        
+        // Actualiza el contenido del modal para mostrar el ticket
+        const notificationContent = document.getElementById("notificationContent");
+        notificationContent.textContent = `Nuevo Ticket: ${mostRecentTicket.name}`; // Aquí puedes personalizar el texto
+
+        const notificationModal = new bootstrap.Modal(
+          document.getElementById("notificationModal")
+        );
+        notificationModal.show();
+
+        // Cierra el modal automáticamente después de 2 segundos
+        setTimeout(() => {
+          notificationModal.hide();
+        }, 2000); // 2 segundos
+      }
+    }
+
+    // Verifica si hay noticias nuevas
+    if (lastestNews.length > 0) {
+      const mostRecentNews = lastestNews[lastestNews.length - 1]; // Obtener la última noticia (la más reciente)
+
+      // Solo mostramos la noticia si hay una nueva y no ha sido vista
+      if (mostRecentNews && mostRecentNews.id !== lastSeenNewsId) {
+        lastSeenNewsId = mostRecentNews.id; // Marca la noticia como vista
+
+        // Actualiza el contenido del modal para mostrar la noticia
+        const notificationContent = document.getElementById("notificationContent");
+        notificationContent.textContent = `Última Noticia: ${mostRecentNews.title}`; // Personaliza el mensaje
+
+        const notificationModal = new bootstrap.Modal(
+          document.getElementById("notificationModal")
+        );
+        notificationModal.show();
+
+        // Cierra el modal automáticamente después de 3 segundos
+        setTimeout(() => {
+          notificationModal.hide();
+        }, 3000); // 3 segundos
+      }
+    }
+
+  } catch (error) {
+    console.error("Error loading notifications:", error);
   }
 };
 
@@ -466,6 +544,8 @@ const averageBugScore = async () => {
         setInterval(realTimeNotifications, 5000);
         topPerformance();
         averageBugScore();
+        highPriorityTickets();
+        lastestNews();
       };
     </script>
   </body>
