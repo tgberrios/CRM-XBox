@@ -10,132 +10,204 @@
       rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-   
-<!-- Montserrat Font -->
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
       rel="stylesheet"
     />
     <style>
       * {
-  font-family: "montserrat", sans-serif;
-  color: 1C1C1E;
-}
-      .notification-modal .modal-dialog {
-  position: fixed; /* Mantiene el modal en una posición fija */
-  bottom: 20px; /* Espaciado desde la parte inferior */
-  right: 20px; /* Espaciado desde la derecha */
-  width: 300px; /* Ajustar ancho automáticamente */
-  height: auto;
-}
-p {
-    margin-top: 0;
-    margin-bottom: 2px;
-}
-      .container-reviewsOverAll {
-        width: 100%;
-        height: 300px;
-        border: 1px solid #dee2e6; /* Borde ligero para el gráfico */
-        border-radius: 8px;
-        background-color: #f8f9fa; /* Fondo claro */
-        padding: 20px;
-        margin-bottom: 20px; /* Espacio inferior */
+        font-family: "Montserrat", sans-serif;
+        color: #1c1c1e;
       }
-      .metric {
-        padding: 20px;
+      body {
+        overflow-x: hidden;
+      }
+      .sidebar {
+        height: 100vh;
+        background-color: #f8f9fa;
+        border-right: 1px solid #dee2e6;
+      }
+      .main-content {
+        height: 100vh;
+        overflow-y: auto;
+      }
+      .card {
         border: 1px solid #dee2e6;
         border-radius: 8px;
-        background-color: #ffffff; /* Fondo blanco */
-        text-align: center;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-        margin-bottom: 20px; /* Espacio inferior */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
       }
-
-      h3 {
-        margin-top: 20px; /* Espaciado para los encabezados */
+      .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
       }
-
       .list-group-item {
-        border: none; /* Sin borde para los items de lista */
-        border-radius: 5px; /* Bordes redondeados */
-        background-color: #f1f1f1; /* Fondo gris claro */
+        border: none;
+        border-radius: 5px;
+        background-color: #f1f1f1;
       }
-
       .list-group-item:hover {
-        background-color: #e9ecef; /* Fondo gris más oscuro al pasar el mouse */
+        background-color: #e9ecef;
       }
-
-      .footer-implementations {
-        background-color: #343a40; /* Fondo oscuro */
-        color: #ffffff; /* Texto blanco */
-        padding: 20px;
-        border-radius: 8px;
-        margin-top: 20px; /* Espacio superior */
+      .notification-modal .modal-dialog {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 300px;
+        height: auto;
       }
     </style>
   </head>
   <body>
-    <div class="container mt-4">
-      <h1 class="text-center">Dashboard</h1>
-
+    <div class="container-fluid">
       <div class="row">
-        <!-- Primera Columna -->
-        <div class="col-md-4">
-          <div class="container-reviewsOverAll">
-            <canvas id="reviewsOverAll" width="500" height="400"></canvas>
+        <!-- Sidebar -->
+        <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+          <div class="position-sticky pt-3">
+            <h1 class="h4 px-3 pb-3 border-bottom">Dashboard</h1>
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link active" href="#"> Overview </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#"> Reviews </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#"> Issues </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#"> Tickets </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#"> Audits </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <!-- Main content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+          >
+            <h1 class="h2">Overview</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <select id="testerSelect" class="form-select">
+                <option value="all">Todos los Testers</option>
+              </select>
+            </div>
           </div>
 
-        
-          <!-- Issue List -->
-          <h3>Lista de Issues:</h3>
-          <ul id="issuesList" class="list-group"></ul>
-
-          <h3>Últimos Noticias:</h3>          
-          <ul id="newsList" class="list-group"></ul>
-
-          
-          
-        </div>
-        
-
-        <!-- Segunda Columna -->
-        <div class="col-md-4">
-          <!-- Dropdown para Testers -->
-          <div class="mb-4">
-            <select id="testerSelect" class="form-select">
-              <option value="all">Todos los Testers</option>
-            </select>
-            <h3>Top 3 Performance:</h3>
-            <ul id="topPerformance" class="list-group"></ul>
+          <div class="row">
+            <div class="col-12 col-lg-8">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">Reviews Overview</h5>
+                </div>
+                <div class="card-body">
+                  <canvas id="reviewsOverAll" width="400" height="200"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-4">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">Top 3 Performance</h5>
+                </div>
+                <div class="card-body">
+                  <ul id="topPerformance" class="list-group"></ul>
+                </div>
+              </div>
+            </div>
           </div>
-          <h3>Tickets Prioridades Altas:</h3>
-          <ul id="highPriorityTicketsList" class="list-group"></ul>
-          <!-- Tickets List -->
-          <h3>Tickets Activos:</h3>
-          <ul id="ticketsList" class="list-group"></ul>
 
-          <!-- Trackers Activos -->
-          <h3>Trackers Activos:</h3>
-          <ul id="activeTrackersList" class="list-group"></ul>
-        </div>
+          <div class="row">
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">Latest Issues</h5>
+                </div>
+                <div class="card-body">
+                  <ul id="issuesList" class="list-group"></ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">High Priority Tickets</h5>
+                </div>
+                <div class="card-body">
+                  <ul id="highPriorityTicketsList" class="list-group"></ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">Active Tickets</h5>
+                </div>
+                <div class="card-body">
+                  <ul id="ticketsList" class="list-group"></ul>
+                </div>
+              </div>
+            </div>
+          </div>
 
-        <!-- Tercera Columna -->
-        <div class="col-md-4">
-          <!-- Audits Recientes -->
-          <h3>Audits Recientes:</h3>
-          <ul id="recentAuditsList" class="list-group"></ul>
-          <h3>Average BQ Score:</h3>
-<div style=" padding: 15px; border-radius: 5px; background-color: #f9f9f9; display: inline-block;">
-    <p style="font-size: 24px; font-weight: bold; color: #1C1C1E;" id="averageBugScore">1</p>
-    <p style="font-size: 14px; color: #555;">This score reflects the average qualit the CR performance. Scores range from 0 to 10, where higher values indicate better quality.</p>
-</div>
-<!-- Últimos SGC -->
-          <h3>Últimos SGC:</h3>
-          <ul id="sgcList" class="list-group"></ul>
+          <div class="row">
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">Recent Audits</h5>
+                </div>
+                <div class="card-body">
+                  <ul id="recentAuditsList" class="list-group"></ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">Average BQ Score</h5>
+                </div>
+                <div class="card-body">
+                  <p id="averageBugScore" class="display-4 text-center">1</p>
+                  <p class="text-muted small">
+                    This score reflects the average quality of the CR
+                    performance. Scores range from 0 to 10, where higher values
+                    indicate better quality.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">Latest SGC</h5>
+                </div>
+                <div class="card-body">
+                  <ul id="sgcList" class="list-group"></ul>
+                </div>
+              </div>
+            </div>
+          </div>
 
-          
-        </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">Latest News</h5>
+                </div>
+                <div class="card-body">
+                  <ul id="newsList" class="list-group"></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
+    </div>
+
     <!-- Modal de Notificación -->
     <div
       class="modal fade notification-modal"
@@ -369,8 +441,6 @@ p {
         }
       };
 
-      
-
       const topPerformance = async () => {
         try {
           const reviews = await window.cert.getReviews();
@@ -402,135 +472,142 @@ p {
         }
       };
 
+      const averageBugScore = async () => {
+        try {
+          const issues = await window.cert.getIssues();
+          console.log("Issues:", issues);
+          const bugScoreArray = issues.map((issue) => issue.bqScore);
+          const averageBugScore =
+            bugScoreArray.reduce((total, current) => total + current, 0) /
+            bugScoreArray.length;
+          console.log("Average Bug Score:", averageBugScore);
+          document.getElementById(
+            "averageBugScore"
+          ).textContent = `${averageBugScore}`;
+        } catch (error) {
+          console.error("Error loading issues:", error);
+        }
+      };
 
+      const highPriorityTickets = async () => {
+        try {
+          const tickets = await window.cert.getTickets();
+          const highPriorityTickets = tickets.filter(
+            (ticket) => ticket.priority === "High"
+          );
+          const highPriorityTicketsListContainer = document.getElementById(
+            "highPriorityTicketsList"
+          );
+          highPriorityTicketsListContainer.innerHTML = "";
+          highPriorityTickets.forEach((ticket) => {
+            const listItem = document.createElement("li");
+            listItem.className = "list-group-item";
+            listItem.textContent = ticket.name;
+            highPriorityTicketsListContainer.appendChild(listItem);
+          });
+        } catch (error) {
+          console.error("Error loading high priority tickets:", error);
+        }
+      };
 
-const averageBugScore = async () => { 
-  try {
-    const issues = await window.cert.getIssues();
-    console.log("Issues:", issues);
-    const bugScoreArray = issues.map((issue) => issue.bqScore);
-    const averageBugScore = bugScoreArray.reduce((total, current) => total + current, 0) / bugScoreArray.length;
-    console.log("Average Bug Score:", averageBugScore);
-    document.getElementById("averageBugScore").textContent = `${averageBugScore}`;
-  } catch (error) {
-    console.error("Error loading issues:", error);
-  }
-};
+      const lastestNews = async () => {
+        try {
+          const news = await window.cert.loadUpdates();
+          const newsListContainer = document.getElementById("newsList");
+          newsListContainer.innerHTML = "";
+          news.forEach((news) => {
+            const listItem = document.createElement("li");
+            listItem.className = "list-group-item";
+            listItem.textContent = news.title;
+            newsListContainer.appendChild(listItem);
+          });
+        } catch (error) {
+          console.error("Error loading news:", error);
+        }
+      };
 
-const highPriorityTickets = async () => {
-  try {
-    const tickets = await window.cert.getTickets();
-    const highPriorityTickets = tickets.filter(
-      (ticket) => ticket.priority === "High"
-    );
-    const highPriorityTicketsListContainer = document.getElementById(
-      "highPriorityTicketsList"
-    );
-    highPriorityTicketsListContainer.innerHTML = "";
-    highPriorityTickets.forEach((ticket) => {
-      const listItem = document.createElement("li");
-      listItem.className = "list-group-item";
-      listItem.textContent = ticket.name;
-      highPriorityTicketsListContainer.appendChild(listItem);
-    });
-  } catch (error) {
-    console.error("Error loading high priority tickets:", error);
-  }
-};
+      let lastSeenTicketId = null;
+      let lastSeenNewsId = null; // Para controlar las noticias
+      let hasLoadedInitially = false; // Para evitar la notificación inicial
 
-const lastestNews = async () => {
-  try {
-    const news = await window.cert.loadUpdates();
-    const newsListContainer = document.getElementById("newsList");
-    newsListContainer.innerHTML = "";
-    news.forEach((news) => {
-      const listItem = document.createElement("li");
-      listItem.className = "list-group-item";
-      listItem.textContent = news.title;
-      newsListContainer.appendChild(listItem);
-    });
-  } catch (error) {
-    console.error("Error loading news:", error);
-  }
-};
+      const realTimeNotifications = async () => {
+        try {
+          const ticketNotifications = await window.cert.getTickets(); // Cargar tickets
+          const lastestNews = await window.cert.loadUpdates(); // Cargar noticias
 
-let lastSeenTicketId = null;
-let lastSeenNewsId = null; // Para controlar las noticias
-let hasLoadedInitially = false; // Para evitar la notificación inicial
+          // Marca la carga inicial
+          if (!hasLoadedInitially) {
+            hasLoadedInitially = true; // Ahora se ha cargado inicialmente
+            // Almacenamos el último ID de ticket y noticias para evitar mostrar inicialmente
+            if (ticketNotifications.length > 0) {
+              lastSeenTicketId =
+                ticketNotifications[ticketNotifications.length - 1].id; // Marca el último ticket como visto
+            }
+            if (lastestNews.length > 0) {
+              lastSeenNewsId = lastestNews[lastestNews.length - 1].id; // Marca la última noticia como vista
+            }
+            return; // Salimos de la función para evitar mostrar notificaciones
+          }
 
-const realTimeNotifications = async () => {
-  try {
-    const ticketNotifications = await window.cert.getTickets(); // Cargar tickets
-    const lastestNews = await window.cert.loadUpdates(); // Cargar noticias
+          // Verifica si hay tickets nuevos
+          if (ticketNotifications.length > 0) {
+            const mostRecentTicket =
+              ticketNotifications[ticketNotifications.length - 1]; // Obtener el último ticket
 
-    // Marca la carga inicial
-    if (!hasLoadedInitially) {
-      hasLoadedInitially = true; // Ahora se ha cargado inicialmente
-      // Almacenamos el último ID de ticket y noticias para evitar mostrar inicialmente
-      if (ticketNotifications.length > 0) {
-        lastSeenTicketId = ticketNotifications[ticketNotifications.length - 1].id; // Marca el último ticket como visto
-      }
-      if (lastestNews.length > 0) {
-        lastSeenNewsId = lastestNews[lastestNews.length - 1].id; // Marca la última noticia como vista
-      }
-      return; // Salimos de la función para evitar mostrar notificaciones
-    }
+            if (
+              mostRecentTicket &&
+              mostRecentTicket.status === "Open" &&
+              mostRecentTicket.id !== lastSeenTicketId
+            ) {
+              lastSeenTicketId = mostRecentTicket.id; // Actualiza el último ticket visto
 
-    // Verifica si hay tickets nuevos
-    if (ticketNotifications.length > 0) {
-      const mostRecentTicket = ticketNotifications[ticketNotifications.length - 1]; // Obtener el último ticket
+              // Actualiza el contenido del modal para mostrar el ticket
+              const notificationContent = document.getElementById(
+                "notificationContent"
+              );
+              notificationContent.textContent = `Nuevo Ticket: ${mostRecentTicket.name}`; // Aquí puedes personalizar el texto
 
-      if (mostRecentTicket && mostRecentTicket.status === "Open" && mostRecentTicket.id !== lastSeenTicketId) {
-        lastSeenTicketId = mostRecentTicket.id; // Actualiza el último ticket visto
-        
-        // Actualiza el contenido del modal para mostrar el ticket
-        const notificationContent = document.getElementById("notificationContent");
-        notificationContent.textContent = `Nuevo Ticket: ${mostRecentTicket.name}`; // Aquí puedes personalizar el texto
+              const notificationModal = new bootstrap.Modal(
+                document.getElementById("notificationModal")
+              );
+              notificationModal.show();
 
-        const notificationModal = new bootstrap.Modal(
-          document.getElementById("notificationModal")
-        );
-        notificationModal.show();
+              // Cierra el modal automáticamente después de 2 segundos
+              setTimeout(() => {
+                notificationModal.hide();
+              }, 2000); // 2 segundos
+            }
+          }
 
-        // Cierra el modal automáticamente después de 2 segundos
-        setTimeout(() => {
-          notificationModal.hide();
-        }, 2000); // 2 segundos
-      }
-    }
+          // Verifica si hay noticias nuevas
+          if (lastestNews.length > 0) {
+            const mostRecentNews = lastestNews[lastestNews.length - 1]; // Obtener la última noticia (la más reciente)
 
-    // Verifica si hay noticias nuevas
-    if (lastestNews.length > 0) {
-      const mostRecentNews = lastestNews[lastestNews.length - 1]; // Obtener la última noticia (la más reciente)
+            // Solo mostramos la noticia si hay una nueva y no ha sido vista
+            if (mostRecentNews && mostRecentNews.id !== lastSeenNewsId) {
+              lastSeenNewsId = mostRecentNews.id; // Marca la noticia como vista
 
-      // Solo mostramos la noticia si hay una nueva y no ha sido vista
-      if (mostRecentNews && mostRecentNews.id !== lastSeenNewsId) {
-        lastSeenNewsId = mostRecentNews.id; // Marca la noticia como vista
+              // Actualiza el contenido del modal para mostrar la noticia
+              const notificationContent = document.getElementById(
+                "notificationContent"
+              );
+              notificationContent.textContent = `Última Noticia: ${mostRecentNews.title}`; // Personaliza el mensaje
 
-        // Actualiza el contenido del modal para mostrar la noticia
-        const notificationContent = document.getElementById("notificationContent");
-        notificationContent.textContent = `Última Noticia: ${mostRecentNews.title}`; // Personaliza el mensaje
+              const notificationModal = new bootstrap.Modal(
+                document.getElementById("notificationModal")
+              );
+              notificationModal.show();
 
-        const notificationModal = new bootstrap.Modal(
-          document.getElementById("notificationModal")
-        );
-        notificationModal.show();
-
-        // Cierra el modal automáticamente después de 3 segundos
-        setTimeout(() => {
-          notificationModal.hide();
-        }, 3000); // 3 segundos
-      }
-    }
-
-  } catch (error) {
-    console.error("Error loading notifications:", error);
-  }
-};
-
-
-
-
+              // Cierra el modal automáticamente después de 3 segundos
+              setTimeout(() => {
+                notificationModal.hide();
+              }, 3000); // 3 segundos
+            }
+          }
+        } catch (error) {
+          console.error("Error loading notifications:", error);
+        }
+      };
 
       window.onload = () => {
         loadReviewsData();
