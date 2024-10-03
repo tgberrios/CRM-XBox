@@ -67,12 +67,23 @@
 }
 
 #auth-page {
-  background: linear-gradient(120deg, #000000, #242424, #0a5b05);
+  background: linear-gradient(
+    120deg,
+    #c7c7c7,
+    /* Gris claro */ #b3d1b3,
+    /* Verde intermedio claro */ #a8d5a8,
+    /* Verde claro adicional */ #8bbf8b,
+    /* Verde suave */ #7aa27a,
+    /* Verde intermedio */ #647c64,
+    /* Verde oscuro */ #4f6d4f,
+    /* Verde aún más oscuro */ #e5e5e5,
+    /* Gris claro de transición */ #f2f2f7 /* Blanco claro */
+  );
   background-size: 400% 400%;
-  animation: gradientBackground 12s ease infinite;
+  animation: gradientBackground 50s linear infinite; /* Duración ajustada a 50 segundos */
   display: flex;
   justify-content: center;
-  align-items: center; /* Centra verticalmente el contenido */
+  align-items: center;
   height: 100vh;
   margin: 0;
 }
@@ -81,11 +92,8 @@
   0% {
     background-position: 0% 50%;
   }
-  50% {
-    background-position: 100% 50%;
-  }
   100% {
-    background-position: 0% 50%;
+    background-position: 100% 50%;
   }
 }
 
