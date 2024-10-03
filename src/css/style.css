@@ -258,7 +258,7 @@
 #navbar ul {
   display: flex;
   justify-content: center;
-  gap: 15px; /* Reducimos el gap a 15px */
+  gap: 10px;
 }
 a {
   text-decoration: none;

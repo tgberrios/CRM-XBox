@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>XR Comments</title>
     <link rel="stylesheet" href="./css/style.css" />
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: transparent;
+        margin: 70px;
+      }
+    </style>
   </head>
   <body>
     <div class="container-comments">
@@ -17,9 +25,6 @@
           onkeyup="searchTable()"
           aria-label="Search input"
         />
-        <button id="homeButton" onclick="goHome()" aria-label="Go to Home">
-          Home
-        </button>
       </div>
       <table id="excelTable">
         <thead>
