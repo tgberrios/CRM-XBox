@@ -9,118 +9,143 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./css/sgc.css" />
+    <style>
+      .input-background {
+        background-color: #c7c7c7;
+      }
+      .form-container {
+        padding: 20px;
+        background-color: #f2f2f7;
+        border-radius: 5px;
+        margin: 0 auto;
+      }
+    </style>
   </head>
   <body>
-    <div class="container">
-      <div class="form-container">
-        <form id="dataForm" class="form-group">
-          <div class="search-container">
-            <input
-              type="text"
-              id="searchInput"
-              class="form-control"
-              placeholder="Search by Name, Date, ID"
-            />
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="form-container">
+            <form id="dataForm" class="form-group">
+              <h3>Formulario SGC</h3>
+              <div class="search-container form-group">
+                <input
+                  type="text"
+                  id="searchInput"
+                  class="form-control input-background"
+                  placeholder="Search by Name, Date, ID"
+                />
+              </div>
+              <div class="form-group">
+                <label for="date">Date:</label>
+                <input
+                  type="date"
+                  class="form-control input-background"
+                  id="date"
+                  name="date"
+                />
+              </div>
+              <div class="form-group">
+                <label for="position">Position:</label>
+                <input
+                  type="text"
+                  class="form-control input-background"
+                  id="position"
+                  name="position"
+                />
+              </div>
+              <div class="form-group">
+                <label for="email">Email:</label>
+                <input
+                  type="email"
+                  class="form-control input-background"
+                  id="email"
+                  name="email"
+                />
+              </div>
+              <div class="form-group">
+                <label for="gamertag">Gamertag:</label>
+                <input
+                  type="text"
+                  class="form-control input-background"
+                  id="gamertag"
+                  name="gamertag"
+                />
+              </div>
+              <div class="form-group">
+                <label for="title-name">Title Name:</label>
+                <input
+                  type="text"
+                  class="form-control input-background"
+                  id="title-name"
+                  name="title-name"
+                />
+              </div>
+              <div class="form-group">
+                <label for="title-version">Title Version:</label>
+                <input
+                  type="text"
+                  class="form-control input-background"
+                  id="title-version"
+                  name="title-version"
+                />
+              </div>
+              <div class="form-group">
+                <label for="submission-iteration">Submission Iteration:</label>
+                <textarea
+                  id="submission-iteration"
+                  name="submission-iteration"
+                  class="form-control input-background"
+                  rows="3"
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <label for="progress">Progress:</label>
+                <input
+                  type="text"
+                  class="form-control input-background"
+                  id="progress"
+                  name="progress"
+                />
+              </div>
+              <div class="form-group">
+                <label for="options">Options:</label>
+                <textarea
+                  id="options"
+                  name="options"
+                  class="form-control input-background"
+                  rows="3"
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <label for="publisher-accounts">Publisher Accounts:</label>
+                <input
+                  type="text"
+                  class="form-control input-background"
+                  id="publisher-accounts"
+                  name="publisher-accounts"
+                />
+              </div>
+              <div class="form-group">
+                <label for="publisher-password">Password:</label>
+                <input
+                  type="password"
+                  class="form-control input-background"
+                  id="publisher-password"
+                  name="publisher-password"
+                />
+              </div>
+              <button type="submit" class="btn btn-primary">Save</button>
+              <a href="../index.html" class="btn btn-primary">Home</a>
+            </form>
           </div>
-          <!-- Removed ID field -->
-          <div class="form-group">
-            <label for="date">Date:</label>
-            <input type="date" class="form-control" id="date" name="date" />
+        </div>
+        <div class="col-md-6">
+          <h3>SGC Info</h3>
+          <div class="data-display" id="dataDisplay">
+            <!-- SGC Info will be displayed here -->
           </div>
-          <div class="form-group">
-            <label for="position:">Position</label>
-            <input
-              type="text"
-              class="form-control"
-              id="position"
-              name="position"
-            />
-          </div>
-          <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" class="form-control" id="email" name="email" />
-          </div>
-          <div class="form-group">
-            <label for="gamertag">Gamertag:</label>
-            <input
-              type="text"
-              class="form-control"
-              id="gamertag"
-              name="gamertag"
-            />
-          </div>
-          <div class="form-group">
-            <label for="title-name">Title Name:</label>
-            <input
-              type="text"
-              class="form-control"
-              id="title-name"
-              name="title-name"
-            />
-          </div>
-          <div class="form-group">
-            <label for="title-version">Title Version: </label>
-            <input
-              type="text"
-              class="form-control"
-              id="title-version"
-              name="title-version"
-            />
-          </div>
-          <div class="form-group">
-            <label for="submission-iteration">Submission Iteration:</label>
-            <textarea
-              id="submission-iteration"
-              name="submission-iteration"
-              class="form-control"
-              rows="3"
-            ></textarea>
-          </div>
-          <div class="form-group">
-            <label for="progress">Progress:</label>
-            <input
-              type="text"
-              class="form-control"
-              id="progress"
-              name="progress"
-            />
-          </div>
-          <div class="form-group">
-            <label for="options">Options:</label>
-            <textarea
-              id="options"
-              name="options"
-              class="form-control"
-              rows="3"
-            ></textarea>
-          </div>
-          <div class="form-group">
-            <label for="publisher-accounts">Publisher Accounts:</label>
-            <input
-              type="text"
-              class="form-control"
-              id="publisher-accounts"
-              name="publisher-accounts"
-            />
-          </div>
-          <div class="form-group">
-            <label for="publisher-password">Password:</label>
-            <input
-              type="password"
-              class="form-control"
-              id="publisher-password"
-              name="publisher-password"
-            />
-          </div>
-          <button type="submit" class="btn btn-primary">Save</button>
-          <button class="btn btn-primary">
-            <a href="../index.html">Home</a>
-          </button>
-        </form>
-      </div>
-
-      <div class="data-display" id="dataDisplay">
-        <!-- SGC Info -->
+        </div>
       </div>
     </div>
 
@@ -149,18 +174,14 @@
           <div class="modal-body">
             <p><strong>Date:</strong> <span id="modal-date"></span></p>
             <p>
-              <strong>Title Name:</strong>
-              <span id="modal-title-name"></span>
+              <strong>Title Name:</strong> <span id="modal-title-name"></span>
             </p>
             <p>
               <strong>Submission Iteration:</strong>
               <span id="modal-submission-iteration"></span>
             </p>
             <p><strong>Position:</strong> <span id="modal-position"></span></p>
-            <p>
-              <strong>Email:</strong>
-              <span id="modal-email"></span>
-            </p>
+            <p><strong>Email:</strong> <span id="modal-email"></span></p>
             <p><strong>Gamertag:</strong> <span id="modal-gamertag"></span></p>
             <p>
               <strong>Title Version:</strong>

@@ -24,12 +24,149 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./css/style.css" />
+    <style>
+      /* Custom styles for the layout */
+      .xbox-container {
+        display: flex;
+        height: 100vh;
+      }
+
+      /* Sidebar styles */
+      .sidebar {
+        width: 300px;
+        background-color: #f8f9fa;
+        padding: 20px;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+      }
+
+      .sidebar h2 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+      }
+
+      .sidebar button {
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      /* Main content styles */
+      .main-content {
+        flex-grow: 1;
+        padding: 20px;
+        background-color: #fff;
+      }
+
+      /* Other styles */
+      .form-control-xbox {
+        margin-bottom: 15px;
+      }
+      .modal-header {
+        background-color: #f2f2f7;
+        color: #1c1c1e;
+      }
+      .modal-content {
+        background-color: #f2f2f7;
+        color: #1c1c1e;
+      }
+      .modal-footer {
+        background-color: #f2f2f7;
+        color: #1c1c1e;
+      }
+
+      .modal-dialog {
+        max-width: 600px;
+      }
+      .search-container {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-bottom: 10px;
+        height: 100px;
+        flex-direction: column;
+      }
+
+      /* Ajustes para la barra de búsqueda */
+      #searchInput {
+        width: 100%;
+        max-width: 300px; /* Ancho máximo de la barra de búsqueda */
+      }
+    </style>
   </head>
   <body class="xboxdocsbody">
     <div class="xbox-container">
-      <div class="row">
-        <div class="col-md-6 px-50">
-          <h2></h2>
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <h2>Xbox Docs</h2>
+        <!-- Formulario de Add Test Case estático -->
+        <form id="testCaseForm">
+          <h4>Add Test Case</h4>
+          <input type="hidden" id="testCaseId" />
+          <div class="form-group">
+            <label for="xr">Test Case XR</label>
+            <input
+              type="text"
+              class="form-control"
+              id="xr"
+              aria-describedby="xrHelp"
+              required
+            />
+            <small id="xrHelp" class="form-text text-muted">
+              Enter the XR for the test case.
+            </small>
+          </div>
+          <div class="form-group">
+            <label for="documentation">Documentation</label>
+            <div id="documentation" class="form-control"></div>
+          </div>
+          <div class="form-group">
+            <label for="passExample">Pass Example</label>
+            <textarea
+              class="form-control"
+              id="passExample"
+              rows="2"
+              aria-describedby="passExampleHelp"
+              required
+            ></textarea>
+            <small id="passExampleHelp" class="form-text text-muted">
+              Provide an example of a passing test case.
+            </small>
+          </div>
+          <div class="form-group">
+            <label for="failExample">Fail Example</label>
+            <textarea
+              class="form-control"
+              id="failExample"
+              rows="2"
+              aria-describedby="failExampleHelp"
+              required
+            ></textarea>
+            <small id="failExampleHelp" class="form-text text-muted">
+              Provide an example of a failing test case.
+            </small>
+          </div>
+          <div class="form-group">
+            <label for="naExample">Non Applicable Example</label>
+            <textarea
+              class="form-control"
+              id="naExample"
+              rows="2"
+              aria-describedby="naExampleHelp"
+              required
+            ></textarea>
+            <small id="naExampleHelp" class="form-text text-muted">
+              Provide an example of a non-applicable test case.
+            </small>
+          </div>
+          <button type="submit" id="saveButton" class="btn btn-primary">
+            Save Test Case
+          </button>
+        </form>
+      </div>
+
+      <!-- Main content -->
+      <div class="main-content">
+        <div class="search-container">
           <input
             type="text"
             id="searchInput"
@@ -37,39 +174,87 @@
             placeholder="Search by XR or Documentation"
             aria-label="Search Input"
           />
-          <div class="text-center mt-3">
-            <button
-              type="button"
-              class="btn btn-primary"
-              data-toggle="modal"
-              data-target="#testCaseModal"
-              aria-label="Add Test Case"
-            >
-              Add Test Case
-            </button>
-          </div>
         </div>
-        <div class="col-md-6 px-20">
-          <h2></h2>
-          <div id="testCasesList"></div>
+
+        <div id="testCasesList">
+          <!-- The list of test cases will be rendered here -->
         </div>
       </div>
     </div>
 
-    <!-- Modals -->
-    <!-- Add Test Case Modal -->
+    <!-- Modal para Ver Test Case -->
+    <div
+      class="modal fade"
+      id="viewModal"
+      tabindex="-1"
+      aria-labelledby="viewModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="viewModalLabel">View Test Case</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h6>Test Case XR:</h6>
+            <p id="viewXR"></p>
+
+            <h6>Documentation:</h6>
+            <div id="viewDocumentation"></div>
+
+            <h6>Pass Example:</h6>
+            <p id="viewPassExample"></p>
+
+            <h6>Fail Example:</h6>
+            <p id="viewFailExample"></p>
+
+            <h6>Non Applicable Example:</h6>
+            <p id="viewNAExample"></p>
+
+            <h6>Image:</h6>
+            <div id="viewImage"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" id="deleteButton">
+              Delete
+            </button>
+            <button type="button" class="btn btn-primary" id="editButton">
+              Edit
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para Crear/Editar Test Case -->
     <div
       class="modal fade"
       id="testCaseModal"
       tabindex="-1"
-      role="dialog"
       aria-labelledby="testCaseModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="testCaseModalLabel">Add Test Case</h5>
+            <h5 class="modal-title" id="testCaseModalLabel">
+              Add/Edit Test Case
+            </h5>
             <button
               type="button"
               class="close"
@@ -84,16 +269,7 @@
               <input type="hidden" id="testCaseId" />
               <div class="form-group">
                 <label for="xr">Test Case XR</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="xr"
-                  aria-describedby="xrHelp"
-                  required
-                />
-                <small id="xrHelp" class="form-text text-muted">
-                  Enter the XR for the test case.
-                </small>
+                <input type="text" class="form-control" id="xr" required />
               </div>
               <div class="form-group">
                 <label for="documentation">Documentation</label>
@@ -105,12 +281,8 @@
                   class="form-control"
                   id="passExample"
                   rows="2"
-                  aria-describedby="passExampleHelp"
                   required
                 ></textarea>
-                <small id="passExampleHelp" class="form-text text-muted">
-                  Provide an example of a passing test case.
-                </small>
               </div>
               <div class="form-group">
                 <label for="failExample">Fail Example</label>
@@ -118,12 +290,8 @@
                   class="form-control"
                   id="failExample"
                   rows="2"
-                  aria-describedby="failExampleHelp"
                   required
                 ></textarea>
-                <small id="failExampleHelp" class="form-text text-muted">
-                  Provide an example of a failing test case.
-                </small>
               </div>
               <div class="form-group">
                 <label for="naExample">Non Applicable Example</label>
@@ -131,65 +299,22 @@
                   class="form-control"
                   id="naExample"
                   rows="2"
-                  aria-describedby="naExampleHelp"
                   required
                 ></textarea>
-                <small id="naExampleHelp" class="form-text text-muted">
-                  Provide an example of a non-applicable test case.
-                </small>
               </div>
-              <button type="submit" id="saveButton" class="btn btn-primary">
-                Save Test Case
+              <button type="submit" class="btn btn-primary" id="saveButton">
+                Save
               </button>
             </form>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- View Test Case Modal -->
-    <div
-      class="modal fade"
-      id="viewModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="viewModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="viewModalLabel">View Test Case</h5>
+          <div class="modal-footer">
             <button
               type="button"
-              class="close"
+              class="btn btn-secondary"
               data-dismiss="modal"
-              aria-label="Close"
             >
-              <span aria-hidden="true">&times;</span>
+              Close
             </button>
-          </div>
-          <div class="modal-body">
-            <div><strong>XR:</strong> <span id="viewXR"></span></div>
-            <div>
-              <strong>Documentation:</strong>
-              <p id="viewDocumentation"></p>
-            </div>
-            <div>
-              <strong>Pass Example:</strong>
-              <p id="viewPassExample"></p>
-            </div>
-            <div>
-              <strong>Fail Example:</strong>
-              <p id="viewFailExample"></p>
-            </div>
-            <div>
-              <strong>Non Applicable Example:</strong>
-              <p id="viewNAExample"></p>
-            </div>
-            <div id="viewImage"></div>
-            <button id="editButton" class="btn btn-primary">Edit</button>
-            <button id="deleteButton" class="btn btn-primary">Delete</button>
           </div>
         </div>
       </div>

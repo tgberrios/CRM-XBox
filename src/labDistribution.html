@@ -5,6 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lab Distribution & Info</title>
     <link rel="stylesheet" href="./css/style.css" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        overflow-x: hidden; /* Evita el desplazamiento horizontal */
+      }
+
+      .container-labDistribution {
+        max-width: 100vw; /* Asegura que no exceda el ancho de la ventana */
+        margin: auto;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow-x: auto; /* Permite el desplazamiento horizontal solo si es necesario */
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed; /* Fija el ancho de las celdas para evitar que la tabla se desborde */
+      }
+
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+        word-wrap: break-word; /* Permite que el texto se divida en líneas */
+        word-break: break-all; /* Fuerza a que el texto se rompa si es necesario */
+        overflow-wrap: break-word; /* Asegura que el contenido se ajuste dentro de la celda */
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      tr:hover {
+        background-color: #f1f1f1;
+      }
+
+      .hidden {
+        display: none;
+      }
+      #homeButton {
+        padding: 10px 20px;
+        border: none;
+        margin-top: 30px;
+        margin-right: 20px;
+        border-radius: 5px;
+        background-color: #c7c7c7;
+        color: #1c1c1e;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out,
+          box-shadow 0.3s ease-in-out;
+      }
+    </style>
   </head>
   <body>
     <div class="container-labDistribution">
