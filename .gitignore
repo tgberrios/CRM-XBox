@@ -7,4 +7,5 @@ node_modules/
 # Ignorar archivos de configuración local
 .env
 
+# Ignorar la carpeta data
 data/
