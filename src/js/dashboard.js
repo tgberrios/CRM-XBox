@@ -377,6 +377,25 @@ const TesterMostCFR = async () => {
   }
 };
 
+const getRecentUpdates = async () => {
+  try {
+    const recentStatus = await window.cert.loadUpdates(); // Cargar datos de forma dinámica
+
+    const recentStatusList = document.getElementById("recentStatusList"); // Usamos el ID correcto
+    recentStatusList.innerHTML = ""; // Limpiamos el contenido anterior
+
+    // Iteramos sobre las actualizaciones y las agregamos a la lista
+    recentStatus.forEach((status) => {
+      const listItem = document.createElement("li");
+      listItem.className = "list-group-item";
+      listItem.textContent = status.title;
+      recentStatusList.appendChild(listItem);
+    });
+  } catch (error) {
+    console.error("Error loading recent updates:", error);
+  }
+};
+
 window.onload = () => {
   loadReviewsData();
   submissionCount();

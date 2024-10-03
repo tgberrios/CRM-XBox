@@ -90,6 +90,22 @@
       .btn-close {
         color: #1c1c1e;
       }
+
+      .recentStatus {
+        margin-top: 20px;
+      }
+
+      #recentStatusList .list-group-item {
+        background-color: #f1f1f1;
+        border-radius: 5px;
+        border: none;
+        margin-bottom: 5px;
+        transition: background-color 0.3s;
+      }
+
+      #recentStatusList .list-group-item:hover {
+        background-color: #e9ecef;
+      }
     </style>
   </head>
   <body>
@@ -224,6 +240,20 @@
                 </div>
                 <div class="card-body">
                   <ul id="sgcList" class="list-group"></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- New Recent Status Section -->
+          <div class="recentStatus row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">Recent Status</h5>
+                </div>
+                <div class="card-body">
+                  <ul id="recentStatusList" class="list-group"></ul>
                 </div>
               </div>
             </div>
