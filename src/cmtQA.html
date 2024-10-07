@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QA Form - Minimalist Design</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* Ocultar la barra de desplazamiento (scrollbar) en todo el cuerpo */
+      body {
+        overflow: hidden;
+      }
+
+      /* Permitir el scroll suave sin mostrar la barra */
+      html {
+        scroll-behavior: smooth;
+        overflow: hidden;
+      }
+
+      /* Asegurar que las secciones aún se puedan desplazar sin barra visible */
+      section {
+        height: 100vh;
+        scroll-snap-align: start;
+        scroll-snap-type: y mandatory;
+        overflow-y: hidden; /* Desactiva el scroll individual de las secciones */
+      }
+      /* Estilos para que cada sección cubra la pantalla completa */
+      section {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        scroll-snap-align: start;
+      }
+
+      /* Colores sólidos minimalistas con tonos pastel y oscuros */
+      #section1 {
+        background-color: #f5cba7; /* Naranja pastel suave */
+      }
+      #section2 {
+        background-color: #f1948a; /* Rojo pastel suave */
+      }
+      #section3 {
+        background-color: #a9dfbf; /* Verde pastel suave */
+      }
+      #section4 {
+        background-color: #76d7c4; /* Verde azulado pastel suave */
+      }
+      #section5 {
+        background-color: #85c1e9; /* Azul pastel suave */
+      }
+      #section6 {
+        background-color: #bb8fce; /* Púrpura pastel suave */
+      }
+      #section7 {
+        background-color: #f9e79f; /* Amarillo pastel suave (ahora más abajo) */
+      }
+      #section8 {
+        background-color: #566573; /* Azul oscuro suave */
+      }
+      #section9 {
+        background-color: #48c9b0; /* Verde azulado oscuro suave */
+      }
+      #section10 {
+        background-color: #5dade2; /* Azul oscuro suave */
+      }
+      #resultSection {
+        background-color: #2e4053; /* Gris oscuro */
+        color: white;
+        display: none;
+      }
+
+      /* Efecto de scroll suave */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Smooth scroll behavior */
+      body {
+        scroll-snap-type: y mandatory;
+        overflow-y: scroll;
+      }
+
+      /* Diseño de las opciones radio (minimalista) */
+      .custom-radio {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .custom-radio input[type="radio"] {
+        display: none;
+      }
+
+      .custom-radio label {
+        margin: 0 15px;
+        padding: 10px 20px;
+        background-color: #ffffff;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .custom-radio input[type="radio"]:checked + label {
+        background-color: #3498db;
+        color: #fff;
+      }
+
+      h1 {
+        color: white;
+      }
+
+      /* Sección de resultados */
+      #resultSection {
+        display: none;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Sección 1 a 10 con preguntas -->
+    <section id="section1">
+      <div class="container text-center">
+        <h1>Pregunta 1</h1>
+        <div class="custom-radio">
+          <input
+            type="radio"
+            id="q1o1"
+            name="question1"
+            value="1.1"
+            onclick="nextSection(2)"
+          />
+          <label for="q1o1">Opción 1</label>
+
+          <input
+            type="radio"
+            id="q1o2"
+            name="question1"
+            value="1.2"
+            onclick="nextSection(2)"
+          />
+          <label for="q1o2">Opción 2</label>
+
+          <input
+            type="radio"
+            id="q1o3"
+            name="question1"
+            value="1.3"
+            onclick="nextSection(2)"
+          />
+          <label for="q1o3">Opción 3</label>
+        </div>
+      </div>
+    </section>
+
+    <section id="section2">
+      <div class="container text-center">
+        <h1>Pregunta 2</h1>
+        <div class="custom-radio">
+          <input
+            type="radio"
+            id="q2o1"
+            name="question2"
+            value="2.1"
+            onclick="nextSection(3)"
+          />
+          <label for="q2o1">Opción 1</label>
+
+          <input
+            type="radio"
+            id="q2o2"
+            name="question2"
+            value="2.2"
+            onclick="nextSection(3)"
+          />
+          <label for="q2o2">Opción 2</label>
+
+          <input
+            type="radio"
+            id="q2o3"
+            name="question2"
+            value="2.3"
+            onclick="nextSection(3)"
+          />
+          <label for="q2o3">Opción 3</label>
+        </div>
+      </div>
+    </section>
+
+    <section id="section3">
+      <div class="container text-center">
+        <h1>Pregunta 3</h1>
+        <div class="custom-radio">
+          <input
+            type="radio"
+            id="q3o1"
+            name="question3"
+            value="3.1"
+            onclick="nextSection(4)"
+          />
+          <label for="q3o1">Opción 1</label>
+
+          <input
+            type="radio"
+            id="q3o2"
+            name="question3"
+            value="3.2"
+            onclick="nextSection(4)"
+          />
+          <label for="q3o2">Opción 2</label>
+
+          <input
+            type="radio"
+            id="q3o3"
+            name="question3"
+            value="3.3"
+            onclick="nextSection(4)"
+          />
+          <label for="q3o3">Opción 3</label>
+        </div>
+      </div>
+    </section>
+
+    <section id="section4">
+      <div class="container text-center">
+        <h1>Pregunta 4</h1>
+        <div class="custom-radio">
+          <input
+            type="radio"
+            id="q4o1"
+            name="question4"
+            value="4.1"
+            onclick="nextSection(5)"
+          />
+          <label for="q4o1">Opción 1</label>
+
+          <input
+            type="radio"
+            id="q4o2"
+            name="question4"
+            value="4.2"
+            onclick="nextSection(5)"
+          />
+          <label for="q4o2">Opción 2</label>
+
+          <input
+            type="radio"
+            id="q4o3"
+            name="question4"
+            value="4.3"
+            onclick="nextSection(5)"
+          />
+          <label for="q4o3">Opción 3</label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Repetir hasta la sección 10 -->
+    <section id="section5">
+      <div class="container text-center">
+        <h1>Pregunta 5</h1>
+        <div class="custom-radio">
+          <input
+            type="radio"
+            id="q5o1"
+            name="question5"
+            value="5.1"
+            onclick="nextSection(6)"
+          />
+          <label for="q5o1">Opción 1</label>
+
+          <input
+            type="radio"
+            id="q5o2"
+            name="question5"
+            value="5.2"
+            onclick="nextSection(6)"
+          />
+          <label for="q5o2">Opción 2</label>
+
+          <input
+            type="radio"
+            id="q5o3"
+            name="question5"
+            value="5.3"
+            onclick="nextSection(6)"
+          />
+          <label for="q5o3">Opción 3</label>
+        </div>
+      </div>
+    </section>
+
+    <section id="section6">
+      <div class="container text-center">
+        <h1>Pregunta 6</h1>
+        <div class="custom-radio">
+          <input
+            type="radio"
+            id="q6o1"
+            name="question6"
+            value="6.1"
+            onclick="nextSection(7)"
+          />
+          <label for="q6o1">Opción 1</label>
+
+          <input
+            type="radio"
+            id="q6o2"
+            name="question6"
+            value="6.2"
+            onclick="nextSection(7)"
+          />
+          <label for="q6o2">Opción 2</label>
+
+          <input
+            type="radio"
+            id="q6o3"
+            name="question6"
+            value="6.3"
+            onclick="nextSection(7)"
+          />
+          <label for="q6o3">Opción 3</label>
+        </div>
+      </div>
+    </section>
+
+    <section id="section7">
+      <div class="container text-center">
+        <h1>Pregunta 7</h1>
+        <div class="custom-radio">
+          <input
+            type="radio"
+            id="q7o1"
+            name="question7"
+            value="7.1"
+            onclick="nextSection(8)"
+          />
+          <label for="q7o1">Opción 1</label>
+
+          <input
+            type="radio"
+            id="q7o2"
+            name="question7"
+            value="7.2"
+            onclick="nextSection(8)"
+          />
+          <label for="q7o2">Opción 2</label>
+
+          <input
+            type="radio"
+            id="q7o3"
+            name="question7"
+            value="7.3"
+            onclick="nextSection(8)"
+          />
+          <label for="q7o3">Opción 3</label>
+        </div>
+      </div>
+    </section>
+
+    <section id="section8">
+      <div class="container text-center">
+        <h1>Pregunta 8</h1>
+        <div class="custom-radio">
+          <input
+            type="radio"
+            id="q8o1"
+            name="question8"
+            value="8.1"
+            onclick="nextSection(9)"
+          />
+          <label for="q8o1">Opción 1</label>
+
+          <input
+            type="radio"
+            id="q8o2"
+            name="question8"
+            value="8.2"
+            onclick="nextSection(9)"
+          />
+          <label for="q8o2">Opción 2</label>
+
+          <input
+            type="radio"
+            id="q8o3"
+            name="question8"
+            value="8.3"
+            onclick="nextSection(9)"
+          />
+          <label for="q8o3">Opción 3</label>
+        </div>
+      </div>
+    </section>
+
+    <section id="section9">
+      <div class="container text-center">
+        <h1>Pregunta 9</h1>
+        <div class="custom-radio">
+          <input
+            type="radio"
+            id="q9o1"
+            name="question9"
+            value="9.1"
+            onclick="nextSection(10)"
+          />
+          <label for="q9o1">Opción 1</label>
+
+          <input
+            type="radio"
+            id="q9o2"
+            name="question9"
+            value="9.2"
+            onclick="nextSection(10)"
+          />
+          <label for="q9o2">Opción 2</label>
+
+          <input
+            type="radio"
+            id="q9o3"
+            name="question9"
+            value="9.3"
+            onclick="nextSection(10)"
+          />
+          <label for="q9o3">Opción 3</label>
+        </div>
+      </div>
+    </section>
+
+    <section id="section10">
+      <div class="container text-center">
+        <h1>Pregunta 10</h1>
+        <div class="custom-radio">
+          <input
+            type="radio"
+            id="q10o1"
+            name="question10"
+            value="10.1"
+            onclick="showResult()"
+          />
+          <label for="q10o1">Opción 1</label>
+
+          <input
+            type="radio"
+            id="q10o2"
+            name="question10"
+            value="10.2"
+            onclick="showResult()"
+          />
+          <label for="q10o2">Opción 2</label>
+
+          <input
+            type="radio"
+            id="q10o3"
+            name="question10"
+            value="10.3"
+            onclick="showResult()"
+          />
+          <label for="q10o3">Opción 3</label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección para mostrar el resultado -->
+    <section id="resultSection">
+      <div class="container text-center">
+        <h2>Resultado:</h2>
+        <p id="result"></p>
+      </div>
+    </section>
+
+    <!-- Modal de confirmación de copiado -->
+    <div
+      class="modal fade"
+      id="copyModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="copyModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="copyModalLabel">¡Copiado!</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            El resultado ha sido copiado al portapapeles.
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Función para saltar a la siguiente sección
+      function nextSection(sectionNumber) {
+        document
+          .getElementById(`section${sectionNumber}`)
+          .scrollIntoView({ behavior: "smooth" });
+      }
+
+      // Función para generar y mostrar el resultado final
+      function showResult() {
+        let result = "";
+        for (let i = 1; i <= 10; i++) {
+          const selectedOption = document.querySelector(
+            `input[name="question${i}"]:checked`
+          );
+          if (result) {
+            result += ",";
+          }
+          result += selectedOption ? selectedOption.value : "";
+        }
+        document.getElementById("result").textContent = result;
+        document.getElementById("resultSection").style.display = "flex"; // Mostrar la sección de resultados
+        document
+          .getElementById("resultSection")
+          .scrollIntoView({ behavior: "smooth" });
+      }
+    </script>
+  </body>
+</html>

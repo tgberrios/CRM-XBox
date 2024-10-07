@@ -1,8 +1,11 @@
+// Import the Electron API
 const { contextBridge, ipcRenderer } = require("electron");
 
+// Expose the API to the renderer process
 console.log("Preload script loaded and exposing API");
 console.log("ipcRenderer is defined:", ipcRenderer !== undefined);
 
+// Define the IPC invoke function
 const ipcInvoke = (channel, ...args) => {
   console.log(`IPC invoke: ${channel}`, args);
   return ipcRenderer.invoke(channel, ...args).catch((error) => {
@@ -11,10 +14,14 @@ const ipcInvoke = (channel, ...args) => {
   });
 };
 
+// Define the API object
 const api = {
+  // Open the database
   openDB: () => ipcInvoke("openDB"),
+  // Register a new user
   registerUser: (username, password) =>
     ipcInvoke("registerUser", username, password),
+  // Login a user
   loginUser: (username, password) => ipcInvoke("loginUser", username, password),
 
   logUpdate: (update) => ipcInvoke("logUpdate", update),
@@ -96,15 +103,10 @@ const api = {
   deleteData: (id) => ipcRenderer.invoke("delete-data", id),
   loadAllData: () => ipcRenderer.invoke("loadAllData"),
 
-  // LEVELS
-  getLevels: () => ipcRenderer.invoke("get-levels"),
-  addLevel: (level) => ipcRenderer.invoke("add-level", level),
-  updateLevel: (level) => ipcRenderer.invoke("update-level", level),
-  deleteLevel: (id) => ipcRenderer.invoke("delete-level", id),
-  // LEVELS
-
+  // Expose the ipcRenderer.invoke method
   invoke: ipcRenderer.invoke.bind(ipcRenderer),
   on: ipcRenderer.on.bind(ipcRenderer),
 };
 
+// Expose the api object to the main process
 contextBridge.exposeInMainWorld("cert", api);

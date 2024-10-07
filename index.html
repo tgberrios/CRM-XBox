@@ -3,14 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="CERT Management - Efficient management of documents, KPIs, and more."
-    />
-    <meta
-      name="keywords"
-      content="CERT, Management, Documents, KPIs, Inventory, Tools"
-    />
     <title>CERT MANAGEMENT</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
@@ -21,15 +13,22 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="icon" type="image/png" href="./src/assets/xbox.ico" />
     <link rel="stylesheet" href="./src/css/style.css" />
+    <style>
+      .card {
+        width: 100%;
+      }
+    </style>
   </head>
   <body class="indexbody">
     <header>
+      <!-- Title -->
       <h1 class="box">CERT MANAGEMENT</h1>
+      <!-- Navbar -->
       <nav id="navbar" role="navigation">
         <ul class="nav">
           <li class="nav-item">
+            <!-- NEWS -->
             <a
               class="nav-link"
               href="./src/news.html"
@@ -39,6 +38,7 @@
             >
           </li>
           <li class="nav-item">
+            <!-- DASHBOARD -->
             <a
               class="nav-link"
               href="./src/dashboard.html"
@@ -49,6 +49,7 @@
             >
           </li>
           <li class="nav-item dropdown">
+            <!-- DOCS -->
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -59,6 +60,7 @@
             >
             <ul class="dropdown-menu" aria-labelledby="docsDropdown">
               <li>
+                <!-- DOCS -->
                 <a
                   class="dropdown-item"
                   href="#"
@@ -67,6 +69,7 @@
                 >
               </li>
               <li>
+                <!-- FMA -->
                 <a
                   class="dropdown-item"
                   href="#"
@@ -77,6 +80,7 @@
             </ul>
           </li>
           <li class="nav-item dropdown">
+            <!-- KPI -->
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -87,6 +91,7 @@
             >
             <ul class="dropdown-menu" aria-labelledby="kpiDropdown">
               <li>
+                <!-- KPI -->
                 <a
                   class="dropdown-item"
                   href="#"
@@ -95,6 +100,7 @@
                 >
               </li>
               <li>
+                <!-- TITLE AUDIT -->
                 <a
                   class="dropdown-item"
                   href="#"
@@ -105,11 +111,13 @@
             </ul>
           </li>
           <li class="nav-item">
+            <!-- SUBMISSIONS MANAGER -->
             <a class="nav-link" href="./src/submissionManager.html"
               >Submissions Manager</a
             >
           </li>
           <li class="nav-item">
+            <!-- LAB DISTRIBUTION -->
             <a
               class="nav-link"
               href="./src/labDistribution.html"
@@ -118,17 +126,21 @@
             >
           </li>
           <li class="nav-item">
+            <!-- TICKETS -->
             <a class="nav-link" href="./src/tickets.html">Tickets</a>
           </li>
           <li class="nav-item">
+            <!-- BUGPEDIA -->
             <a class="nav-link" href="./src/bugpedia.html">Bugpedia</a>
           </li>
           <li class="nav-item">
+            <!-- SAVE GAME COMPATIBILITY -->
             <a class="nav-link" href="./src/SaveGameComp.html"
               >Save Game Compatibility</a
             >
           </li>
           <li class="nav-item">
+            <!-- XR COMMENTS -->
             <a
               class="nav-link"
               href="#"
@@ -137,6 +149,7 @@
             >
           </li>
           <li class="nav-item dropdown">
+            <!-- INVENTORY -->
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -147,11 +160,13 @@
             >
             <ul class="dropdown-menu" aria-labelledby="inventoryDropdown">
               <li>
+                <!-- ACCOUNTS -->
                 <a class="dropdown-item" href="./src/inventoryAccounts.html"
                   >Accounts</a
                 >
               </li>
               <li>
+                <!-- HARDWARE -->
                 <a class="dropdown-item" href="./src/inventoryHardware.html"
                   >Hardware</a
                 >
@@ -159,6 +174,7 @@
             </ul>
           </li>
           <li class="nav-item dropdown">
+            <!-- TOOLS -->
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -169,6 +185,7 @@
             >
             <ul class="dropdown-menu" aria-labelledby="toolsDropdown">
               <li>
+                <!-- XCERT CR -->
                 <a
                   class="dropdown-item"
                   href="http://xcert_vm.crlabcert.com:5002/xcertclient/cr/files/XCertv4.msix"
@@ -177,23 +194,35 @@
               </li>
 
               <li>
+                <!-- CMT -->
                 <a
                   class="dropdown-item"
                   href="https://cmlog.blob.core.windows.net/cmcont/publish.htm"
                   >CMT</a
                 >
               </li>
+
+              <li>
+                <!-- CMT -->
+                <a
+                  class="dropdown-item"
+                  href="./src/cmtQA.html"
+                  >CMT QUESTIONARY</a
+                >
+              </li>
             </ul>
           </li>
         </ul>
       </nav>
+      <!-- End of Navbar -->
     </header>
 
+    <!-- Main Content -->
     <main class="container">
       <!-- Row for organizing cards into columns -->
       <section class="main-content row">
         <div class="col-md-4 mb-4">
-          <div class="card" style="width: 100%">
+          <div class="card" >
             <img
               class="card-img-top"
               src="./src/assets/blue.png"
@@ -203,6 +232,7 @@
               <h5 class="card-title">My HCL</h5>
               <p class="card-text"></p>
               <a
+              rel="noopener noreferrer"
                 href="https://hclo365.sharepoint.com/sites/MYHCLTech"
                 target="_blank"
                 class="btn btn-primary"
@@ -213,7 +243,7 @@
         </div>
 
         <div class="col-md-4 mb-4">
-          <div class="card" style="width: 100%">
+          <div class="card" ">
             <img
               class="card-img-top"
               src="./src/assets/Indigo Purple Solid.jpg"
@@ -223,6 +253,7 @@
               <h5 class="card-title">Percipio Academy</h5>
               <p class="card-text"></p>
               <a
+                rel="noopener noreferrer"
                 href="https://hclcontent.percipio.com/"
                 target="_blank"
                 class="btn btn-primary"
@@ -233,7 +264,7 @@
         </div>
 
         <div class="col-md-4 mb-4">
-          <div class="card" style="width: 100%">
+          <div class="card">
             <img
               class="card-img-top"
               src="./src/assets/14267311-green-paint-texture-background.jpg"
@@ -243,6 +274,7 @@
               <h5 class="card-title">Xbox Services</h5>
               <p class="card-text"></p>
               <a
+                rel="noopener noreferrer"
                 href="https://support.xbox.com/en-US/xbox-live-status"
                 target="_blank"
                 class="btn btn-primary"
@@ -260,6 +292,7 @@
         </div>
       </aside>
     </main>
+    <!-- End of Main Content -->
 
     <footer>Version 1.5 &copy; IKS</footer>
 
