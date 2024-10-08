@@ -320,7 +320,7 @@ function createWindow() {
 
   mainWindow.webContents.on("did-finish-load", () => {
     mainWindow.maximize(); // Maximize the window after loading
-    mainWindow.setMenu(null); // Uncomment to disable the menu
+    // mainWindow.setMenu(null); // Uncomment to disable the menu
   });
 
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
