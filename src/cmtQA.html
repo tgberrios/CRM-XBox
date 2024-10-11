@@ -9,79 +9,99 @@
       rel="stylesheet"
     />
     <style>
-      /* Ocultar la barra de desplazamiento (scrollbar) en todo el cuerpo */
+      /* Permitir el scroll y ocultar completamente la barra de desplazamiento */
       body {
-        overflow: hidden;
+        overflow-y: scroll; /* Permitir desplazamiento vertical */
+        -ms-overflow-style: none; /* Ocultar la barra en Internet Explorer y Edge */
+        scrollbar-width: none; /* Ocultar la barra en Firefox */
       }
 
-      /* Permitir el scroll suave sin mostrar la barra */
+      /* Ocultar la barra de desplazamiento en navegadores WebKit (Chrome, Safari) */
+      body::-webkit-scrollbar {
+        width: 0px; /* Oculta la barra de desplazamiento en navegadores WebKit */
+      }
+
+      /* Permitir el scroll suave */
       html {
-        scroll-behavior: smooth;
-        overflow: hidden;
+        scroll-behavior: smooth; /* Habilitar el scroll suave */
+        overflow-y: scroll; /* Asegura que el scroll esté activo en todo el contenido */
       }
 
-      /* Asegurar que las secciones aún se puedan desplazar sin barra visible */
+      /* Secciones */
       section {
-        height: 100vh;
-        scroll-snap-align: start;
-        scroll-snap-type: y mandatory;
-        overflow-y: hidden; /* Desactiva el scroll individual de las secciones */
-      }
-      /* Estilos para que cada sección cubra la pantalla completa */
-      section {
-        height: 100vh;
+        min-height: 100vh; /* Asegúrate de que cada sección ocupe al menos el 100% de la pantalla */
         display: flex;
         justify-content: center;
         align-items: center;
         scroll-snap-align: start;
+        scroll-snap-type: y mandatory;
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 0.3s ease; /* Suaviza el cambio de visibilidad si se requiere */
+        overflow-y: auto; /* Permitir el scroll si es necesario */
+      }
+
+      /* Clase para forzar un repaint */
+      .force-repaint {
+        transform: scale(
+          1.01
+        ); /* Una transformación mínima que forzará el navegador a repintar */
+      }
+
+      /* La clase visible que permite que las secciones se muestren correctamente */
+      section.visible {
+        opacity: 1;
+        visibility: visible;
+        transform: scale(1); /* Vuelve al estado normal */
       }
 
       /* Colores sólidos minimalistas con tonos pastel y oscuros */
       #section1 {
         background-color: #f5cba7; /* Naranja pastel suave */
       }
+
       #section2 {
         background-color: #f1948a; /* Rojo pastel suave */
       }
+
       #section3 {
         background-color: #a9dfbf; /* Verde pastel suave */
       }
+
       #section4 {
         background-color: #76d7c4; /* Verde azulado pastel suave */
       }
+
       #section5 {
         background-color: #85c1e9; /* Azul pastel suave */
       }
+
       #section6 {
         background-color: #bb8fce; /* Púrpura pastel suave */
       }
+
       #section7 {
-        background-color: #f9e79f; /* Amarillo pastel suave (ahora más abajo) */
+        background-color: #f9e79f; /* Amarillo pastel suave */
       }
+
       #section8 {
         background-color: #566573; /* Azul oscuro suave */
       }
+
       #section9 {
         background-color: #48c9b0; /* Verde azulado oscuro suave */
       }
+
       #section10 {
         background-color: #5dade2; /* Azul oscuro suave */
       }
+
       #resultSection {
         background-color: #2e4053; /* Gris oscuro */
         color: white;
         display: none;
-      }
-
-      /* Efecto de scroll suave */
-      html {
-        scroll-behavior: smooth;
-      }
-
-      /* Smooth scroll behavior */
-      body {
-        scroll-snap-type: y mandatory;
-        overflow-y: scroll;
+        justify-content: center;
+        align-items: center;
       }
 
       /* Diseño de las opciones radio (minimalista) */
@@ -89,99 +109,50 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        flex-wrap: wrap; /* Allow wrapping if necessary */
+        flex-wrap: wrap;
         max-width: 1200px;
         margin: 0 auto;
       }
 
       .custom-radio label {
         margin: 10px;
-        padding: 15px 25px;
+        padding: 20px 40px; /* Asegura que haya suficiente espacio interno */
         background-color: #ffffff;
         border-radius: 50px;
         cursor: pointer;
         transition: background-color 0.3s, transform 0.3s;
-        font-size: 1rem;
+        font-size: 1.2rem;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         text-align: center;
-        width: 344px; /* Ensure the width is respected */
-        display: inline-block;
-      }
-
-      .custom-radio input[type="radio"]:checked + label {
-        background-color: #3498db;
-        color: #fff;
-        transform: scale(1.05);
-      }
-
-      h1 {
-        color: white;
-      }
-
-      /* Sección de resultados */
-      #resultSection {
-        display: none;
-        justify-content: center;
-        align-items: center;
-      }
-
-      /* Styling for the container */
-      .custom-radio {
+        min-width: 344px; /* Asegúrate de que el ancho mínimo sea respetado */
+        min-height: 100px; /* Asegura que haya suficiente espacio vertical */
         display: flex;
-        justify-content: space-around; /* Better spacing between buttons */
         align-items: center;
-        max-width: 100%; /* Use the full width of the container */
-        margin: 0 auto;
+        justify-content: center;
       }
 
       .custom-radio input[type="radio"] {
-        display: none; /* Hide the actual radio input */
+        display: none; /* Ocultar el radio button real */
       }
 
-      .custom-radio label {
-        margin: 10px;
-        padding: 20px 40px; /* Increase padding for more internal space */
-        background-color: #ffffff;
-        border-radius: 50px;
-        cursor: pointer;
-        transition: background-color 0.3s, transform 0.3s;
-        font-size: 1.2rem; /* Optional: Adjust the font size */
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        width: 400px; /* Increase width for a wider button */
-        display: inline-block;
-      }
-
-      /* Styling when a button is selected */
       .custom-radio input[type="radio"]:checked + label {
         background-color: #3498db;
         color: #fff;
-        transform: scale(1.05); /* Efecto de agrandamiento al seleccionar */
+        transform: scale(1.05); /* Efecto de escala al seleccionar */
       }
 
-      /* Align "Agree" and "Disagree" with the button group */
-      .radio-label {
-        margin: 0 15px;
-        font-size: 1.5rem;
-        color: #ffffff;
-        font-weight: bold;
-      }
-
-      h1 {
-        color: white;
-        margin-bottom: 20px;
-      }
-
-      /* Responsive adjustments */
+      /* Ajustes responsivos */
       @media (max-width: 768px) {
         .custom-radio {
-          flex-direction: column; /* Stack buttons vertically on smaller screens */
+          flex-direction: column; /* Coloca los botones en columna en pantallas pequeñas */
         }
+
         .custom-radio label {
-          width: 100%; /* Full-width buttons on small screens */
+          width: 100%; /* Asegura que los botones ocupen el ancho completo en pantallas pequeñas */
         }
+
         .radio-label {
-          text-align: center; /* Center-align Agree/Disagree text */
+          text-align: center;
         }
       }
     </style>
@@ -199,7 +170,7 @@
             type="radio"
             id="q1o1"
             name="question1"
-            value="1.1"
+            value="A1"
             onclick="nextSection(2)"
           />
           <label for="q1o1" style="background-color: #d4edda; color: #155724">
@@ -210,7 +181,7 @@
             type="radio"
             id="q1o2"
             name="question1"
-            value="1.2"
+            value="A2"
             onclick="nextSection(2)"
           />
           <label for="q1o2" style="background-color: #d4edda; color: #155724">
@@ -221,7 +192,7 @@
             type="radio"
             id="q1o3"
             name="question1"
-            value="1.3"
+            value="A3"
             onclick="nextSection(2)"
           />
           <label for="q1o3" style="background-color: #d4edda; color: #155724">
@@ -232,7 +203,7 @@
             type="radio"
             id="q1o4"
             name="question1"
-            value="1.4"
+            value="A4"
             onclick="nextSection(2)"
           />
           <label for="q1o4" style="background-color: #f8d7da; color: #721c24">
@@ -243,7 +214,7 @@
             type="radio"
             id="q1o5"
             name="question1"
-            value="1.5"
+            value="A5"
             onclick="nextSection(2)"
           />
           <label for="q1o5" style="background-color: #f8d7da; color: #721c24">
@@ -254,7 +225,7 @@
             type="radio"
             id="q1o6"
             name="question1"
-            value="1.6"
+            value="A6"
             onclick="nextSection(2)"
           />
           <label for="q1o6" style="background-color: #f8d7da; color: #721c24">
@@ -275,7 +246,7 @@
             type="radio"
             id="q2o1"
             name="question2"
-            value="2.1"
+            value="B1"
             onclick="nextSection(3)"
           />
           <label for="q2o1" style="background-color: #d4edda; color: #155724">
@@ -289,7 +260,7 @@
             type="radio"
             id="q2o2"
             name="question2"
-            value="2.2"
+            value="B2"
             onclick="nextSection(3)"
           />
           <label for="q2o2" style="background-color: #f8d7da; color: #721c24"
@@ -301,7 +272,7 @@
             type="radio"
             id="q2o3"
             name="question2"
-            value="2.3"
+            value="B3"
             onclick="nextSection(3)"
           />
           <label for="q2o3" style="background-color: #f8d7da; color: #721c24"
@@ -322,7 +293,7 @@
             type="radio"
             id="q3o1"
             name="question3"
-            value="3.1"
+            value="C1"
             onclick="nextSection(4)"
           />
           <label for="q3o1 " style="background-color: #d4edda; color: #155724"
@@ -334,7 +305,7 @@
             type="radio"
             id="q3o2"
             name="question3"
-            value="3.2"
+            value="C2"
             onclick="nextSection(4)"
           />
           <label for="q3o2" style="background-color: #f8d7da; color: #721c24"
@@ -346,7 +317,7 @@
             type="radio"
             id="q3o3"
             name="question3"
-            value="3.3"
+            value="C3"
             onclick="nextSection(4)"
           />
           <label for="q3o3" style="background-color: #f8d7da; color: #721c24"
@@ -360,41 +331,43 @@
     <section id="section4">
       <div class="container text-center">
         <h1>
-          All applicable documentation was fully completed at the end of the
-          test.
+          Maintained a professional work ethic at all (tick all that apply)
         </h1>
         <div class="custom-radio">
           <input
             type="radio"
             id="q4o1"
             name="question4"
-            value="4.1"
+            value="D1"
             onclick="nextSection(5)"
           />
           <label for="q4o1" style="background-color: #d4edda; color: #155724"
-            >The tester completed his documentation on time.</label
+            >The tester does not talk for more than 10% on topics unrelated to
+            the tasks assigned with other coworkers.</label
           >
 
           <input
             type="radio"
             id="q4o2"
             name="question4"
-            value="4.2"
+            value="D2"
             onclick="nextSection(5)"
           />
           <label for="q4o2" style="background-color: #f8d7da; color: #721c24"
-            >The tester did not complete his documentation on time.</label
+            >The tester distracted other coworkers by talking for periods of
+            more than 10% on topics unrelated to the assigned tasks.</label
           >
 
           <input
             type="radio"
             id="q4o3"
             name="question4"
-            value="4.3"
+            value="D3"
             onclick="nextSection(5)"
           />
           <label for="q4o3" style="background-color: #f8d7da; color: #721c24"
-            >The tester did not use the tester checklist.</label
+            >The tester raised his voice to chat with other coworkers,
+            generating noise pollution.</label
           >
         </div>
       </div>
@@ -403,49 +376,92 @@
     <!-- Repetir hasta la sección 10 -->
     <section id="section5">
       <div class="container text-center">
-        <h1>The tester remained punctual throughout the day.</h1>
+        <h1>
+          All applicable documentation was fully completed at the end of the
+          test.
+        </h1>
         <div class="custom-radio">
           <input
             type="radio"
             id="q5o1"
             name="question5"
-            value="5.1"
+            value="E1"
             onclick="nextSection(6)"
           />
           <label for="q5o1" style="background-color: #d4edda; color: #155724"
-            >The tester is punctual.</label
+            >The tester completed his documentation on time.</label
           >
 
           <input
             type="radio"
             id="q5o2"
             name="question5"
-            value="5.2"
+            value="E2"
             onclick="nextSection(6)"
           />
           <label for="q5o2" style="background-color: #d4edda; color: #155724"
-            >The tester lasts no more than 10 minutes in the bathroom during
-            working hours.</label
+            >The tester did not complete his documentation on time.</label
           >
 
           <input
             type="radio"
             id="q5o3"
             name="question5"
-            value="5.3"
+            value="E3"
             onclick="nextSection(6)"
           />
           <label for="q5o3" style="background-color: #f8d7da; color: #721c24"
+            >The tester did not use the tester checklist.</label
+          >
+        </div>
+      </div>
+    </section>
+
+    <section id="section6">
+      <div class="container text-center">
+        <h1>The tester remained punctual throughout the day.</h1>
+        <div class="custom-radio">
+          <input
+            type="radio"
+            id="q6o1"
+            name="question6"
+            value="F1"
+            onclick="nextSection(7)"
+          />
+          <label for="q6o1" style="background-color: #d4edda; color: #155724"
+            >The tester is punctual.</label
+          >
+
+          <input
+            type="radio"
+            id="q6o2"
+            name="question6"
+            value="F2"
+            onclick="nextSection(7)"
+          />
+          <label for="q6o2" style="background-color: #d4edda; color: #155724"
+            >The tester lasts no more than 10 minutes in the bathroom during
+            working hours.</label
+          >
+
+          <input
+            type="radio"
+            id="q6o3"
+            name="question6"
+            value="F3"
+            onclick="nextSection(7)"
+          />
+          <label for="q6o3" style="background-color: #f8d7da; color: #721c24"
             >The tester was late with more than 10% of working hours.</label
           >
           <input
             type="radio"
-            id="q5o3"
-            name="question5"
-            value="5.3"
-            onclick="nextSection(6)"
+            id="q6o4"
+            name="question6"
+            value="F4"
+            onclick="nextSection(7)"
           />
-          <label for="q5o3" style="background-color: #f8d7da; color: #721c24"
+          <label for="q6o4" style="background-color: #f8d7da; color: #721c24"
             >The tester exceeded more than 10 minutes in the bathroom during
             working hours.</label
           >
@@ -453,7 +469,7 @@
       </div>
     </section>
 
-    <section id="section6">
+    <section id="section7">
       <div class="container text-center">
         <h1>
           The tester gave due care and attention to test cases, running them
@@ -462,46 +478,46 @@
         <div class="custom-radio">
           <input
             type="radio"
-            id="q6o1"
-            name="question6"
-            value="6.1"
-            onclick="nextSection(7)"
+            id="q7o1"
+            name="question7"
+            value="G1"
+            onclick="nextSection(8)"
           />
-          <label for="q6o1" style="background-color: #d4edda; color: #155724"
+          <label for="q7o1" style="background-color: #f8d7da; color: #721c24"
             >The tester correctly completes his test cases.</label
           >
 
           <input
             type="radio"
-            id="q6o2"
-            name="question6"
-            value="6.2"
-            onclick="nextSection(7)"
+            id="q7o2"
+            name="question7"
+            value="G2"
+            onclick="nextSection(8)"
           />
-          <label for="q6o2" style="background-color: #d4edda; color: #155724"
+          <label for="q7o2" style="background-color: #f8d7da; color: #721c24"
             >The tester added comments detailing the behavior of the assigned
             title.</label
           >
 
           <input
             type="radio"
-            id="q6o3"
-            name="question6"
-            value="6.3"
-            onclick="nextSection(7)"
+            id="q7o3"
+            name="question7"
+            value="G3"
+            onclick="nextSection(8)"
           />
-          <label for="q6o3" style="background-color: #f8d7da; color: #721c24"
+          <label for="q7o3" style="background-color: #d4edda; color: #155724"
             >The tester performed 1 or more test cases incorrectly, obtaining
             erroneous results. (Indicate XR#)</label
           >
           <input
             type="radio"
-            id="q6o3"
-            name="question6"
-            value="6.3"
-            onclick="nextSection(7)"
+            id="q7o4"
+            name="question7"
+            value="G4"
+            onclick="nextSection(8)"
           />
-          <label for="q6o3" style="background-color: #f8d7da; color: #721c24"
+          <label for="q7o4" style="background-color: #d4edda; color: #155724"
             >The tester did not add comments or add a comment that does not
             reflect the correct behavior of the title.</label
           >
@@ -509,143 +525,67 @@
       </div>
     </section>
 
-    <section id="section7">
+    <section id="section8">
       <div class="container text-center">
-        <h1>Once their assigned tasks were completed, the tester</h1>
+        <h1>Once their assigned tasks were completed, the tester...</h1>
         <div class="custom-radio">
           <input
             type="radio"
-            id="q7o1"
-            name="question7"
-            value="7.1"
-            onclick="nextSection(8)"
+            id="q8o1"
+            name="question8"
+            value="H1"
+            onclick="nextSection(9)"
           />
-          <label for="q7o1" style="background-color: #f8d7da; color: #721c24"
+          <label for="q8o1" style="background-color: #f8d7da; color: #721c24"
             >The tester does not help, preferring to continue playing or doing
-            activities unrelated to his/her tasks.</label
-          >
+            activities unrelated to his/her tasks
+          </label>
 
           <input
             type="radio"
-            id="q7o2"
-            name="question7"
-            value="7.2"
-            onclick="nextSection(8)"
+            id="q8o2"
+            name="question8"
+            value="H2"
+            onclick="nextSection(9)"
           />
-          <label for="q7o2" style="background-color: #f8d7da; color: #721c24"
+          <label for="q8o2" style="background-color: #f8d7da; color: #721c24"
             >The tester ignores requests for help from a lead or senior lead 3
             or more times.</label
           >
 
           <input
             type="radio"
-            id="q7o3"
-            name="question7"
-            value="7.3"
-            onclick="nextSection(8)"
-          />
-          <label for="q7o3" style="background-color: #d4edda; color: #155724"
-            >The tester helps the lead and their coworkers without having to
-            request it.</label
-          >
-          <input
-            type="radio"
-            id="q7o3"
-            name="question7"
-            value="7.3"
-            onclick="nextSection(8)"
-          />
-          <label for="q7o3" style="background-color: #d4edda; color: #155724"
-            >Show interest in helping the team.</label
-          >
-
-          <input
-            type="radio"
-            id="q7o3"
-            name="question7"
-            value="7.3"
-            onclick="nextSection(8)"
-          />
-          <label for="q7o3" style="background-color: #e7eead; color: #000000"
-            >The lead or senior lead asked him 1 to 3 times to help with
-            different tasks.</label
-          >
-        </div>
-      </div>
-    </section>
-
-    <section id="section8">
-      <div class="container text-center">
-        <h1>Throughout the course of test, the tester</h1>
-        <div class="custom-radio">
-          <input
-            type="radio"
-            id="q8o1"
-            name="question8"
-            value="8.1"
-            onclick="nextSection(9)"
-          />
-          <label for="q8o1" style="background-color: #f8d7da; color: #721c24"
-            >The tester requires supervision or instructions from a leader to
-            continue with their tasks.</label
-          >
-
-          <input
-            type="radio"
-            id="q8o2"
-            name="question8"
-            value="8.2"
-            onclick="nextSection(9)"
-          />
-          <label for="q8o2" style="background-color: #f8d7da; color: #721c24"
-            >The tester asked 1 or more times to perform one or more test
-            cases.</label
-          >
-
-          <input
-            type="radio"
             id="q8o3"
             name="question8"
-            value="8.3"
+            value="H3"
             onclick="nextSection(9)"
           />
           <label for="q8o3" style="background-color: #e7eead; color: #000000"
-            >The tester handles his own cases without the need for supervision,
-            however he does not help his coworkers, waiting for
-            instructions.</label
+            >The lead or senior lead asked him 1 to 3 times to help with
+            different tasks.</label
           >
 
           <input
             type="radio"
-            id="q8o1"
+            id="q8o4"
             name="question8"
-            value="8.1"
+            value="H4"
             onclick="nextSection(9)"
           />
           <label for="q8o1" style="background-color: #d4edda; color: #155724"
-            >The tester does not require supervision from a leader.</label
+            >The tester helps the lead and their coworkers without having to
+            request it.</label
           >
 
           <input
             type="radio"
-            id="q8o1"
+            id="q8o5"
             name="question8"
-            value="8.1"
+            value="H5"
             onclick="nextSection(9)"
           />
           <label for="q8o1" style="background-color: #d4edda; color: #155724"
-            >The tested person demonstrates initiative in team tasks.</label
-          >
-
-          <input
-            type="radio"
-            id="q8o1"
-            name="question8"
-            value="8.1"
-            onclick="nextSection(9)"
-          />
-          <label for="q8o1" style="background-color: #d4edda; color: #155724"
-            >Helps the leader by completing tasks on initiative.</label
+            >Show interest in helping the team.</label
           >
         </div>
       </div>
@@ -653,68 +593,77 @@
 
     <section id="section9">
       <div class="container text-center">
-        <h1>Pregunta 9</h1>
+        <h1>Throughout the course of test, the tester...</h1>
         <div class="custom-radio">
           <input
             type="radio"
             id="q9o1"
             name="question9"
-            value="9.1"
-            onclick="nextSection(10)"
+            value="I1"
+            onclick="showResultCombined()"
           />
-          <label for="q9o1">Opción 1</label>
+          <label for="q9o1"
+            >The tester requires supervision or instructions from a leader to
+            continue with their tasks.</label
+          >
 
           <input
             type="radio"
             id="q9o2"
             name="question9"
-            value="9.2"
-            onclick="nextSection(10)"
+            value="I2"
+            onclick="showResultCombined()"
           />
-          <label for="q9o2">Opción 2</label>
+          <label for="q9o2"
+            >The tester asked 1 or more times to perform one or more test
+            cases.</label
+          >
 
           <input
             type="radio"
             id="q9o3"
             name="question9"
-            value="9.3"
-            onclick="nextSection(10)"
-          />
-          <label for="q9o3">Opción 3</label>
-        </div>
-      </div>
-    </section>
-
-    <section id="section10">
-      <div class="container text-center">
-        <h1>Pregunta 10</h1>
-        <div class="custom-radio">
-          <input
-            type="radio"
-            id="q10o1"
-            name="question10"
-            value="10.1"
+            value="I3"
             onclick="showResultCombined()"
           />
-          <label for="q10o1">Opción 1</label>
+          <label for="q9o3"
+            >The tester handles his own cases without the need for supervision,
+            however he does not help his coworkers, waiting for
+            instructions.</label
+          >
 
           <input
             type="radio"
-            id="q10o2"
-            name="question10"
-            value="10.2"
+            id="q9o4"
+            name="question9"
+            value="I4"
             onclick="showResultCombined()"
           />
-          <label for="q10o2">Opción 2</label>
+          <label for="q9o4"
+            >The tester does not require supervision from a leader.</label
+          >
 
           <input
             type="radio"
-            id="q10o3"
-            name="question10"
-            value="10.3"
+            id="q9o5"
+            name="question9"
+            value="I5"
             onclick="showResultCombined()"
           />
-          <label for="q10o3">Opción 3</label>
+          <label for="q9o5"
+            >The tested person demonstrates initiative in team tasks.</label
+          >
+
+          <input
+            type="radio"
+            id="q9o6"
+            name="question9"
+            value="I6"
+            onclick="showResultCombined()"
+          />
+          <label for="q9o6"
+            >Helps the leader by completing tasks on initiative.</label
+          >
         </div>
       </div>
     </section>
@@ -722,8 +671,10 @@
     <!-- Sección para mostrar el resultado -->
     <section id="resultSection">
       <div class="container text-center">
-        <h2>Resultado:</h2>
-        <p id="result"></p>
+        <h2>Codes:</h2>
+        <p id="resultCodes"></p>
+        <h2>Answers:</h2>
+        <p id="resultAnswers"></p>
       </div>
     </section>
 
@@ -765,54 +716,6 @@
       </div>
     </div>
 
-    <script>
-      // Función para saltar a la siguiente sección
-      function nextSection(sectionNumber) {
-        document
-          .getElementById(`section${sectionNumber}`)
-          .scrollIntoView({ behavior: "smooth" });
-      }
-
-      let arrCMTAnswers = {
-        q1o1: "The tester did not use the tester checklist.",
-        q2o1: "Maintained a professional work ethic.",
-        q3o3: "The tester used the headphones to listen to music.",
-        q4o1: "The tester completed his documentation on time.",
-        q5o1: "The tester is punctual.",
-        q6o1: "The tester correctly completes his test cases.",
-        q7o1: "The tester does not help others.",
-        q8o1: "The tester requires supervision from a leader.",
-        q9o1: "Option 1 for question 9",
-        q10o3: "Option 3 for question 10",
-      };
-
-      function showResultCombined() {
-        let result = "";
-        for (let i = 1; i <= 10; i++) {
-          const selectedOption = document.querySelector(
-            `input[name="question${i}"]:checked`
-          );
-          if (selectedOption) {
-            // Añade el valor de la opción seleccionada
-            result += `${selectedOption.value}`;
-
-            // Verifica si hay una respuesta personalizada en arrCMTAnswers
-            if (arrCMTAnswers[selectedOption.id]) {
-              result += ` -> ${arrCMTAnswers[selectedOption.id]}`;
-            }
-
-            // Agrega un salto de línea para la siguiente opción
-            result += "<br>";
-          }
-        }
-
-        // Mostrar el resultado en la sección de resultados
-        document.getElementById("result").innerHTML = result; // Usamos innerHTML para preservar los saltos de línea
-        document.getElementById("resultSection").style.display = "flex"; // Mostrar la sección de resultados
-        document
-          .getElementById("resultSection")
-          .scrollIntoView({ behavior: "smooth" });
-      }
-    </script>
+    <script src="./js/script.js"></script>
   </body>
 </html>
