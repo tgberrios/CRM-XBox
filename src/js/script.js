@@ -1,27 +1,21 @@
 function nextSection(sectionNumber) {
   const section = document.getElementById(`section${sectionNumber}`);
 
-  // Forzar un retraso para dar tiempo al renderizado
   setTimeout(() => {
     section.scrollIntoView({ behavior: "smooth" });
 
     setTimeout(() => {
-      // Simula varios clics en el body para forzar el renderizado
       document.body.click();
 
-      // Aplicar la clase visible para hacer el renderizado suave
       section.classList.add("visible");
 
-      // Forzar el repaint/redibujado forzando una transformación en la sección
       section.style.transform = "scale(1)";
 
-      // Aplicar un ligero cambio temporal en el DOM para forzar el reflow
-      section.style.border = "1px solid transparent"; // Cambio pequeño en el DOM
+      section.style.border = "1px solid transparent";
       setTimeout(() => {
-        section.style.border = ""; // Revertir el cambio para finalizar el reflow
+        section.style.border = "";
       }, 100);
 
-      // Restaurar el foco a la ventana principal o sección activa
       section.focus();
     }, 50);
   }, 50);
@@ -30,29 +24,22 @@ function nextSection(sectionNumber) {
 window.onload = function () {
   const section1 = document.getElementById("section1");
 
-  // Verificar si estamos en la sección 1 y si no hemos recargado antes
   if (section1 && !localStorage.getItem("pageReloaded")) {
-    // Si estamos en la sección 1, simular el refresco automático
-    localStorage.setItem("pageReloaded", "true"); // Marcar que la página ya ha sido recargada
-    location.reload(); // Refrescar la página automáticamente
+    localStorage.setItem("pageReloaded", "true");
+    location.reload();
   }
 };
 
-// Función para manejar la pulsación de teclas
 document.addEventListener("keydown", function (event) {
-  // Detectar Ctrl + R
   if (event.ctrlKey && event.key === "r") {
     const section1 = document.getElementById("section1");
 
-    // Verificar si la primera sección es visible
     const section1Visible = section1.classList.contains("visible");
 
     if (!section1Visible) {
-      // Prevenir el refresco si no estamos en la primera sección
       event.preventDefault();
       alert("El refresco solo está permitido en la primera sección.");
     }
-    // Si estamos en la primera sección, permitimos el refresco
   }
 });
 
