@@ -1,303 +1,49 @@
+// Import Electron modules
 const { app, BrowserWindow, ipcMain } = require("electron");
+// Import other modules
 const path = require("path");
 const crypto = require("crypto");
 const sqlite3 = require("sqlite3").verbose();
+const initializeTables = require("./dbSchema");
 
-// DISABLE GPU ACCELERATION
+// Disable GPU acceleration
 app.disableHardwareAcceleration();
 app.commandLine.appendSwitch("disable-software-rasterizer");
 app.commandLine.appendSwitch("ignore-gpu-blacklist");
 app.commandLine.appendSwitch("disable-gpu");
 app.commandLine.appendSwitch("disable-gpu-compositing");
 app.commandLine.appendSwitch("no-sandbox");
-// END DISABLE GPU ACCELERATION
 
+// Initialize the database path
 let db;
 let basePath = path.dirname(process.execPath);
 
-// Verificar si la aplicación se está ejecutando en desarrollo o en producción
 if (process.env.NODE_ENV !== "production") {
   basePath = process.cwd();
 }
 
+// Initialize the database path
 const dbPath = path.join(basePath, "appDB.db");
 console.log(`Database path: ${dbPath}`);
-// END DB PATH
 
-// Inicializar la base de datos
+// DB
 function initializeDB() {
-  db = new sqlite3.Database(dbPath, (err) => {
+  const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
       console.error("Error opening database:", err.message);
     } else {
       console.log("Database connected successfully.");
-
-      const tables = [
-        {
-          name: "users",
-          sql: `
-            CREATE TABLE IF NOT EXISTS users (
-              username TEXT PRIMARY KEY,
-              password TEXT NOT NULL
-            )
-          `,
-        },
-        {
-          name: "tickets",
-          sql: `
-            CREATE TABLE IF NOT EXISTS tickets (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              name TEXT,
-              category TEXT,
-              description TEXT,
-              priority TEXT,
-              status TEXT,
-              date TEXT
-            )
-          `,
-        },
-        {
-          name: "logs",
-          sql: `
-            CREATE TABLE IF NOT EXISTS logs (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              action TEXT NOT NULL,
-              timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-            )
-          `,
-        },
-        {
-          name: "updates",
-          sql: `
-            CREATE TABLE IF NOT EXISTS updates (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              title TEXT,
-              type TEXT,
-              content TEXT
-            )
-          `,
-        },
-        {
-          name: "testCases",
-          sql: `
-            CREATE TABLE IF NOT EXISTS testCases (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              xr TEXT,
-              documentation TEXT,
-              passExample TEXT,
-              failExample TEXT,
-              naExample TEXT
-            )
-          `,
-        },
-        {
-          name: "data",
-          sql: `CREATE TABLE IF NOT EXISTS data (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    date DATE,
-    position TEXT,
-    email TEXT,
-    gamertag TEXT,
-    title_name TEXT,
-    title_version TEXT,
-    submission_iteration TEXT,
-    progress TEXT,
-    options TEXT,
-    publisher_accounts TEXT,
-    publisher_password TEXT
-  )`,
-        },
-        {
-          name: "reviews",
-          sql: `
-            CREATE TABLE IF NOT EXISTS reviews (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              testerName TEXT,
-              performanceScore INTEGER,
-              bugDetectionAccuracy INTEGER,
-              testingEfficiency INTEGER,
-              communicationSkills INTEGER,
-              creativity INTEGER,
-              responsiveness INTEGER,
-              punctuality INTEGER,
-              problemAnalysis INTEGER,
-              toolsKnowledge INTEGER,
-              overallRating INTEGER,
-              observations TEXT,
-              date TEXT
-            )
-          `,
-        },
-        {
-          name: "levels",
-          sql: `
-            CREATE TABLE IF NOT EXISTS levels (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              testerName TEXT,
-              level INTEGER
-            )
-          `,
-        },
-        {
-          name: "items",
-          sql: `
-            CREATE TABLE IF NOT EXISTS items (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              fecha TEXT,
-              posicion TEXT,
-              email TEXT,
-              gamertag TEXT,
-              titleName TEXT,
-              titleVersion TEXT,
-              submissionIteration TEXT,
-              generation TEXT,
-              options TEXT,
-              publisherAccount TEXT,
-              publisherPassword TEXT
-            )
-          `,
-        },
-        {
-          name: "issues",
-          sql: `
-            CREATE TABLE IF NOT EXISTS issues (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              name TEXT,
-              date TEXT,
-              observedBehavior TEXT,
-              reproductionSteps TEXT,
-              expectedBehavior TEXT,
-              notes TEXT,
-              bqScore INTEGER,
-              tags TEXT,
-              xr TEXT,
-              scenario TEXT
-            )
-          `,
-        },
-        {
-          name: "accounts",
-          sql: `
-            CREATE TABLE IF NOT EXISTS accounts (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              state TEXT,
-              email TEXT,
-              position TEXT,
-              gamertag TEXT,
-              sandbox TEXT,
-              subscription TEXT,
-              location TEXT,
-              notes TEXT
-            )
-          `,
-        },
-        {
-          name: "testers",
-          sql: `
-            CREATE TABLE IF NOT EXISTS testers (
-              name TEXT PRIMARY KEY
-            )
-          `,
-        },
-        {
-          name: "audits",
-          sql: `
-            CREATE TABLE IF NOT EXISTS audits (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              titleName TEXT,
-              submissionIteration TEXT,
-              generation TEXT,
-              testDate TEXT,    
-              nonCFRIssuesLogged TEXT,
-              cfrIssuesLogged TEXT,
-              totalCFRMissed TEXT,
-              lead TEXT,
-              testers TEXT,
-              actionItems TEXT,
-              bugQualityTracking TEXT
-            )
-          `,
-        },
-        {
-          name: "trackers",
-          sql: `
-            CREATE TABLE IF NOT EXISTS trackers (
-              id TEXT PRIMARY KEY,
-              titleName TEXT,
-              leadName TEXT,
-              testStartDate TEXT,
-              testEndDate TEXT,
-              sandboxIds TEXT,
-              recoveryVersion TEXT,
-              binaryId TEXT,
-              skuIdentifier TEXT,
-              xboxVersion TEXT,
-              simplifiedUserModel TEXT,
-              windowsVersion TEXT,
-              supportedPlatforms TEXT,
-              testModel TEXT,
-              testCases TEXT
-            )
-          `,
-        },
-        {
-          name: "widget_positions",
-          sql: `CREATE TABLE IF NOT EXISTS widget_positions (
-        id TEXT PRIMARY KEY,
-        top INTEGER,
-        left INTEGER,
-        width INTEGER,
-        height INTEGER
-    )`,
-        },
-        {
-          name: "hardware",
-          sql: `
-            CREATE TABLE IF NOT EXISTS hardware (
-              serialNumber TEXT PRIMARY KEY,
-              consoleId TEXT,
-              xboxLiveId TEXT,
-              assetOwner TEXT,
-              projectOwner TEXT,
-              type TEXT,
-              classification TEXT,
-              assetTag TEXT,
-              location TEXT,
-              status TEXT,
-              owner TEXT
-            )
-          `,
-        },
-        {
-          name: "history",
-          sql: `
-      CREATE TABLE IF NOT EXISTS history (
-        id INTEGER PRIMARY KEY,                 
-        titleName TEXT NOT NULL,               
-        supportedPlatforms TEXT,            
-        leadName TEXT,                          
-        testCases TEXT,                         
-        date TEXT NOT NULL 
-      )
-    `,
-        },
-      ];
-
-      tables.forEach((table) => {
-        db.run(table.sql, (err) => {
-          if (err) {
-            console.error(`Error creating ${table.name} table:`, err.message);
-          } else {
-          }
-        });
-      });
+      // Inicializa las tablas desde el archivo externo
+      initializeTables(db);
     }
   });
 }
-initializeDB();
-// END INITIALIZE DB
 
-//CREATE WINDOW
+initializeDB();
+
+//DB
+
+// CREATE WINDOW
 function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 800,
@@ -313,18 +59,20 @@ function createWindow() {
     icon: path.join(__dirname, "src/assets/xbox.ico"),
   });
 
-  // Load the HTML file
+  // Load the HTML file (authentication.html)
   mainWindow.loadFile("src/authentication.html").catch((err) => {
     console.error("Error loading HTML file:", err);
   });
 
+  // Maximize the window after loading
   mainWindow.webContents.on("did-finish-load", () => {
     mainWindow.maximize(); // Maximize the window after loading
     mainWindow.setMenu(null); // Uncomment to disable the menu
   });
 
+  // Handle new window requests
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-    // Handle new window requests
+    // Allow new window requests
     return {
       action: "allow",
       overrideBrowserWindowOptions: {
@@ -342,9 +90,8 @@ function createWindow() {
     };
   });
 }
-// END CREATE WINDOW
 
-// IPC handlers USERS
+// IPC RegisterUser
 ipcMain.handle("registerUser", async (event, username, password) => {
   return new Promise((resolve, reject) => {
     const hashedPassword = crypto
@@ -365,6 +112,7 @@ ipcMain.handle("registerUser", async (event, username, password) => {
   });
 });
 
+// IPC LoadDataById
 ipcMain.handle("loadDataById", async (event, id) => {
   return new Promise((resolve, reject) => {
     db.get("SELECT * FROM data WHERE id = ?", [id], (err, row) => {
@@ -377,7 +125,7 @@ ipcMain.handle("loadDataById", async (event, id) => {
   });
 });
 
-// Get all reviews
+// IPC GetReviews
 ipcMain.handle("get-reviews", async () => {
   return new Promise((resolve, reject) => {
     db.all("SELECT * FROM reviews", (err, rows) => {
@@ -391,7 +139,7 @@ ipcMain.handle("get-reviews", async () => {
   });
 });
 
-// Get a specific review by ID
+// IPC GetReviewById
 ipcMain.handle("get-review-by-id", async (event, id) => {
   return new Promise((resolve, reject) => {
     db.get("SELECT * FROM reviews WHERE id = ?", [id], (err, row) => {
@@ -405,6 +153,7 @@ ipcMain.handle("get-review-by-id", async (event, id) => {
   });
 });
 
+//IPC FetchItems
 ipcMain.handle("fetch-items", async () => {
   return new Promise((resolve, reject) => {
     db.all("SELECT * FROM items", [], (err, rows) => {
@@ -416,9 +165,8 @@ ipcMain.handle("fetch-items", async () => {
     });
   });
 });
-// IPC handlers USERS
 
-// IPC handlers HARDWARE
+// IPC GetHardWare
 ipcMain.handle("get-hardware", async () => {
   return new Promise((resolve, reject) => {
     db.all("SELECT * FROM hardware", [], (err, rows) => {
@@ -431,6 +179,7 @@ ipcMain.handle("get-hardware", async () => {
   });
 });
 
+// IPC AddOrUpdateHardware
 ipcMain.handle("add-or-update-hardware", async (event, hardware) => {
   return new Promise((resolve, reject) => {
     db.run(
@@ -461,6 +210,7 @@ ipcMain.handle("add-or-update-hardware", async (event, hardware) => {
   });
 });
 
+// IPC DeleteHardware
 ipcMain.handle("delete-hardware", async (event, serialNumber) => {
   return new Promise((resolve, reject) => {
     db.run(
@@ -476,9 +226,8 @@ ipcMain.handle("delete-hardware", async (event, serialNumber) => {
     );
   });
 });
-// IPC handlers HARDWARE
 
-// IPC handlers ACCOUNTS
+// IPC GetAccounts
 ipcMain.handle("get-accounts", async (event, page, search) => {
   const itemsPerPage = 10;
   const offset = (page - 1) * itemsPerPage;
@@ -513,6 +262,7 @@ ipcMain.handle("get-accounts", async (event, page, search) => {
   });
 });
 
+//IPC GetAccount
 ipcMain.handle("get-account", async (event, id) => {
   return new Promise((resolve, reject) => {
     db.get("SELECT * FROM accounts WHERE id = ?", [id], (err, row) => {
@@ -525,6 +275,7 @@ ipcMain.handle("get-account", async (event, id) => {
   });
 });
 
+// IPC SaveAccount
 ipcMain.handle("save-account", async (event, account) => {
   if (account.id) {
     return new Promise((resolve, reject) => {
@@ -582,6 +333,7 @@ ipcMain.handle("save-account", async (event, account) => {
   }
 });
 
+// IPC DeleteAccount
 ipcMain.handle("delete-account", async (event, id) => {
   return new Promise((resolve, reject) => {
     db.run("DELETE FROM accounts WHERE id = ?", [id], function (err) {
@@ -594,6 +346,7 @@ ipcMain.handle("delete-account", async (event, id) => {
   });
 });
 
+// IPC GetNextId
 ipcMain.handle("get-next-id", async () => {
   return new Promise((resolve, reject) => {
     db.get("SELECT MAX(id) AS maxId FROM accounts", (err, row) => {
@@ -605,8 +358,8 @@ ipcMain.handle("get-next-id", async () => {
     });
   });
 });
-// IPC handlers ACCOUNTS
 
+// IPC AddItem
 ipcMain.handle("add-item", async (event, item) => {
   return new Promise((resolve, reject) => {
     db.run(
@@ -636,6 +389,7 @@ ipcMain.handle("add-item", async (event, item) => {
   });
 });
 
+// IPC UpdateItem
 ipcMain.handle("update-item", async (event, item) => {
   return new Promise((resolve, reject) => {
     db.run(
@@ -677,6 +431,7 @@ ipcMain.handle("update-item", async (event, item) => {
   });
 });
 
+// IPC GetData
 ipcMain.handle("get-data", (event, query) => {
   console.log(`Executing query: ${query}`);
   return new Promise((resolve, reject) => {
@@ -690,6 +445,7 @@ ipcMain.handle("get-data", (event, query) => {
   });
 });
 
+// IPC DeleteItem
 ipcMain.handle("delete-item", async (event, id) => {
   return new Promise((resolve, reject) => {
     db.run("DELETE FROM items WHERE id = ?", id, function (err) {
@@ -702,6 +458,7 @@ ipcMain.handle("delete-item", async (event, id) => {
   });
 });
 
+//IPC SearchItems
 ipcMain.handle("search-items", async (event, query) => {
   return new Promise((resolve, reject) => {
     db.all(
@@ -718,6 +475,7 @@ ipcMain.handle("search-items", async (event, query) => {
   });
 });
 
+//IPC addIssue
 ipcMain.handle("addIssue", async (event, issue) => {
   return new Promise((resolve, reject) => {
     const query = `
@@ -749,6 +507,7 @@ ipcMain.handle("addIssue", async (event, issue) => {
   });
 });
 
+//IPC GetIssues
 ipcMain.handle("get-issues", async () => {
   return new Promise((resolve, reject) => {
     const query = "SELECT * FROM issues";
@@ -762,6 +521,7 @@ ipcMain.handle("get-issues", async () => {
   });
 });
 
+// IPC SearchIssues
 ipcMain.handle("search-issues", async (event, query) => {
   return new Promise((resolve, reject) => {
     const searchQuery = `
@@ -782,6 +542,7 @@ ipcMain.handle("search-issues", async (event, query) => {
   });
 });
 
+// IPC AddTicket
 ipcMain.handle("addTicket", (event, ticket) => {
   return new Promise((resolve, reject) => {
     db.run(
@@ -805,6 +566,7 @@ ipcMain.handle("addTicket", (event, ticket) => {
   });
 });
 
+// IPC LoadAllData
 ipcMain.handle("loadAllData", async () => {
   return new Promise((resolve, reject) => {
     db.all(`SELECT * FROM data`, [], (err, rows) => {
@@ -817,6 +579,7 @@ ipcMain.handle("loadAllData", async () => {
   });
 });
 
+// IPC DeleteData
 ipcMain.handle("delete-data", async (event, id) => {
   return new Promise((resolve, reject) => {
     db.run(`DELETE FROM data WHERE id = ?`, [id], function (err) {
@@ -829,6 +592,7 @@ ipcMain.handle("delete-data", async (event, id) => {
   });
 });
 
+// IPC GetTickets
 ipcMain.handle("get-tickets", () => {
   return new Promise((resolve, reject) => {
     db.all("SELECT * FROM tickets", (err, rows) => {
@@ -841,6 +605,7 @@ ipcMain.handle("get-tickets", () => {
   });
 });
 
+// IPC DeleteTicket
 ipcMain.handle("delete-ticket", (event, id) => {
   return new Promise((resolve, reject) => {
     db.run("DELETE FROM tickets WHERE id = ?", id, function (err) {
@@ -853,6 +618,7 @@ ipcMain.handle("delete-ticket", (event, id) => {
   });
 });
 
+// IPC LoginUser
 ipcMain.handle("loginUser", async (event, username, password) => {
   return new Promise((resolve, reject) => {
     const hashedPassword = crypto
@@ -873,9 +639,7 @@ ipcMain.handle("loginUser", async (event, username, password) => {
   });
 });
 
-// IPC handlers USERS
-
-// IPC handlers UPDATES
+// IPC LogUpdate
 ipcMain.handle("logUpdate", async (event, update) => {
   return new Promise((resolve, reject) => {
     db.run(
@@ -893,6 +657,7 @@ ipcMain.handle("logUpdate", async (event, update) => {
   });
 });
 
+// IPC SaveData
 ipcMain.handle("save-data", async (event, data) => {
   const {
     id,
@@ -938,6 +703,7 @@ ipcMain.handle("save-data", async (event, data) => {
   });
 });
 
+// IPC LoadData
 ipcMain.handle("load-data", async (event, id) => {
   return new Promise((resolve, reject) => {
     db.get(`SELECT * FROM data WHERE id = ?`, [id], (err, row) => {
@@ -950,6 +716,7 @@ ipcMain.handle("load-data", async (event, id) => {
   });
 });
 
+// IPC UpdateData
 ipcMain.handle("update-data", async (event, data) => {
   const {
     id,
@@ -995,6 +762,7 @@ ipcMain.handle("update-data", async (event, data) => {
   });
 });
 
+// IPC LoadUpdates
 ipcMain.handle("loadUpdates", async () => {
   return new Promise((resolve, reject) => {
     db.all("SELECT * FROM updates", [], (err, rows) => {
@@ -1008,6 +776,7 @@ ipcMain.handle("loadUpdates", async () => {
   });
 });
 
+// IPC DeleteUpdate
 ipcMain.handle("deleteUpdate", async (event, updateID) => {
   return new Promise((resolve, reject) => {
     db.run("DELETE FROM updates WHERE id = ?", [updateID], function (err) {
@@ -1020,9 +789,8 @@ ipcMain.handle("deleteUpdate", async (event, updateID) => {
     });
   });
 });
-// IPC handlers UPDATES
 
-// IPC handlers TEST CASES
+// IPC InsertTestCase
 ipcMain.handle("insertTestCase", async (event, testCase) => {
   const { xr, documentation, passExample, failExample, naExample } = testCase;
   return new Promise((resolve, reject) => {
@@ -1047,7 +815,7 @@ ipcMain.handle("insertTestCase", async (event, testCase) => {
   });
 });
 
-// Obtener todos los casos de prueba
+// IPC GetAllTestCases
 ipcMain.handle("getAllTestCases", async () => {
   return new Promise((resolve, reject) => {
     db.all("SELECT * FROM testCases", (err, rows) => {
@@ -1060,7 +828,7 @@ ipcMain.handle("getAllTestCases", async () => {
   });
 });
 
-// Obtener un caso de prueba por id
+// IPC GetTestCaseById
 ipcMain.handle("getTestCaseById", async (event, id) => {
   return new Promise((resolve, reject) => {
     db.get("SELECT * FROM testCases WHERE id = ?", [id], (err, row) => {
@@ -1073,7 +841,7 @@ ipcMain.handle("getTestCaseById", async (event, id) => {
   });
 });
 
-// Actualizar un caso de prueba
+// IPC UpdateTestCase
 ipcMain.handle("updateTestCase", async (event, testCase) => {
   const { id, xr, documentation, passExample, failExample, naExample } =
     testCase;
@@ -1100,7 +868,7 @@ ipcMain.handle("updateTestCase", async (event, testCase) => {
   });
 });
 
-// Eliminar un caso de prueba
+// IPC DeleteTestCase
 ipcMain.handle("deleteTestCase", async (event, id) => {
   return new Promise((resolve, reject) => {
     const stmt = db.prepare("DELETE FROM testCases WHERE id = ?");
@@ -1114,9 +882,8 @@ ipcMain.handle("deleteTestCase", async (event, id) => {
     stmt.finalize();
   });
 });
-// IPC handlers TEST CASES
 
-// Controlador IPC para obtener revisiones
+// IPC GetReviews
 ipcMain.handle("getReviews", async () => {
   return new Promise((resolve, reject) => {
     db.all("SELECT * FROM reviews", [], (err, rows) => {
@@ -1128,7 +895,7 @@ ipcMain.handle("getReviews", async () => {
   });
 });
 
-// Controlador IPC para agregar revisión
+// IPC AddReview
 ipcMain.handle("add-review", async (event, review) => {
   return new Promise((resolve, reject) => {
     const {
@@ -1173,7 +940,7 @@ ipcMain.handle("add-review", async (event, review) => {
   });
 });
 
-// Controlador IPC para actualizar revisión
+// IPC UpdateReview
 ipcMain.handle("update-review", async (event, review) => {
   return new Promise((resolve, reject) => {
     const {
@@ -1220,7 +987,7 @@ ipcMain.handle("update-review", async (event, review) => {
   });
 });
 
-// Controlador IPC para eliminar revisión
+// IPC DeleteReview
 ipcMain.handle("delete-review", async (event, id) => {
   return new Promise((resolve, reject) => {
     db.run("DELETE FROM reviews WHERE id = ?", id, function (err) {
@@ -1232,6 +999,7 @@ ipcMain.handle("delete-review", async (event, id) => {
   });
 });
 
+// IPC GetAllTrackers
 ipcMain.handle("getAllTrackers", async () => {
   return new Promise((resolve, reject) => {
     const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
@@ -1254,7 +1022,7 @@ ipcMain.handle("getAllTrackers", async () => {
   });
 });
 
-// Controlador IPC para obtener testers
+// IPC GetTesters
 ipcMain.handle("get-testers", async () => {
   return new Promise((resolve, reject) => {
     db.all("SELECT * FROM testers", [], (err, rows) => {
@@ -1266,7 +1034,7 @@ ipcMain.handle("get-testers", async () => {
   });
 });
 
-// Controlador IPC para agregar tester
+// IPC AddTester
 ipcMain.handle("add-tester", async (event, testerName) => {
   return new Promise((resolve, reject) => {
     db.run(
@@ -1282,6 +1050,7 @@ ipcMain.handle("add-tester", async (event, testerName) => {
   });
 });
 
+// IPC AddAudit
 ipcMain.handle("add-audit", (event, audit) => {
   return new Promise((resolve, reject) => {
     db.run(
@@ -1311,6 +1080,7 @@ ipcMain.handle("add-audit", (event, audit) => {
   });
 });
 
+// IPC LoadAudits
 ipcMain.handle("load-audits", () => {
   return new Promise((resolve, reject) => {
     db.all("SELECT * FROM audits", [], (err, rows) => {
@@ -1323,9 +1093,11 @@ ipcMain.handle("load-audits", () => {
   });
 });
 
+// IPC GetTestCases
 ipcMain.handle("getTestCases", async (event, trackerId) => {
   console.log("Handler for getTestCases called with trackerId:", trackerId);
 
+  // Initialize the database
   const db = new sqlite3.Database(dbPath);
 
   return new Promise((resolve, reject) => {
@@ -1349,6 +1121,7 @@ ipcMain.handle("getTestCases", async (event, trackerId) => {
   });
 });
 
+// IPC GetAudit
 ipcMain.handle("get-audit", (event, id) => {
   return new Promise((resolve, reject) => {
     db.get("SELECT * FROM audits WHERE id = ?", [id], (err, row) => {
@@ -1361,6 +1134,7 @@ ipcMain.handle("get-audit", (event, id) => {
   });
 });
 
+// IPC DeleteAudit
 ipcMain.handle("delete-audit", (event, id) => {
   return new Promise((resolve, reject) => {
     db.run("DELETE FROM audits WHERE id = ?", [id], (err) => {
@@ -1373,6 +1147,7 @@ ipcMain.handle("delete-audit", (event, id) => {
   });
 });
 
+// IPC EditAudit
 ipcMain.handle("edit-audit", (event, id, audit) => {
   return new Promise((resolve, reject) => {
     db.run(
@@ -1403,6 +1178,7 @@ ipcMain.handle("edit-audit", (event, id, audit) => {
   });
 });
 
+// IPC LoadTrackers
 ipcMain.handle("load-trackers", async () => {
   return new Promise((resolve, reject) => {
     let db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
@@ -1421,6 +1197,7 @@ ipcMain.handle("load-trackers", async () => {
   });
 });
 
+// IPC LoadHistory
 ipcMain.handle("load-history", async () => {
   return new Promise((resolve, reject) => {
     let db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
@@ -1439,6 +1216,7 @@ ipcMain.handle("load-history", async () => {
   });
 });
 
+// IPC DeleteTracker
 ipcMain.handle("deleteTracker", async (event, id) => {
   return new Promise((resolve, reject) => {
     let db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
@@ -1457,7 +1235,7 @@ ipcMain.handle("deleteTracker", async (event, id) => {
   });
 });
 
-// Manejador para mover un tracker al historial
+// IPC MoveTrackerToHistory
 ipcMain.handle("moveTrackerToHistory", async (event, tracker) => {
   console.log("Tracker data before moving:", tracker);
 
@@ -1536,7 +1314,7 @@ ipcMain.handle("moveTrackerToHistory", async (event, tracker) => {
   });
 });
 
-// Get all levels
+// IPC GetLevels
 ipcMain.handle("get-levels", async () => {
   return new Promise((resolve, reject) => {
     db.all("SELECT * FROM levels", [], (err, rows) => {
@@ -1548,7 +1326,7 @@ ipcMain.handle("get-levels", async () => {
     });
   });
 });
-// Get a specific level by ID
+// IPC AddLevel
 ipcMain.handle("add-level", async (event, level) => {
   return new Promise((resolve, reject) => {
     db.run(
@@ -1565,8 +1343,7 @@ ipcMain.handle("add-level", async (event, level) => {
   });
 });
 
-//Update level
-
+// IPC UpdateLevel
 ipcMain.handle("update-level", async (event, level) => {
   return new Promise((resolve, reject) => {
     db.run(
@@ -1583,8 +1360,7 @@ ipcMain.handle("update-level", async (event, level) => {
   });
 });
 
-//Delete level
-
+// IPC DeleteLevel
 ipcMain.handle("delete-level", async (event, id) => {
   return new Promise((resolve, reject) => {
     db.run("DELETE FROM levels WHERE id = ?", id, function (err) {
@@ -1597,6 +1373,7 @@ ipcMain.handle("delete-level", async (event, id) => {
   });
 });
 
+// IPC ViewTestCases
 ipcMain.handle("view-test-cases", async (event, id) => {
   return new Promise((resolve, reject) => {
     let db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
@@ -1615,10 +1392,7 @@ ipcMain.handle("view-test-cases", async (event, id) => {
   });
 });
 
-ipcMain.handle("migrate-trackers", async () => {
-  // Implement migration logic if needed
-});
-
+// IPC loadTrackerDetails
 ipcMain.handle("loadTrackerDetails", async (event, trackerId) => {
   return new Promise((resolve, reject) => {
     db.get(`SELECT * FROM trackers WHERE id = ?`, [trackerId], (err, row) => {
@@ -1631,6 +1405,7 @@ ipcMain.handle("loadTrackerDetails", async (event, trackerId) => {
   });
 });
 
+// IPC SaveTrackerDetails
 ipcMain.handle("saveTrackerDetails", async (event, tracker) => {
   return new Promise((resolve, reject) => {
     db.run(
@@ -1667,6 +1442,7 @@ ipcMain.handle("saveTrackerDetails", async (event, tracker) => {
   });
 });
 
+// IPC SaveTracker
 ipcMain.handle("save-tracker", (event, tracker) => {
   return new Promise((resolve, reject) => {
     const stmt = db.prepare(`INSERT OR REPLACE INTO trackers (
@@ -1706,6 +1482,7 @@ ipcMain.handle("save-tracker", (event, tracker) => {
   });
 });
 
+// IPC LoadTracker
 ipcMain.handle("load-tracker", (event, id) => {
   return new Promise((resolve, reject) => {
     db.get("SELECT * FROM trackers WHERE id = ?", [id], (err, row) => {
@@ -1725,6 +1502,7 @@ ipcMain.handle("load-tracker", (event, id) => {
   });
 });
 
+// IPC ClearDatabase
 ipcMain.handle("clear-database", async () => {
   return new Promise((resolve, reject) => {
     let db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
@@ -1743,6 +1521,7 @@ ipcMain.handle("clear-database", async () => {
   });
 });
 
+// IPC SearchInput
 ipcMain.handle("search-input", async (event, searchTerm) => {
   return new Promise((resolve, reject) => {
     let db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
@@ -1822,7 +1601,6 @@ ipcMain.handle("search-input", async (event, searchTerm) => {
           );
         });
       } else {
-        // Insert new account
         return new Promise((resolve, reject) => {
           db.run(
             `INSERT INTO accounts (fecha, posicion, email, gamertag, titleName, titleVersion, submissionIteration, generation, options, publisherAccount, publisherPassword) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
@@ -1852,7 +1630,7 @@ ipcMain.handle("search-input", async (event, searchTerm) => {
       }
     });
 
-    // Delete an account by ID
+    // IPC DeleteAccount
     ipcMain.handle("delete-account", async (event, id) => {
       return new Promise((resolve, reject) => {
         db.run(`DELETE FROM accounts WHERE id = ?`, [id], function (err) {
@@ -1866,7 +1644,7 @@ ipcMain.handle("search-input", async (event, searchTerm) => {
       });
     });
 
-    // Get the next ID for a new account
+    // IPC GetNextId
     ipcMain.handle("get-next-id", async () => {
       return new Promise((resolve, reject) => {
         db.get(`SELECT MAX(id) AS maxId FROM accounts`, (err, row) => {
@@ -1880,6 +1658,7 @@ ipcMain.handle("search-input", async (event, searchTerm) => {
       });
     });
 
+    // IPC SearchHistory
     db.all(
       "SELECT * FROM history WHERE titleName LIKE ?",
       [`%${searchTerm}%`],
@@ -1894,20 +1673,21 @@ ipcMain.handle("search-input", async (event, searchTerm) => {
   });
 });
 
-// Inicializar la app.
+// Initialize the app.
 app.whenReady().then(() => {
   initializeDB(); // Asegúrate de inicializar la base de datos
 
   createWindow();
 });
 
-// Salir de la app.
+// Close the app.
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
   }
 });
 
+// Activate the app.
 app.on("activate", () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
