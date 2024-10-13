@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Meta tags and document information -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CERT MANAGEMENT</title>
+
+    <!-- External CSS (Bootstrap) -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -13,22 +16,26 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <!-- Internal CSS for custom styles -->
     <link rel="stylesheet" href="./src/css/style.css" />
     <style>
+      /* Inline CSS for card width (consider moving this to style.css) */
       .card {
         width: 100%;
       }
     </style>
   </head>
   <body class="indexbody">
+    <!-- HEADER SECTION -->
     <header>
-      <!-- Title -->
+      <!-- Title of the page -->
       <h1 class="box">CERT MANAGEMENT</h1>
-      <!-- Navbar -->
+
+      <!-- Navigation bar -->
       <nav id="navbar" role="navigation">
         <ul class="nav">
+          <!-- NEWS link -->
           <li class="nav-item">
-            <!-- NEWS -->
             <a
               class="nav-link"
               href="./src/news.html"
@@ -37,19 +44,21 @@
               >News</a
             >
           </li>
+
+          <!-- Dashboard link -->
           <li class="nav-item">
-            <!-- DASHBOARD -->
             <a
               class="nav-link"
               href="./src/dashboard.html"
+              target="_blank"
               data-bs-toggle="tooltip"
               data-bs-placement="top"
-              target="_blank"
               >Dashboard</a
             >
           </li>
+
+          <!-- Dropdown for Docs -->
           <li class="nav-item dropdown">
-            <!-- DOCS -->
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -60,7 +69,6 @@
             >
             <ul class="dropdown-menu" aria-labelledby="docsDropdown">
               <li>
-                <!-- DOCS -->
                 <a
                   class="dropdown-item"
                   href="#"
@@ -69,7 +77,6 @@
                 >
               </li>
               <li>
-                <!-- FMA -->
                 <a
                   class="dropdown-item"
                   href="#"
@@ -79,8 +86,9 @@
               </li>
             </ul>
           </li>
+
+          <!-- Dropdown for KPI -->
           <li class="nav-item dropdown">
-            <!-- KPI -->
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -91,7 +99,6 @@
             >
             <ul class="dropdown-menu" aria-labelledby="kpiDropdown">
               <li>
-                <!-- KPI -->
                 <a
                   class="dropdown-item"
                   href="#"
@@ -100,7 +107,6 @@
                 >
               </li>
               <li>
-                <!-- TITLE AUDIT -->
                 <a
                   class="dropdown-item"
                   href="#"
@@ -110,14 +116,14 @@
               </li>
             </ul>
           </li>
+
+          <!-- Other navigation links -->
           <li class="nav-item">
-            <!-- SUBMISSIONS MANAGER -->
             <a class="nav-link" href="./src/submissionManager.html"
               >Submissions Manager</a
             >
           </li>
           <li class="nav-item">
-            <!-- LAB DISTRIBUTION -->
             <a
               class="nav-link"
               href="./src/labDistribution.html"
@@ -126,30 +132,19 @@
             >
           </li>
           <li class="nav-item">
-            <!-- TICKETS -->
             <a class="nav-link" href="./src/tickets.html">Tickets</a>
           </li>
           <li class="nav-item">
-            <!-- BUGPEDIA -->
             <a class="nav-link" href="./src/bugpedia.html">Bugpedia</a>
           </li>
           <li class="nav-item">
-            <!-- SAVE GAME COMPATIBILITY -->
             <a class="nav-link" href="./src/SaveGameComp.html"
               >Save Game Compatibility</a
             >
           </li>
-          <li class="nav-item">
-            <!-- XR COMMENTS -->
-            <a
-              class="nav-link"
-              href="#"
-              onclick="openMaximizedWindow('./src/xrComments.html')"
-              >XR Comments</a
-            >
-          </li>
+
+          <!-- Dropdown for Inventory -->
           <li class="nav-item dropdown">
-            <!-- INVENTORY -->
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -160,21 +155,20 @@
             >
             <ul class="dropdown-menu" aria-labelledby="inventoryDropdown">
               <li>
-                <!-- ACCOUNTS -->
                 <a class="dropdown-item" href="./src/inventoryAccounts.html"
                   >Accounts</a
                 >
               </li>
               <li>
-                <!-- HARDWARE -->
                 <a class="dropdown-item" href="./src/inventoryHardware.html"
                   >Hardware</a
                 >
               </li>
             </ul>
           </li>
+
+          <!-- Dropdown for Tools -->
           <li class="nav-item dropdown">
-            <!-- TOOLS -->
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -185,29 +179,21 @@
             >
             <ul class="dropdown-menu" aria-labelledby="toolsDropdown">
               <li>
-                <!-- XCERT CR -->
                 <a
                   class="dropdown-item"
                   href="http://xcert_vm.crlabcert.com:5002/xcertclient/cr/files/XCertv4.msix"
                   >XCert CR</a
                 >
               </li>
-
               <li>
-                <!-- CMT -->
                 <a
                   class="dropdown-item"
                   href="https://cmlog.blob.core.windows.net/cmcont/publish.htm"
                   >CMT</a
                 >
               </li>
-
               <li>
-                <!-- CMT -->
-                <a
-                  class="dropdown-item"
-                  href="./src/cmtQA.html"
-                  target="_blank"
+                <a class="dropdown-item" href="./src/cmtQA.html" target="_blank"
                   >CMT QUESTIONARY</a
                 >
               </li>
@@ -215,15 +201,15 @@
           </li>
         </ul>
       </nav>
-      <!-- End of Navbar -->
     </header>
 
-    <!-- Main Content -->
+    <!-- MAIN CONTENT SECTION -->
     <main class="container">
-      <!-- Row for organizing cards into columns -->
+      <!-- Cards section -->
       <section class="main-content row">
         <div class="col-md-4 mb-4">
-          <div class="card" >
+          <!-- Card for My HCL -->
+          <div class="card">
             <img
               class="card-img-top"
               src="./src/assets/blue.png"
@@ -231,9 +217,7 @@
             />
             <div class="card-body">
               <h5 class="card-title">My HCL</h5>
-              <p class="card-text"></p>
               <a
-              rel="noopener noreferrer"
                 href="https://hclo365.sharepoint.com/sites/MYHCLTech"
                 target="_blank"
                 class="btn btn-primary"
@@ -244,7 +228,8 @@
         </div>
 
         <div class="col-md-4 mb-4">
-          <div class="card" ">
+          <!-- Card for Percipio Academy -->
+          <div class="card">
             <img
               class="card-img-top"
               src="./src/assets/Indigo Purple Solid.jpg"
@@ -252,9 +237,7 @@
             />
             <div class="card-body">
               <h5 class="card-title">Percipio Academy</h5>
-              <p class="card-text"></p>
               <a
-                rel="noopener noreferrer"
                 href="https://hclcontent.percipio.com/"
                 target="_blank"
                 class="btn btn-primary"
@@ -265,6 +248,7 @@
         </div>
 
         <div class="col-md-4 mb-4">
+          <!-- Card for Xbox Services -->
           <div class="card">
             <img
               class="card-img-top"
@@ -273,9 +257,7 @@
             />
             <div class="card-body">
               <h5 class="card-title">Xbox Services</h5>
-              <p class="card-text"></p>
               <a
-                rel="noopener noreferrer"
                 href="https://support.xbox.com/en-US/xbox-live-status"
                 target="_blank"
                 class="btn btn-primary"
@@ -286,17 +268,17 @@
         </div>
       </section>
 
+      <!-- Sidebar for additional content (e.g., clock) -->
       <aside class="sidebar">
         <h2>CERT ඞ</h2>
-        <div class="clock" id="clock">
-          <!-- Relojes combinados -->
-        </div>
+        <div class="clock" id="clock"></div>
       </aside>
     </main>
-    <!-- End of Main Content -->
 
+    <!-- FOOTER SECTION -->
     <footer>Version 1.5 &copy; IKS</footer>
 
+    <!-- JavaScript imports -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
