@@ -4,7 +4,7 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const crypto = require("crypto");
 const sqlite3 = require("sqlite3").verbose();
-const initializeTables = require("./dbSchema");
+const initializeTables = require("../CRM XBox/src/js/dbSchema");
 
 // Disable GPU acceleration
 app.disableHardwareAcceleration();
@@ -15,7 +15,8 @@ app.commandLine.appendSwitch("disable-gpu-compositing");
 app.commandLine.appendSwitch("no-sandbox");
 
 // Initialize the database path
-let db;
+let db; // Variable global
+
 let basePath = path.dirname(process.execPath);
 
 if (process.env.NODE_ENV !== "production") {
@@ -28,7 +29,8 @@ console.log(`Database path: ${dbPath}`);
 
 // DB
 function initializeDB() {
-  const db = new sqlite3.Database(dbPath, (err) => {
+  db = new sqlite3.Database(dbPath, (err) => {
+    // Usa la variable global `db`
     if (err) {
       console.error("Error opening database:", err.message);
     } else {
@@ -40,8 +42,6 @@ function initializeDB() {
 }
 
 initializeDB();
-
-//DB
 
 // CREATE WINDOW
 function createWindow() {
@@ -67,7 +67,7 @@ function createWindow() {
   // Maximize the window after loading
   mainWindow.webContents.on("did-finish-load", () => {
     mainWindow.maximize(); // Maximize the window after loading
-    mainWindow.setMenu(null); // Uncomment to disable the menu
+    // mainWindow.setMenu(null); // Uncomment to disable the menu
   });
 
   // Handle new window requests
@@ -90,6 +90,27 @@ function createWindow() {
     };
   });
 }
+
+// IPC LoginUser
+ipcMain.handle("loginUser", async (event, username, password) => {
+  return new Promise((resolve, reject) => {
+    const hashedPassword = crypto
+      .createHash("sha256")
+      .update(password)
+      .digest("hex");
+    db.get(
+      `SELECT * FROM users WHERE username = ? AND password = ?`,
+      [username, hashedPassword],
+      (err, row) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(row);
+        }
+      }
+    );
+  });
+});
 
 // IPC RegisterUser
 ipcMain.handle("registerUser", async (event, username, password) => {
@@ -615,27 +636,6 @@ ipcMain.handle("delete-ticket", (event, id) => {
         resolve(this.changes);
       }
     });
-  });
-});
-
-// IPC LoginUser
-ipcMain.handle("loginUser", async (event, username, password) => {
-  return new Promise((resolve, reject) => {
-    const hashedPassword = crypto
-      .createHash("sha256")
-      .update(password)
-      .digest("hex");
-    db.get(
-      `SELECT * FROM users WHERE username = ? AND password = ?`,
-      [username, hashedPassword],
-      (err, row) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(row);
-        }
-      }
-    );
   });
 });
 
